@@ -40,7 +40,21 @@ public function add()
 }
 public function save1(Request $req)
     {
+        $vip="";
+        $active="";
+        if(isset($req->vip)){
+            $vip=1;
+         }else{
+            $vip=0;
+         }
+         if(isset($req->is_active)){
+            $active=1;
+         }else{
+            $active=0;
+         }
       $Customer=new Customer;
+      $Customer->vip=$vip;
+      $Customer->is_active=$active;
       $Customer->cus_name=$req->cus_name;
       $Customer->cus_account=$req->cus_account;
       $Customer->contact_person=$req->contact_person;
@@ -51,8 +65,6 @@ public function save1(Request $req)
       $Customer->fax2=$req->fax2;
       $Customer->cus_email=$req->cus_email;
       $Customer->whatsapp=$req->whatsapp;
-      $Customer->vip=$req->vip;
-      $Customer->is_active=$req->is_active;
       $Customer->def_currency=$req->def_currency;
       $Customer->country=$req->country;
       $Customer->how_create_it=$req->how_create_it;
@@ -64,13 +76,25 @@ public function save1(Request $req)
 public function edit_row(Request $req){
     $req->validate([
         ]);
-    $Customer=new Customer;
+        $vip="";
+        $active="";
+        if(isset($req->vip)){
+            $vip=1;
+         }else{
+            $vip=0;
+         }
+         if(isset($req->is_active)){
+            $active=1;
+         }else{
+            $active=0;
+         }
+      $Customer=new Customer;
     $Customer::where('cus_id',$req->id)
     ->update(['contact_person'=>$req->contact_person,'cus_account'=>$req->cus_account,
     'cus_name'=>$req->cus_name,'contact_title'=>$req->contact_title,
     'telephon1'=>$req->telephon1,'telephon2'=>$req->telephon2,'fax1'=>$req->fax1,
     'fax2'=>$req->fax2,'cus_email'=>$req->cus_email,'whatsapp'=>$req->whatsapp,
-    'is_active'=>$req->vip,'is_active'=>$req->vip,'country'=>$req->country,
+    'vip'=>$vip,'is_active'=>$active,'country'=>$req->country,
     'city'=>$req->city,'address'=>$req->address,'def_currency'=>$req->def_currency,
     ]);
     return redirect('customer_display');

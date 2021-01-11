@@ -69,19 +69,17 @@
       <label for="pwd">country</label>
       <input type="text" required value="{{$item->country}}"  class="form-control" name="country">
     </div>
-    <div class="form-group col-md-4">
-      <label for="is_active">is_active</label>
-     <select name="is_active" required class="form-control" id="">
-     <option value=1>yes</option>
-     <option value=0>no</option>
-     </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="is_active">VIP</label>
-     <select required name="vip" class="form-control" id="">
-     <option value=1>yes</option>
-     <option value=0>no</option>
-     </select>
+    <div class="form-group col-md-2 mt-4">
+    @if($item->is_active ==1)
+      <label class="checkbox-inline"><input type="checkbox" name="is_active" checked value="1">active</label>
+    @else
+    <label class="checkbox-inline"><input type="checkbox" name="is_active"  value="0">active</label>
+    @endif
+    @if($item->vip ==1)
+      <label class="checkbox-inline"><input type="checkbox" name="vip" checked value="1">vip</label>
+      @else
+      <label class="checkbox-inline"><input type="checkbox" name="vip"  value="0">vip</label>
+      @endif
     </div>
     @endforeach
 

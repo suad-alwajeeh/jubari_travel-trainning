@@ -41,14 +41,12 @@
       {{$item->remark}}
       </textarea>
     </div>
-    <div class="form-group col-md-6">
-      <label for="is_active">is_active</label>
-     <select name="is_active" class="form-control" id="">
-     <option value=1>1</option>
-     <option value=0>2</option>
-     </select>
-    </div>
-   
+    <div class="form-group col-md-2 mt-4">
+    @if($item->is_active ==1)
+      <label class="checkbox-inline"><input type="checkbox" name="is_active" checked value="1">active</label>
+    @else
+    <label class="checkbox-inline"><input type="checkbox" name="is_active"  value="0">active</label>
+    @endif    </div>  
    </div>
     <button type="submit" class="btn btn-primary">send</button>
     @endforeach

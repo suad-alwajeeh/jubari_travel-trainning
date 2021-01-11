@@ -35,8 +35,12 @@ class AirlineController extends Controller
     }
     public function save1(Request $req)
     {
-     // print_r($req->input());
-     $req->validate([
+        $active="";
+         if(isset($req->is_active)){
+            $active=1;
+         }else{
+            $active=0;
+         }     $req->validate([
         "airline_code"=>"min:3",
         "airline"=>"required",
         "code"=>"required",
@@ -54,17 +58,24 @@ class AirlineController extends Controller
       $airline->code=$req->code;
       $airline->IATA=$req->IATA;
       $airline->remark=$req->remark;
-      $airline->is_active=$req->is_active;
+      $airline->is_active=$active;
        $airline->save();
       $affected = Airline::where('is_delete',0)->paginate(7);
       return redirect('airline_display');
     }
     public function edit_row(Request $req){
         $airline=new Airline;
+        $active="";
+       
+         if(isset($req->is_active)){
+            $active=1;
+         }else{
+            $active=0;
+         }
         $airline::where('id',$req->id)
         ->update(['airline_code'=>$req->airline_code,'airline_name'=>$req->airline,
         'country'=>$req->country,'carrier_code'=>$req->carrier_code,'code'=>$req->code,
-        'IATA'=>$req->IATA	,'remark'=>$req->remark,'is_active'=>$req->is_active,
+        'IATA'=>$req->IATA	,'remark'=>$req->remark,'is_active'=>$active,
         ]);
         $affected = Airline::where('is_delete',0)->paginate(7);
         return redirect('airline_display');

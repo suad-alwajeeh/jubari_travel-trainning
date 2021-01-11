@@ -5,7 +5,7 @@
   <div class="content-wrapper">
   <div class="container p-4">
   
-<h2>edit customer </h2>
+<h2>add customer </h2>
 @foreach($errors->all() as $er)
 <div class="alert alert-warning alert-dismissible">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -69,20 +69,7 @@
       <label for="pwd">country</label>
       <input type="text" required value=""  class="form-control" name="country">
     </div>
-    <div class="form-group col-md-4">
-      <label for="is_active">is_active</label>
-     <select name="is_active" required class="form-control" id="">
-     <option value=1>yes</option>
-     <option value=0>no</option>
-     </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="is_active">VIP</label>
-     <select required name="vip" class="form-control" id="">
-     <option value=1>yes</option>
-     <option value=0>no</option>
-     </select>
-    </div>
+    
 
     <div class="form-group col-md-4">
       <label for="is_active">def_currency</label>
@@ -92,7 +79,10 @@
      @endforeach
      </select>
     </div>
-   
+    <div class="form-group col-md-2 mt-4">
+<label class="checkbox-inline"><input type="checkbox" name="is_active" checked value="1">active</label>
+      <label class="checkbox-inline"><input type="checkbox" name="vip" checked value="1">vip</label>
+    </div>
    </div>
    <button type="submit" class="btn btn-primary">send</button>
    <a href="/customer_display" class="btn btn-dark">cansel</a>

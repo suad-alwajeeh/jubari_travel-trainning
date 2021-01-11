@@ -44,13 +44,10 @@
       <label for="pwd">	remark</label>
       <textarea class="form-control" name="remark" id="remark"></textarea>
     </div>
-    <div class="form-group col-md-6">
-      <label for="is_active">is_active</label>
-     <select class="form-control" name="is_active" id="">
-     <option value=1>1</option>
-     <option value=0>2</option>
-     </select>
+    <div class="form-group col-md-2 mt-4">
+<label class="checkbox-inline"><input type="checkbox" name="is_active" checked value="1">active</label>
     </div>
+   </div>
    </div>
     <button type="submit" class="btn btn-primary">send</button>
    
