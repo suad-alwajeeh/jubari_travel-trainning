@@ -1,0 +1,54 @@
+@media (max-width:250.98px) {
+    .noo{padding-top: 50%;}
+.user_message h2 {
+    font-size: 25px;
+    font-weight: bolder;
+}
+    .user_message .btn {
+    width: 58%;
+    color: #fff;
+    border: 1px solid #10044a;
+    float: right;
+    margin-right: 21%;
+    background: #10044a;
+    border-radius: 11px;
+}
+}
+@media (min-width: 250px) and (max-width: 575.98px) { 
+      .noo{padding-top: 50%;}
+.user_message h2 {
+    font-size: 25px;
+    font-weight: bolder;
+}
+   .user_message .btn {
+    width: 40%;
+    color: #fff;
+    border: 1px solid #10044a;
+    float: right;
+    margin-right: 28%;
+    background: #10044a;
+    border-radius: 11px;
+}
+
+}
+
+@media (min-width: 576px) and (max-width:767.98px ) {
+      .noo{padding-top: 30%;}
+
+}
+@media (min-width: 767.98px) and (max-width: 992px) { 
+  
+    .noo{padding-top: 20%;}
+
+}
+
+@media (min-width: 992px) and (max-width: 1099.98px) { 
+     .noo{padding-top: 20%;}
+
+}
+
+@media (min-width: 1200px)
+{     .noo{padding-top: 20%;}
+
+
+}

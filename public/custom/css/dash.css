@@ -1,0 +1,24 @@
+.header{
+padding-top: 10px;
+height: 50px;
+}
+.control{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 50px;
+}
+.login{
+    margin: auto;
+    height: 100vh;
+    background-image: url('../img/b\ \(2\).jpg');
+    background-repeat: no-repeat;
+    background-size:cover ;
+  }
+  .log{
+    position: relative;
+    top:30vh;
+    background:#dee1e685;
+    padding: 30px;
+    width: 80%;
+    left: 10%;
+}
