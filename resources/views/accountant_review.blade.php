@@ -462,7 +462,7 @@ function sendremark(){
              success:function(response){
                //$('#myModal_acc').modal('toggle');
               // $("#serr"+service).css('display','none'); 
-               location.reload();   
+               //location.reload();   
              },
              error:function(error){
                console.log(error);

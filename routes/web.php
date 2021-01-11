@@ -206,6 +206,7 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
   Route::get('/accountant/send_remark/{m}/{s}/{to}/{from}/{number}','accountantController@send_remark');
   Route::get('/accountant/add_bookmark/{m}/{s}/{c}/{h}','accountantController@add_bookmark');
   Route::get('/accountant/remove_bookmark/{m}/{s}/{h}','accountantController@remove_bookmark');
+  Route::get('/accountant/display_remark_body/{m}/{s}','accountantController@display_remark_body');
 
 });
 Route::group(['middleware' => ['auth','role:sale_manager']], function() {

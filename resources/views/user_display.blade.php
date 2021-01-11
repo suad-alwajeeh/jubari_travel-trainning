@@ -33,6 +33,7 @@
         <th>user_name</th>
         <th>user_email</th>
         <th>department</th>
+        <th>password</th>
         <th>user_status</th>
         <th>opration</th>
       </tr>
@@ -44,6 +45,7 @@
       <td>{{$item->u_name}}</td>
       <td>{{$item->u_email}}</td>      
       <td>{{$item->d_name}}</td>
+      <td>{{$item->pass}}</td> 
       <td>
       @if($item->u_is_active == 0)
       
@@ -64,7 +66,7 @@
 
 @endif
 
-      </td>    
+      </td>   
         <td>
         <div class="btn-group btn-group-sm">
   <a type="button" class="btn btn-success" href="{{ url('user_edit/'.$item->u_id) }}"><i class="fas fa-pencil-alt "></i></a>

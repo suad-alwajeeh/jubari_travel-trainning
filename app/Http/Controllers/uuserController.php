@@ -51,8 +51,9 @@ class uuserController extends Controller
     public function display_row($id)
     { 
         $affected = users::where('id',$id)->get();
-        return view('user_edit',['data'=>$affected]);
-                    }
+        $affected2= DB::table('roles')->where([['is_active',1],['is_delete',0]])->get();
+        return view('user_edit',['data'=>$affected,'data3'=>$affected2]);
+    }
      public function user_profile($id)
             { 
                 $affected = users::where('id',$id)
@@ -78,14 +79,17 @@ class uuserController extends Controller
         $affected = users::where('users.is_delete',0)
         ->join('employees','users.id','employees.emp_id')
         ->join('departments','employees.dept_id','departments.id')
-        ->select('users.id as u_id', 'users.is_active as u_is_active','users.is_delete as u_is_delete','users.name as u_name','users.email as u_email', 'departments.name as d_name')->paginate(7);
-        $affected1 = users::where('is_delete',0)->join('role_user','users.id','role_user.user_id')->select('users.id as u_id');
+        ->select('users.id as u_id', 'users.is_active as u_is_active',
+        'users.is_delete as u_is_delete','users.name as u_name',
+        'users.email as u_email','users.pass as pass', 'departments.name as d_name')->paginate(7);
+        $affected1 = users::where('is_delete',0)->join('role_user','users.id','role_user.user_id')
+        ->select('users.id as u_id');
         return view('user_display',['data'=>$affected,'data1'=>$affected1]);
         }
     public function add()
     {
        
-        $affected1 = Department::where('is_active',1)->get();
+        $affected1 = Department::where([['is_active',1],['deleted',0]])->get();
         $affected2= DB::table('roles')->where([['is_active',1],['is_delete',0]])->get();
         return view('user_add',['data1'=>$affected1,'data3'=>$affected2]);
     }

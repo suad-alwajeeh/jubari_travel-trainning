@@ -263,7 +263,19 @@ class accountantController extends Controller
                      echo json_encode($affected);
                 }                                
 /******************************add remark******************************* */
+public function display_remark_body($m,$s){
+   $affected =DB::table('logs')->where([['service_id',$s],['main_servic_id',$m]])->select('remark_body')->get();
+   $m= (explode("|",$affected));
+   $mv=[];
+   foreach($m as $mm)
+   {
+     $ss= explode(",",$mm);
+     array_push($mv,$ss); 
+      
+   } 
+   print_r($mv);  
 
+}
 public function add_remark($col,$old,$new,$status){
   
    if($status==1){
@@ -300,8 +312,11 @@ public function add_remark($col,$old,$new,$status){
    public function send_remark($main,$service,$to,$from,$number){
       $message5="";
       $date=now();
-     $remark_body=$_SESSION['remark'];
-     $remark_body = json_encode($_SESSION['remark']);
+     //$remark_body=$_SESSION['remark'];
+     $out = implode("|",array_map(function($a) {
+        return implode(",",$a);},$_SESSION['remark']));
+     //print_r($out);
+     $remark_body =$out;
      DB::table('logs')->insert(
       ['remarker_id' => $from, 
       'editor_id' => $to,

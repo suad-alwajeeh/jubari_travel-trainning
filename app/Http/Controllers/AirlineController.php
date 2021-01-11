@@ -48,7 +48,6 @@ class AirlineController extends Controller
         "carrier_code"=>"min:2",
         "IATA"=>"required",
         "remark"=>"required",
-        "is_active"=>"required",
         ]);
       $airline=new Airline;
       $airline->airline_code=$req->airline_code;
