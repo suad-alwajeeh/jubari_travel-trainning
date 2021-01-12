@@ -11,7 +11,7 @@
 <div class="card card-outline card-info">
             <div class="card-header">
               <h2 class="card-title">
-              add advertisement page
+              Add Advertisement Page
               </h2>
             </div>
             
@@ -20,12 +20,12 @@
 <form id="so_form" >
 <div class="row">
     <div class="form-group col-md-6 mb-3">
-      <label for="pwd">advertisements_title</label>
+      <label for="pwd">Advertisements Title</label>
       <input type="text" class="form-control" id="adds_name" placeholder="adds_name" name="adds_name">
       <small id="helpId1" class="text-muted"></small>
     </div>
     <div class="form-group col-md-6 col-sm-12 mb-3">
-      <label for="adds_type">advertisements_type</label>
+      <label for="adds_type">Advertisements Type</label>
      <select class="form-control" name="adds_type" id="">
      <option value=1>for all</option>
      <option value=2>special users</option>
@@ -35,7 +35,7 @@
       <input type="text" hidden="hidden" value="{{ Auth::user()->id }}" class="form-control" id="how_create_it" placeholder="how_create_it" name="how_create_it">
     </div>
     <div class="form-group col-md-12 ">
-      <label for="adds_text">advertisements_content</label>
+      <label for="adds_text">Advertisements Content</label>
       <textarea class="form-control" name="adds_text" id="adds_text"></textarea>
       <small id="helpId2" class="text-muted"></small>
     </div>

@@ -76,7 +76,7 @@
       </td>
         <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-outline-success" href="airline_edit/{{$item->id}}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('airline_edit/'.$item->id) }}" href="airline_edit/{{$item->id}}"><i class="fas fa-pencil-alt "></i></a>
   <a type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#myModalair{{$item->id}}" ><i class="fas fa-trash "></i></a>
 </div>
      <!-- The Modal -->

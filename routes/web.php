@@ -36,6 +36,7 @@ Route::get('/airline_display', 'AirlineController@display');
 Route::get('/airline_delete/{id}', 'AirlineController@hide_row');
 Route::post('/addairline','AirlineController@save1');
 Route::post('/editairline','AirlineController@edit_row');
+Route::get('/airline_display1/{id}', 'AirlineController@display_with_status');
 Route::get('/airline_display/{id}', 'AirlineController@filter');
 
 /****************customer************** */
