@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use App\Service;
+use App\service;
 use App\airline;
 use App\Supplier;
 use App\Employee;
@@ -61,7 +61,10 @@ public function generate( Request $req)
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>3])->get();
-          $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+         $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+                
         $data['cars']=CarService::join('currency','currency.cur_id','=','car_services.cur_id')
         ->join('suppliers','suppliers.s_no','=','car_services.due_to_supp')->where('car_id',$id)->get();
    
@@ -80,7 +83,7 @@ public function generate( Request $req)
   else{
     $affected= CarService::where(['car_id'=>$id])
     ->update(['service_status'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Delete');
    
  }
     }
@@ -91,7 +94,10 @@ public function generate( Request $req)
       ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
       ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>3])->get();
-      $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+     $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
      
           return view('add_car',$data);
       } 
@@ -151,7 +157,7 @@ public function add_car( Request $req)
     $car->remark=$req->remark;
     $car->service_status=1;
     $car->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Insert');
 }
 
 public function updateCar( Request $req)
@@ -195,7 +201,7 @@ public function updateCar( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Insert');
   }
   public function deleteAllcar(Request $request){
     $ids = $request->input('ids');

@@ -14,10 +14,10 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  @if (session('status'))
+  @if (session('seccess'))
   <div class="alert alert-success" role="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('status') }}
+    {{ session('seccess') }}
   </div>
   @elseif(session('failed'))
   <div class="alert alert-danger" role="alert">
@@ -64,6 +64,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title col-3  d-inline-block">BUS</h3>
+                <a class="btn btn-outline-primary so_form_btn" href="/service/bus"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Service</a>
+
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -90,7 +92,6 @@
                         <th>Passenger Cost </th>
                         <th>Passenger Currency </th>
                         <th>Remark</th>
-                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody class="row2">
@@ -110,6 +111,12 @@
                         <td>{{$buss->bus_number}} </td>
                         @if($buss->bus_status==1)
                         <td>OK</td>
+                        @elseif($buss->bus_status==2)
+                        <td>Issue</td>
+                        @elseif($buss->bus_status==3)
+                        <td>Void</td>
+                        @elseif($buss->bus_status==4)
+                        <td>Refund</td>
                         @endif
                         <td>{{$buss->Dep_city}} </td>
                         <td> {{$buss->dep_date}} </td>
@@ -121,14 +128,7 @@
                         <td> {{$buss->passnger_currency}} </td>
                         <td>{{$buss->remark}} </td>
                         <td>
-                          @if($buss->service_status==1)
-                          <a type="button" class="btn sendbtn btncolor text-white"><i class="fa fa-paper-plane"
-                              aria-hidden="true"></i></a>
-                          <a class="btn btncolor" type="button"
-                            href="{{ url('/service/update_bus/'.$buss->bus_id) }}"><i class="fa fa-pencil-alt"
-                              aria-hidden="true"></i></a>
-                          <a type="button" class="btn  deletebtn btncolor text-white"><i class="fas fa-trash "></i></a>
-                          @endif
+                         
 
                         </td>
                       </tr>

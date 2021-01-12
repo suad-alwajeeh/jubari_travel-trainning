@@ -72,9 +72,7 @@ public function hide_ticket($id){
         if($affected1 >0)
        { 
        
-     //return redirect('service')->with('Erroe','Seccess Data Delete');
      json_encode('noorder');
-    // print_r(json_encode($x));
      }
       else{
         $affected= TicketService::where(['tecket_id'=>$id])
@@ -85,22 +83,27 @@ public function hide_ticket($id){
         }
 
         public function ticket(){
-            $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
             $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
             ->join('currency','currency.cur_id','=','sup_currency.cur_id')
             ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>1])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+            $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
            
               return view('add_ticket',$data);
           } 
           public function update_ticket($id){
-            $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
             $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>1])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+            $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+               
            
             $data['tickets']=TicketService::join('currency','currency.cur_id','=','ticket_services.cur_id')
             ->join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
@@ -198,7 +201,7 @@ public function add_ticket( Request $req)
     $ticket->remark=$req->remark;
     $ticket->service_status=1;
     $ticket->save();
-return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
 }
 
 public function updateTicket( Request $req)
@@ -283,7 +286,7 @@ $busher='';
 
       ]); 
     }
-return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
 }
 
 

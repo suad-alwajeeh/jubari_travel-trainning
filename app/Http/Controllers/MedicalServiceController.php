@@ -55,12 +55,14 @@ public function sent_med($id)
 
 
 public function update_med($id){
-  $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
   $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
   ->join('services','services.ser_id','=','sup_services.service_id')
   ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>4])->get();
-  $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-$data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
+ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+           $data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
     ->join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')->where('med_id',$id)->get();
    
       return view('update_med',$data);
@@ -73,14 +75,16 @@ $data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_ser
     return back()->with('seccess','Seccess Data Delete');
   }
   public function medical(){
-    $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
     $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
     ->join('currency','currency.cur_id','=','sup_currency.cur_id')
     ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
     ->join('services','services.ser_id','=','sup_services.service_id')
     ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>4])->get();
-    $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-   
+ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
       return view('add_medical',$data);
   } 
   public function send_med($id){
@@ -153,7 +157,7 @@ public function add_Medical( Request $req)
     $medical->remark=$req->remark;
     $medical->service_status=1;
     $medical->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_med/1')->with('seccess','Seccess Data Insert');
 }
 
 
@@ -198,7 +202,7 @@ public function updateMed( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_med/1')->with('seccess','Seccess Data Insert');
   }
 
   public function deleteAllmed(Request $request){

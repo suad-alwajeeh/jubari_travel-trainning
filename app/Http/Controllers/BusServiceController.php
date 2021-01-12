@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Service;
+use App\service;
 use App\airline;
 use App\Supplier;
 use App\Employee;
@@ -60,13 +60,12 @@ public function generate( Request $req)
     } 
     public function bus(){
       $data['airline']=Airline::where('is_active',1)->get();
-      $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-      ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-      ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+      $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
       ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>2])->get();
-      $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-     
+      $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
           return view('add_bus',$data);
       } 
 
@@ -99,11 +98,10 @@ public function add_bus( Request $req)
          $ext=$attchmentFile[$i]->getClientOriginalExtension();
        $attchmentName =rand(123456,999999).".".$ext;
        $attchment=$attchmentFile[$i]->move('img/user_attchment/',$attchmentName);
-       //$bus->attachment=$attchmentName;
        $bus->attachment .=$attchmentName.',';
    
        }
-    //$bus->attachment =$attachment;
+   
 
     }
     else{
@@ -129,8 +127,15 @@ public function add_bus( Request $req)
     $bus->service_status=1;
     $bus->bus_id=$bus_id2;
     $bus->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
-  }
+    if( $loged_id==$req->due_to_customer )
+{    
+  return redirect('/service/show_bus/1')->with('seccess','Seccess Data Insert');
+} 
+else{
+  return redirect('/service/show_bus/1')->with('seccess','Seccess Data Insert');
+
+}
+ }
 public function updateBus( Request $req)
 { 
     $bus=new BusService;
@@ -172,7 +177,7 @@ public function updateBus( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_bus/1')->with('seccess','Seccess Data Update');
   }
 
 
@@ -181,7 +186,10 @@ public function updateBus( Request $req)
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>2])->get();
-          $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+          $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+               
           $data['buss']=BusService::join('currency','currency.cur_id','=','bus_services.cur_id')
           ->join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')->where('bus_id',$id)->get();
        
@@ -204,7 +212,7 @@ public function updateBus( Request $req)
       else{
         $affected= BusService::where(['bus_id'=>$id])
         ->update(['service_status'=>2]);
-        return back()->with('seccess','Seccess Data Delete');
+        return redirect('/service/show_bus/1')->with('seccess','Seccess Data Delete');
        
      }
         }
@@ -278,7 +286,7 @@ public function updateBus( Request $req)
   
           $affected= BusService::where(['bus_id'=>$id])
           ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-          return back()->with('seccess','Seccess Data Delete');
+          return back()->with('seccess','Seccess Data Accept');
         }
   
         public function ignore($id){

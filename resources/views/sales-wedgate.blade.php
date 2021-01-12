@@ -40,7 +40,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_ticket}}</h5>
-                      <a  href="{{url('/service/show_ticket/2') }}">
+                      <a  href="{{url('/service/sent_ticket/2') }}">
                       <span class="text-dark">Sent</span>
                       </a>
                     </div>
@@ -50,7 +50,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_ticket}}</h5>
-                      <a  href="#">
+                      <a  href="/sales_finish/ticket/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span>
                       </a>
                     </div>
@@ -90,7 +90,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_bus}}</h5>
-  <a  href="{{ url('/service/show_bus/2') }}">
+  <a  href="{{ url('/service/sent_bus/2') }}">
                       <span class="text-dark">Sent</span>
                       </a>
                     </div>
@@ -100,7 +100,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_bus}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/bus/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span>
                       </a>
                     </div>
@@ -139,7 +139,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_hotel}}</h5>
-  <a  href="{{ url('/service/show_hotel/2') }}">
+  <a  href="{{ url('/service/sent_hotel/2') }}">
                       <span class="text-dark">Sent</span>
                       </a>
                     </div>
@@ -149,7 +149,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_hotel}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/hotel/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span>
                       </a>
                     </div>
@@ -191,7 +191,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_visa}}</h5>
-  <a  href="{{ url('/service/show_visa/2') }}">
+  <a  href="{{ url('/service/sent_visa/2') }}">
                       <span class="text-dark">Sent</span>
                    </a> </div>
                     <!-- /.description-block -->
@@ -200,7 +200,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_visa}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/visa/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span>
                       </a>
                     </div>
@@ -241,7 +241,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_car}}</h5>
-  <a  href="{{ url('/service/show_car/2') }}">
+  <a  href="{{ url('/service/sent_car/2') }}">
                       <span class="text-dark">Sent</span>
                       </a>
                     </div>
@@ -251,7 +251,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_car}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/car/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span>
                       </a>
                     </div>
@@ -290,7 +290,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_med}}</h5>
-  <a  href="{{ url('/service/show_medical/2') }}">
+  <a  href="{{ url('/service/sent_medical/2') }}">
                       <span class="text-dark">Sent</span></a>
                     </div>
                     <!-- /.description-block -->
@@ -299,7 +299,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_med}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/medical/{{ Auth::user()->id }}">
                       <span class="text-dark">Archived</span></a>
                     </div>
                     <!-- /.description-block -->
@@ -339,7 +339,7 @@
                   <div class="col-sm-4 border-right">
                     <div class="description-block">
                       <h5 class="description-header">{{$sent_service}}</h5>
-  <a  href="{{ url('/service/show_general/2') }}">
+  <a  href="{{ url('/service/sent_general/2') }}">
                       <span class="text-dark">Sent</span></a>
                     </div>
                     <!-- /.description-block -->
@@ -348,7 +348,7 @@
                   <div class="col-sm-4">
                     <div class="description-block">
                       <h5 class="description-header">{{$archev_service}}</h5>
-  <a  href="#">
+  <a  href="/sales_finish/general/{{ Auth::user()->id }}">
                       <span class="text-dark ">Archived</span></a>
                     </div>
                     <!-- /.description-block -->

@@ -61,7 +61,7 @@
 <option  class="form-control  d-inline-block" value="1">Active</option>
 <option  class="form-control  d-inline-block" value="0">Deactive</option>
 </select>
-            <a class="btn btn-primary  col-2 float-right p-2 d-inline-block" href="{{url('employees/insert')}}">  <i class="fa fa-plus" aria-hidden="true"></i>Add New Employee</a>
+            <a class="btn btncolor  col-2 float-right p-2 d-inline-block" href="{{url('employees/insert')}}">  <i class="fa fa-plus" aria-hidden="true"></i>Add New Employee</a>
       </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -86,7 +86,7 @@
                   <input type="hidden" class="delete_id" value="{{$emp->emp_id}}">
 
                     <td>{{$emp->emp_id}}</td>
-                    <td>{{$emp->emp_first_name}}  {{$emp->emp_midel_name}}  {{$emp->emp_thired_name}}  {{$emp->emp_last_name}}</td>
+                    <td>{{$emp->emp_first_name}}{{$emp->emp_middel_name}}  {{$emp->emp_thired_name}}  {{$emp->emp_last_name}}</td>
                     <td>{{$emp->emp_mobile}}</td>
                     <td>{{$emp->name}}</td>
                     <td>{{$emp->emp_salary}}</td>
@@ -221,10 +221,10 @@ $("#dropselect").change(function () {
               //console.log('value.length2');
               console.log(value);
                if(value[i].is_active==1)
-{              td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-success">Active</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a  class="m-2 deletebtn" href=""><i class="fas fa-trash text-danger "></i></a></div></td></tr>';
+{              td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-success">Active</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a class="m-2 deletebtn"  href="#"><i class="fas fa-trash text-danger"></i></a></div></td></tr>';
 }
 else{
-  td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-danger">Deactive</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a  class="m-2 deletebtn" href=""><i class="fas fa-trash text-danger "></i></a></div></td></tr>';
+  td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-danger">Deactive</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a class="m-2 deletebtn" href="#"><i class="fas fa-trash text-danger"></i></a></div></td></tr>';
 
 }
 

@@ -60,7 +60,10 @@ public function generate( Request $req)
               ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
               ->join('services','services.ser_id','=','sup_services.service_id')
               ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>5])->get();
-              $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+              $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+            
              
                   return view('add_hotel',$data);
               } 
@@ -114,13 +117,12 @@ public function generate( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Insert');
   }
 
   
 public function add_hotel( Request $req)
 { 
-  print_r($_FILES['attachment']);
     $hotel=new HotelService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -174,16 +176,18 @@ public function add_hotel( Request $req)
     $hotel->remark=$req->remark;
     $hotel->service_status=1;
     $hotel->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Insert');
 }
 
 public function update_Hotel($id){
-  $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
   $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
   ->join('services','services.ser_id','=','sup_services.service_id')
   ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>5])->get();
-  $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-$data['hotels']=HotelService::join('currency','currency.cur_id','=','hotel_services.cur_id')
+  $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+           $data['hotels']=HotelService::join('currency','currency.cur_id','=','hotel_services.cur_id')
 ->join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')->where('hotel_id',$id)->get();
    
       return view('update_hotel',$data);

@@ -14,10 +14,10 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  @if (session('status'))
+  @if (session('seccess'))
   <div class="alert alert-success" role="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('status') }}
+    {{ session('seccess') }}
   </div>
   @elseif(session('failed'))
   <div class="alert alert-danger" role="alert">
@@ -64,6 +64,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title col-3  d-inline-block">BUS</h3>
+                <a class="btn btn-outline-primary so_form_btn" href="/service/bus"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Service</a>
+              
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -113,6 +115,12 @@
                         <td>{{$buss->bus_number}} </td>
                         @if($buss->bus_status==1)
                         <td>OK</td>
+                        @elseif($buss->bus_status==2)
+                        <td>Issue</td>
+                        @elseif($buss->bus_status==3)
+                        <td>Void</td>
+                        @elseif($buss->bus_status==4)
+                        <td>Refund</td>
                         @endif
                         <td>{{$buss->Dep_city}} </td>
                         <td> {{$buss->dep_date}} </td>

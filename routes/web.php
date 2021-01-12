@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can register  routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -275,6 +275,15 @@ Route::post('/service/add_ticket/','TicketServiceController@add_ticket');
   Route::post('/service/add_medical/','MedicalServiceController@add_medical');
   Route::get('/service/sales_repo','ServiceController@show_repo');
   Route::get('/service/ticket','TicketServiceController@ticket');
+  
+  Route::get('/service/sent_ticket/{id}','TicketServiceController@sent_ticket');
+  Route::get('/service/sent_bus/{id}','BusServiceController@sent_bus');
+  Route::get('/service/sent_emp_bus','BusServiceController@sent_add_emp');
+  Route::get('/service/sent_hotel/{id}','HotelServiceController@sent_hotel');
+  Route::get('/service/sent_car/{id}','CarServiceController@sent_car');
+  Route::get('/service/sent_visa/{id}','VisaServiceController@sent_visa');
+  Route::get('/service/sent_medical/{id}','MedicalServiceController@sent_med');
+  Route::get('/service/sent_general/{id}','GeneralServiceController@sent_gen');
   Route::get('/service/bus','BusServiceController@bus');
   Route::get('/service/car','CarServiceController@car');
   Route::get('/service/visa','VisaServiceController@visa');
@@ -434,6 +443,15 @@ Route::get('/emp_med/ignore/{id}','MedicalServiceController@ignore');
   Route::get('/service/show_visa/{id}','VisaServiceController@show_visa');
   Route::get('/service/show_medical/{id}','MedicalServiceController@show_med');
   Route::get('/service/show_general/{id}','GeneralServiceController@show_gen');
+  
+  Route::get('/service/sent_ticket/{id}','TicketServiceController@sent_ticket');
+  Route::get('/service/sent_bus/{id}','BusServiceController@sent_bus');
+  Route::get('/service/sent_emp_bus','BusServiceController@sent_add_emp');
+  Route::get('/service/sent_hotel/{id}','HotelServiceController@sent_hotel');
+  Route::get('/service/sent_car/{id}','CarServiceController@sent_car');
+  Route::get('/service/sent_visa/{id}','VisaServiceController@sent_visa');
+  Route::get('/service/sent_medical/{id}','MedicalServiceController@sent_med');
+  Route::get('/service/sent_general/{id}','GeneralServiceController@sent_gen');
   Route::get('/service/ticket_delete/{id}','TicketServiceController@hide_ticket');
   Route::get('/service/bus_delete/{id}','BusServiceController@hide_bus');
   Route::get('/service/hotel_delete/{id}','HotelServiceController@hide_hotel');

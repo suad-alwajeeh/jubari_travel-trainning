@@ -6,16 +6,21 @@
 <link rel='stylesheet' href='https://unpkg.com/filepond/dist/filepond.min.css'><link rel="stylesheet" href="./style.css">
 
 <div class="content-wrapper">
+  <div class="container p-4">
 
-  <div class="main">
-  <section class="signup">
-        <div class="container">
-          <div class="signup-content">
-<form method="POST" action="/service/updateBus" enctype="multipart/form-data" id="signup-form" class="signup-form">
+
+    <div class="card card-outline card-info">
+      <div class="card-header">
+        <h2 class="card-title">
+          Update Bus  Services
+        </h2>
+      </div>
+      <div class="card-body">
+
+<form method="POST" action="/service/updateBus" enctype="multipart/form-data" id="signup-form" >
               @csrf
              
               <div class="around">
-                <h2 class="form-title">Bus Info</h2>
 @foreach($buss as $bus)
                 <div class="form-row col-md-12 col-sm-12 col-xm-12">
                   <div class="form-group col-md-6 col-sm-12 col-xm-12">
@@ -62,7 +67,7 @@ name="Issue_date" value="{{ \Carbon\Carbon::createFromDate($bus->Issue_date)->fo
 
                       <input required type="number" class="form-control "
                         style="width:100%;" name="bus_number" value="{{$bus->bus_number}}" id="number" />
-                                <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
+                                <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
 
                     </div>
                   </div>
@@ -77,8 +82,26 @@ name="Issue_date" value="{{ \Carbon\Carbon::createFromDate($bus->Issue_date)->fo
  
                         @if($bus->bus_status==1)
                         <option value="1" selected>OK</option>
-                        <option value="2" disables>Avoid</option>
-                        <option value="3" disables>Refent</option>
+                      <option value="2" >Issue</option>
+                      <option value="3" >Void</option>
+                      <option value="4" >Refund</option>
+                      @elseif($bus->bus_status==2)
+                        <option value="1" >OK</option>
+                      <option value="2" selected >Issue</option>
+                      <option value="3" >Void</option>
+                      <option value="4" >Refund</option>
+                      @elseif($bus->bus_status==3)
+                        <option value="1" >OK</option>
+                      <option value="2"  >Issue</option>
+                      <option value="3" selected >Void</option>
+                      <option value="4" >Refund</option>
+
+                      @elseif($bus->bus_status==4)
+                        <option value="1" >OK</option>
+                      <option value="2"  >Issue</option>
+                      <option value="3"  >Void</option>
+                      <option value="4" selected >Refund</option>
+
                       
                         @endif
 
@@ -252,14 +275,14 @@ name="Issue_date" value="{{ \Carbon\Carbon::createFromDate($bus->Issue_date)->fo
        </div>
           </div>
           <div class="form-group">
-          <button type="submit" class="btn btncolor text-white m-2 p-2  float-right"  id="submit" >Save Change</button>
+          <a href="{{url('service/sales_repo')}}" class="btn btn-outline-danger so_form_btn">Cancel</a>
+          <button type="submit" href="" class="btn btn-outline-primary so_form_btn"  id="submit" >Save Change</button>
           </div>
           </form>
 
-        </div>
-    </div>
-    </section>
+       
 
+  </div>
   </div>
   </div>
 

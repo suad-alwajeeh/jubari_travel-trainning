@@ -83,7 +83,10 @@ public function generate( Request $req)
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>6])->get();
-          $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+          $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+                
          $data['visas']=VisaService::join('currency','currency.cur_id','=','visa_services.cur_id')
          ->join('suppliers','suppliers.s_no','=','visa_services.due_to_supp') ->where('visa_id',$id)->get();
            
@@ -97,7 +100,10 @@ public function generate( Request $req)
             ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>6])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+           $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
            
               return view('add_visa',$data);
           } 
@@ -142,7 +148,7 @@ public function generate( Request $req)
           
                  ]); 
               }
-              return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+              return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
             }
 
             
@@ -200,7 +206,7 @@ public function add_visa( Request $req)
     $visa->remark=$req->remark;
     $visa->service_status=1;
     $visa->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
 }
 public function deleteAllvisa(Request $request){
   $ids = $request->input('ids');
