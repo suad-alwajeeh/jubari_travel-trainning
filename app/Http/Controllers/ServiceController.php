@@ -29,7 +29,7 @@ class ServiceController extends Controller
     {
 
     }
-
+/***********************start show all service*********************************************** */
     public function index()
     {
         
@@ -44,9 +44,6 @@ class ServiceController extends Controller
     
         else if(isset($_GET['id']) && $_GET['id']==2 )
        { 
-       
-        //$where=['departments.is_active'=>1];
-       
         $data['service']=Service::join('employees', 'employees.emp_id', '=', 'services.emp_id_how_create')
         ->where('employees.is_active',1)->get();
         return json_encode($data);}
@@ -64,19 +61,17 @@ class ServiceController extends Controller
     
     
     }
+/***********************end show all service*********************************************** */
+/***********************start insert new service*********************************************** */
 
     public function insert(Request $request)
     {
- $active;
-     if($request->is_active=1)
-     {
-          $active=1;
-     }
-     else
-     $active=0;
-   
-
-      $ser=new Service;
+        $ser=new Service;
+        $active='';
+        if(isset($request->is_active))
+        $active=1;
+        else
+        $active=0;
       $loged_id=  Auth::user()->id ;
       $ser->ser_name=$request->ser_name;
       $ser->discrption=$request->discrption;
@@ -85,47 +80,51 @@ class ServiceController extends Controller
     
       echo $ser->save();
       //return $dept->getall();
-     return redirect('/service')->with('seccess','Seccess Data Insert');
+     return redirect('/services')->with('seccess','Seccess Data Insert');
     
     }
+/***********************end insert new service*********************************************** */
+/***********************start update new service*********************************************** */
 
 public function edit_row(Request $req){
     $ser=new Service;
-    $active;
-    if($req->is_active==1)
-    {
-         $active=1;
-    }
-    else
-    $active=0;
+    $active='';
+     if(isset($req->is_active))
+     $active=1;
+     else
+     $active=0;
 echo $req->ser_name;
     $ser::where('ser_id',$req->id)
     ->update(['ser_name'=>$req->ser_name,'discrption'=>$req->discrption,
     'is_active'=>$active,
     ]);
     $data['service'] = Service::where('deleted',0)->get();
-    return redirect('services')->with($data);
+    return redirect('/services')->with($data);
     
 }
+/***********************end update new service*********************************************** */
+/***********************start display  spacific  service*********************************************** */
+
 public function display_row($id)
 { 
     $data['service'] = Service::where('ser_id',$id)->get();
     return view('update_service',$data);
                 }
+/***********************end display  spacific  service*********************************************** */
+/***********************start delete  service*********************************************** */
 
     public function hide_row($id){
         echo $id;
         $affected1= Service::where('ser_id',$id)
         ->update(['deleted'=>1]);
         $data['service'] = Service::where('deleted',0)->get();
-      // return response()->json(['status'=>'Delete Successfully']);
-      return redirect('/service_test')->with('seccess','Seccess Data Delete');
+     
+      return redirect('/services')->with('seccess','Seccess Data Delete');
 
         }
   
-        
-          
-                       
+/***********************end delete  service*********************************************** */
+/***********************start show   service to sales excutive*********************************************** */                      
  public function show_repo()
                 { 
                     $LOGED_Id=  Auth::user()->id ;                    //get data of ticket service
@@ -186,6 +185,8 @@ public function display_row($id)
                     return view('sales-wedgate',$data);
    } 
 
+/***********************end show   service to sales excutive*********************************************** */
+/***********************start show   remark to sales excutive*********************************************** */
             
 public function show_remark()
 { 
@@ -197,5 +198,7 @@ public function show_remark()
 
     return view('show_remark',$data);
                 }  
+/***********************end show   remark to sales excutive*********************************************** */
+
 
 }

@@ -8,10 +8,10 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  @if (session('status'))
+  @if (session('seccess'))
   <div class="alert alert-success" role="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('status') }}
+    {{ session('seccess') }}
   </div>
   @elseif(session('failed'))
   <div class="alert alert-danger" role="alert">
@@ -52,7 +52,7 @@
               <div class="form-group row">
                 <div class="offset-sm-4 col-sm-8">
                   <div class="form-check">
-                    <input type="checkbox" id="is_active" class="form-check-input" name="is_active" id="active">
+                    <input type="checkbox" checked class="form-check-input" name="is_active" id="active">
                     <label class="form-check-label" for="exampleCheck2">Active</label>
                   </div>
                 </div>
@@ -128,6 +128,7 @@
                       <th>Name</th>
                       <th> Discrption</th>
                       <th> Employee</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -140,12 +141,16 @@
                       <td>{{$ser->discrption}}</td>
                       <td>{{$ser->emp_first_name}} {{$ser->emp_middel_name}} {{$ser->emp_thired_name}}
                         {{$ser->emp_last_name}}</td>
-
+                      @if($ser->is_active==1)
+                      <td><span class="badge badge-success">Active</span></td>
+                      @else
+                      <td><span class="badge badge-danger">Deactive</span></td>
+                      @endif
 
                       <td>
-                        <a type="button" class="btn btncolor"
-                          href="{{ url('service/service-edit/'.$ser->ser_id) }}"><i class="fas fa-pencil-alt "></i></a>
-                        <button type="button" class="btn btncolor deletebtn"><i class="fas fa-trash "></i></button>
+                        <a class="" href="{{ url('service/service-edit/'.$ser->ser_id) }}"><i
+                            class="fas fa-pencil-alt text-primary "></i></a>
+                        <a class=" deletebtn"><i class="fas fa-trash text-danger "></i></a>
               </div>
               @endforeach
               </tbody>
@@ -181,40 +186,81 @@
       }
     });
 
-   
-let td ='';
+
+    let td = '';
     $("#dropselect").change(function () {
 
-console.log('jbwjebfjw');
-console.log($("#dropselect"));
+      console.log('jbwjebfjw');
+      console.log($("#dropselect"));
 
-              var id=$('#dropselect').val();
-              console.log(id);
-              $.ajax({
-      url:"{{url('service_test')}}",
-      data: {id:id},
-      success: function (data) {
-        console.log('sec');
-        //console.log(data);
-         $.each(JSON.parse(data), function (key, value) {
-          for (var i = 0; i < value.length; i++){
-            console.log(value.length);
-            console.log(value.length);
-            if(value.length>0)
-{myJSON = JSON.parse(data);
-td +='<tr><input type="hidden" class="delete_id" value="'+value[i].ser_id+'"><td>'+value[i].ser_id+'</td><td>'+value[i].ser_name+'</td> <td>'+value[i].discrption+'</td><td>'+value[i].emp_first_name+' '+value[i].emp_middel_name+' '+value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td><a type="button" class="btn btncolor" href="/service/service-edit/'+value[i].ser_id+'"><i class="fas fa-pencil-alt "></i></a> <button type="button" class="btn btncolor deletebtn"><i class="fas fa-trash "></i></button></td></tr>';
-$('.row2').html(td);}
-          }
-          td='';
-            
+      var id = $('#dropselect').val();
+      console.log(id);
+      $.ajax({
+        url: "{{url('services')}}",
+        data: { id: id },
+        success: function (data) {
+          console.log('sec');
+          //console.log(data);
+
+          $.each(JSON.parse(data), function (key, value) {
+            if (value.length > 0) {
+              for (var i = 0; i < value.length; i++) {
+                console.log('value.length');
+                console.log(value.length);
+                if (value.length > 0) {
+                  myJSON = JSON.parse(data);
+                  if (value[i].is_active == 1) {
+                    td += '<tr><input type="hidden" class="delete_id" value="' + value[i].ser_id + '"><td>' + value[i].ser_id + '</td><td>' + value[i].ser_name + '</td> <td>' + value[i].discrption + '</td><td>' + value[i].emp_first_name + ' ' + value[i].emp_middel_name + ' ' + value[i].emp_thired_name + ' ' + value[i].emp_last_name + '</td>   <td><span class="badge badge-success">Active</span></td><td><a  class="m-2" href="/service/service-edit/' + value[i].ser_id + '"><i class="fas fa-pencil-alt text-primary "></i></a> <a class="deletebtn m-2"><i class="fas fa-trash text-danger"></i></a></td></tr>';
+                  }
+                  else {
+                    td += '<tr><input type="hidden" class="delete_id" value="' + value[i].ser_id + '"><td>' + value[i].ser_id + '</td><td>' + value[i].ser_name + '</td> <td>' + value[i].discrption + '</td><td>' + value[i].emp_first_name + ' ' + value[i].emp_middel_name + ' ' + value[i].emp_thired_name + ' ' + value[i].emp_last_name + '</td>   <td><span class="badge badge-danger">Deactive</span></td><td><a  class="m-2" href="/service/service-edit/' + value[i].ser_id + '"><i class="fas fa-pencil-alt text-primary"></i></a> <a  class="deletebtn m-2"><i class="fas fa-trash text-danger"></i></a></td></tr>';
+                  }
+
+                  $('.row2').html(td);
+                }
+              }
+            }
+            else {
+              td = '<div class="txte-center">No Data</div>';
+              $('.row2').html(td);
+            }
+            td = '';
 
 
-});  },
-      error:function(){
-        console.log('err');
- }    }); 
+
           });
-          $('.deletebtn').click(function (e) {
+        },
+        error: function () {
+          console.log('err');
+        }
+      });
+    });
+
+    $("#add2").click(function () {
+      var ser_name = $('#ser_name').val();
+      var discrption = $('#discrption').val();
+      var is_active = $('#is_active').val();
+      console.log(ser_name);
+      console.log(id);
+      $.ajax({
+        url: "{{url('service/insert')}}",
+        data: { is_active: is_active, ser_name: ser_name, discrption: discrption },
+        success: function (data) {
+          console.log('sec');
+          $('#add').remove();
+          swal("Data Insert", {
+            icon: "success",
+          }).then((willDelete) => {
+            location.reload();
+          });
+        },
+        error: function () {
+          console.log('err');
+        }
+
+      });
+    });
+    $('.deletebtn').click(function (e) {
       e.preventDefault();
       var id = $(this).closest("tr").find('.delete_id').val();
       console.log(id);
@@ -243,42 +289,17 @@ $('.row2').html(td);}
               data: data,
               success: function (response) {
                 swal("Delete Successfully", {
-                 icon: "success",
+                  icon: "success",
                 }).then((willDelete) => {
                   location.reload();
                 });
               }
             });
           }
-          
-          
+
+
         });
     });
-    $("#add2").click(function () {
-              var ser_name=$('#ser_name').val();
-              var discrption=$('#discrption').val();
-              var is_active=$('#is_active').val();
-              console.log(ser_name);
-              console.log(id);
-              $.ajax({
-      url:"{{url('service/insert')}}",
-      data: {is_active:is_active,ser_name:ser_name,discrption:discrption},
-      success: function (data) {
-        console.log('sec');
-        $('#add').remove();
-        swal("Data Insert", {
-      icon: "success",
-    }).then((willDelete) => {
-                  location.reload();
-                });
-     },
-      error:function(){
-        console.log('err');
-      }
-        
-          }); 
-          });
-   
   });
 </script>
 @endsection
