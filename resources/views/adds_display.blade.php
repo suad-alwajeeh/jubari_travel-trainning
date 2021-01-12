@@ -4,13 +4,14 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-10">
-  <h1 class="text-center">display advertisements	</h1>
-  </div>
-  <div class="col-2">
-  <div class="dropdown">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              display advertisements
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
       status 
     </button>
     <div class="dropdown-menu">
@@ -19,22 +20,26 @@
       <a class="dropdown-item " href="/adds_display/0">No Active</a>
     </div>
   </div>
-</div>
-  
+  <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('adds_add') }}">add new</a>
+
+            </div>
+
 <div class="container"> 
 <?php $i=1 ?> 
 @foreach($data1 as $item1)
-<div style="float:left" class="alert so-alert-message">{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
   @endforeach
-  <table class="table table-striped" id="table">
+  <div id="so-alert-message"></div>         
+
+  <table class="table table-hover text-center " id="table">
     <thead>
       <tr>
         <th>#</th>
-        <th>adds_name</th>
-        <th>adds_type</th>
-        <th>created_date</th>
-        <th>adds_status</th>
-        <th>opration</th>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Create Date</th>
+        <th>Status</th>
+        <th>Opreation</th>
       </tr>
     </thead>
     <tbody id="pp">
@@ -44,9 +49,9 @@
       <td>{{$item->adds_name}}</td>
       <td>
       @if($item->adds_type == 1)
-        <p class="">public</p>
+        <p class="">scroll adds</p>
         @elseif($item->adds_type ==2)
-        <p class="">private</p>
+        <p class="">for users</p>
       @endif
       </td>
       <td>{{$item->created_at}}</td>
@@ -67,21 +72,19 @@
                       <label class="custom-control-label" for="customSwitch{{$item->id}}"></label>
                     </div>
                   </div>
-
 @endif
-
       </td>
         <td>
         @if($item->adds_type == 1)
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="{{ url('adds_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('adds_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
 </div>
 @elseif($item->adds_type == 2)
 <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="{{ url('adds_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
-  <a type="button" class="btn btn-secondary"  href="{{ url('adds_user/'.$item->id) }}"><i class="fas fa-paper-plane "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('adds_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-primary"  href="{{ url('adds_user/'.$item->id) }}"><i class="fas fa-paper-plane "></i></a>
 </div>
 @endif
         </td>
@@ -90,15 +93,9 @@
         <div class="modal fade" id="myModalair{{$item->id}}">
   <div class="modal-dialog">
     <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <button type="button"  class="close" data-dismiss="modal">&times;</button>
-      </div>
-
       <!-- Modal body -->
       <div class="modal-body">
-      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="delete{{$item->id}}()" style="width:15%;">ok</button></div></div>
+      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="delete{{$item->id}}()" style="width:15%;">ok</button></div></div>
       </div>
    </div>
   </div>
@@ -140,6 +137,7 @@ function myFunction{{$item->id}}() {
          });
 }
 }
+
 function delete{{$item->id}}() {
  
        $.ajax({
@@ -150,6 +148,8 @@ function delete{{$item->id}}() {
                console.log(response);
               $('#myModalair'+{{$item->id}}).modal('toggle');
               document.getElementById('tr{{$item->id}}').style.display ='none';
+              $('#so-alert-message').html('<div  class="alert so-alert-message" >delete row successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
+
              },
              error:function(error){console.log(error);
              } 
@@ -173,7 +173,8 @@ function delete{{$item->id}}() {
   {{$data->links()}}
 
   
-</div>
+  </div>
+  </div>
   </div>
   </div>
   </div>

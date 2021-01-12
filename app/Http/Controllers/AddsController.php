@@ -20,7 +20,7 @@ class AddsController extends Controller
     {
     }
     public function display_row($id)
-    { 
+             { 
         $affected = adds::where('id',$id)->get();
         return view('adds_edit',['data'=>$affected]);
                     }
@@ -116,19 +116,11 @@ public function ok($id){
       return redirect('adds_display');
 }
     public function edit_row(Request $req){
-        $req->validate([
-            "adds_name"=>"required",
-            "adds_text"=>"required",
-            "adds_type"=>"required",
-            "is_active"=>"required",
-            ]);
         $role=new adds;
         $role::where('id',$req->id)
         ->update(['adds_name'=>$req->adds_name,'adds_type'=>$req->adds_type,
-        'how_create_it'=>$req->how_create_it,'is_active'=>$req->is_active,'adds_text'=>$req->adds_text,
+        'is_active'=>$req->is_active,'adds_text'=>$req->adds_text,
         ]);
-        $affected = adds::where('is_delete',0)->paginate(7);
-        return redirect('adds_display');
         
     }
     public function hide_row($id){
@@ -168,11 +160,11 @@ public function ok($id){
                 }
                 public function filter($id){
                     if($id==1){
-                        $affected1 = Department::where('is_active',1)->get();
+                        $affected1 =[];
                         $affected = adds::where([['is_delete',0],['is_active',1]])->paginate(7);
                         return view('adds_display',['data'=>$affected,'data1'=>$affected1]);
                     }elseif($id==0){
-                        $affected1 = Department::where('is_active',1)->get();
+                        $affected1 =[];
                         $affected = adds::where([['is_delete',0],['is_active',0]])->paginate(7);
                         return view('adds_display',['data'=>$affected,'data1'=>$affected1]);
                     }
