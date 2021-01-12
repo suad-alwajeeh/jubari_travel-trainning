@@ -64,7 +64,7 @@ class AirlineController extends Controller
       $airline->remark=$req->remark;
       $airline->is_active=$active;
        $airline->save();
-      $affected = Airline::where('is_delete',0)->paginate(7);
+      $affected = Airline::where('is_delete',0)->paginate(25);
       return redirect('airline_display');
     }
     public function edit_row(Request $req){
@@ -84,7 +84,7 @@ class AirlineController extends Controller
     public function hide_row($id){
         $affected1= Airline::where('id',$id)
         ->update(['is_delete'=>'1']);
-        $affected = Airline::where('is_delete',0)->paginate(7);
+        $affected = Airline::where('is_delete',0)->paginate(25);
         return redirect('airline_display');
 
         }
@@ -97,11 +97,11 @@ class AirlineController extends Controller
                         public function filter($id){
                             if($id==1){
                                 $affected1 =[];
-                                $affected = Airline::where([['is_delete',0],['is_active',1]])->paginate(7);
+                                $affected = Airline::where([['is_delete',0],['is_active',1]])->paginate(25);
                                 return view('airline_display',['data'=>$affected,'data1'=>$affected1]);
                             }elseif($id==0){
                                 $affected1 =[];
-                                $affected = Airline::where([['is_delete',0],['is_active',0]])->paginate(7);
+                                $affected = Airline::where([['is_delete',0],['is_active',0]])->paginate(25);
                                 return view('airline_display',['data'=>$affected,'data1'=>$affected1]);
                             }
                         }

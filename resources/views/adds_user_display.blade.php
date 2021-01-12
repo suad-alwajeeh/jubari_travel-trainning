@@ -1,41 +1,57 @@
 @extends('app_layouts.master')
 @section('main_content')
 
-
-
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-12">
-  <h1 class="text-center">display adds with user</h1>
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Users Advertisements Status
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+      status 
+    </button>
+    <div class="dropdown-menu">
+    <a class="dropdown-item" href="/adds_user_display">all</a>
+    <a class="dropdown-item" href="/adds_user_display/1">send</a>
+      <a class="dropdown-item " href="/adds_user_display/2"> read</a>
+      <a class="dropdown-item " href="/adds_user_display/3">cansel</a>
+    </div>
   </div>
-  
-<div class="container">            
-  <table class="table table-striped">
+
+            </div>
+
+<div class="container"> 
+<?php $i=1 ?> 
+           
+  <table class="table table-hover text-center">
     <thead>
       <tr>
         <th>#</th>
-        <th>adds_name</th>
-        <th>user_name</th>
-        <th>status</th>
+        <th>Adds Name</th>
+        <th>User Name</th>
+        <th>Status</th>
+        <th>Opreation</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
-    <td>{{$item->au_id}}</td>
+    @forELSE($data as $item)
+    <td><?php echo $i; ?> </td>
     <td>{{$item->a_name}}</td>
       <td>{{$item->u_name}}</td>
       <td>
       @if($item->au_status==1)
         <span class="badge badge-success">send</span>
-      @elseif($item->au_status==2)
+        @endif
+
+      @if($item->au_status==2)
         <span class="badge badge-secondary">read</span>
-      @elseif($item->au_status==3)
-        <span class="badge badge-warning">cansele</span>
-      
+        @endif
+      @if($item->au_status==3)
+        <span class="badge badge-warning">cansel</span>
       @endif
      </td>
         <td>
@@ -56,10 +72,10 @@
       <div class="modal-body">
       <div id="accordion">
 
-  <div class="card">
+  <div class="card card-outline so_panal">
     <div class="card-header su_head">
       <a class="card-link su_inf" data-toggle="collapse" href="#collapseOne">
-        adds_info
+        adds information
       </a>
     </div>
     <div id="collapseOne" class="collapse show" data-parent="#accordion">
@@ -85,7 +101,7 @@
   <div class="card">
     <div class="card-header su_head">
       <a class="collapsed card-link su_inf" data-toggle="collapse" href="#collapseThree">
-        user_info
+        user information
       </a>
     </div>
     <div id="collapseThree" class="collapse" data-parent="#accordion">
@@ -106,7 +122,7 @@
   <div class="card">
     <div class="card-header su_head">
       <a class="collapsed card-link su_inf" data-toggle="collapse" href="#collapseTwo">
-      adds_status
+      adds status
       </a>
     </div>
     <div id="collapseTwo" class="collapse" data-parent="#accordion">
@@ -122,7 +138,7 @@
       @elseif($item->au_status==2)
         <span class="badge badge-secondary">read</span>
       @elseif($item->au_status==3)
-        <span class="badge badge-warning">cansele</span>
+        <span class="badge badge-warning">cansel</span>
       
       @endif
         </td>
@@ -168,11 +184,18 @@ success:function(response){
 
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}
 </div>
+  </div>
   </div>
   </div>
   </div>

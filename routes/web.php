@@ -65,6 +65,7 @@ Route::get('/adds_display/{id}', 'AddsController@filter');
 Route::get('/adds_display1/{id}', 'AddsController@display_with_status');
 Route::get('/adds_display', 'AddsController@display');
 Route::get('/adds_user_display', 'AddsController@adds_user_display');
+Route::get('/adds_user_display/{id}', 'AddsController@user_filter');
 Route::get('/adds_user_display_row/{id}', 'AddsController@adds_user_display_row');
 Route::get('/adds_user_display_u/{id}', 'AddsController@adds_user_display_u');
 Route::get('/ok/{id}', 'AddsController@ok');
