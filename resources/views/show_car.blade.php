@@ -14,10 +14,10 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  @if (session('status'))
+  @if (session('seccess'))
   <div class="alert alert-success" role="alert">
     <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('status') }}
+    {{ session('seccess') }}
   </div>
   @elseif(session('failed'))
   <div class="alert alert-danger" role="alert">
@@ -64,6 +64,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title col-3  d-inline-block">CAR</h3>
+                <a class="btn btn-outline-primary so_form_btn" href="/service/car"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Service</a>
+
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -108,10 +110,15 @@
                         <td>{{$cars->passenger_name}}</td>
                         <td>{{$cars->voucher_number }}</td>
                         <td>{{$cars->car_info}} </td>
-                        @if($cars->car_status==1)
+                        @if($buss->bus_status==1)
                         <td>OK</td>
+                        @elseif($buss->bus_status==2)
+                        <td>Issue</td>
+                        @elseif($buss->bus_status==3)
+                        <td>Void</td>
+                        @elseif($buss->bus_status==4)
+                        <td>Refund</td>
                         @endif
-
                         <td>{{$cars->supplier_name}} </td>
                         <td>{{$cars->provider_cost}} </td>
                         <td>{{$cars->cur_name}}</td>
@@ -121,12 +128,12 @@
                         <td>
                           @if($cars->service_status==1)
 
-                          <a type="button" class="btn sendbtn btncolor text-white"><i class="fa fa-paper-plane"
+                          <a  class="m-2"><i class="fa fa-paper-plane text-info"
                               aria-hidden="true"></i></a>
-                          <a class="btn btncolor" type="button"
-                            href="{{ url('/service/update_car/'.$cars->car_id) }}"><i class="fa fa-pencil-alt"
+                          <a class="m-2" type="button"
+                            href="{{ url('/service/update_car/'.$cars->car_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>
-                          <a type="button" class="btn  deletebtn btncolor text-white"><i class="fas fa-trash "></i></a>
+                          <a  class=" deletebtn "><i class="fas fa-trash text-danger "></i></a>
                           @endif
 
                         </td>

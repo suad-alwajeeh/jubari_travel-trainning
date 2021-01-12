@@ -60,6 +60,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title col-3  d-inline-block">General</h3>
+                <a class="btn btn-outline-primary so_form_btn" href="/service/gen"> <i class="fa fa-plus" aria-hidden="true"></i> Add New Service</a>
+
       </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
@@ -103,10 +105,15 @@
   <td>{{$gens->passenger_name}}</td>
 
   <td>{{$gens->voucher_number }}</td>
-   @if($gens->offered_status==1)
-  <td>OK</td>
-  @endif
-  <td>OK</td>
+  @if($buss->bus_status==1)
+                        <td>OK</td>
+                        @elseif($buss->bus_status==2)
+                        <td>Issue</td>
+                        @elseif($buss->bus_status==3)
+                        <td>Void</td>
+                        @elseif($buss->bus_status==4)
+                        <td>Refund</td>
+                        @endif
   
  
   <td>{{$gens->gen_info }}</td>
@@ -119,9 +126,9 @@
   <td>
    @if($gens->service_status==1)
 
-  <a type="button" class="btn sendbtn btncolor text-white" ><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
-  <a class="btn btncolor" type="button" href="{{ url('/service/update_gen/'.$gens->gen_id) }}"><i class="fa fa-pencil-alt" aria-hidden="true"></i></a>
-  <a type="button" class="btn  deletebtn btncolor text-white" ><i class="fas fa-trash "></i></a>
+  <a  class="sendbtn  m-2" ><i class="fa fa-paper-plane text-info" aria-hidden="true"></i></a>
+  <a class=" m-2 " href="{{ url('/service/update_gen/'.$gens->gen_id) }}"><i class="fa fa-pencil-alt text-primary" aria-hidden="true"></i></a>
+  <a  class="  deletebtn m-2" ><i class="fas fa-trash text-danger "></i></a>
 @endif
 
                     </td>

@@ -133,12 +133,12 @@
                         <td>{{$buss->remark}} </td>
                         <td>
                           @if($buss->service_status==1)
-                          <a type="button" class="btn sendbtn btncolor text-white"><i class="fa fa-paper-plane"
+                          <a  class=" m-2 sendbtn "><i class="fa fa-paper-plane text-info "
                               aria-hidden="true"></i></a>
-                          <a class="btn btncolor" type="button"
-                            href="{{ url('/service/update_bus/'.$buss->bus_id) }}"><i class="fa fa-pencil-alt"
+                          <a class="m-2" 
+                            href="{{ url('/service/update_bus/'.$buss->bus_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>
-                          <a type="button" class="btn  deletebtn btncolor text-white"><i class="fas fa-trash "></i></a>
+                          <a  class="deletebtn "><i class="fas fa-trash text-danger "></i></a>
                           @endif
 
                         </td>
