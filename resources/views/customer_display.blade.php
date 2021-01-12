@@ -7,21 +7,46 @@
         }
     }
 </style>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-12">
-  <h1 class="text-center">DISPLAY CUSTOMER</h1>
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Customer
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+      status 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/customer_display">all</a>
+      <a class="dropdown-item " href="/customer_display/1"> Active</a>
+      <a class="dropdown-item " href="/customer_display/0">No Active</a>
+    </div>
   </div>
-  
-<div class="container">   
-<div id="cus_mess" class="alert alert-success alert-dismissible">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong id="ttext">Success!</strong> 
-</div>       
-  <table class="table table-striped text-center">
+  <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+      vip 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/customer_display/2">vip</a>
+      <a class="dropdown-item " href="/customer_display/3"> no vip</a>
+    </div>
+  </div>
+  <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('customer_add') }}">add new</a>
+            </div>
+</br>
+            @foreach($data1 as $item1)
+<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endforeach
+  <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
+
+  <table class="table table-hover text-center " id="table">
     <thead>
       <tr>
         <th>ID</th>
@@ -36,9 +61,9 @@
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
+    @forelse($data as $item)
       <tr id="tr{{$item->cus_id}}" >
-      <td>{{$item->cus_id}}</td>
+      <td><?php echo $i;?></td>
       <td>{{$item->contact_person}}</td>
       <td>{{$item->contact_title}}</td>
       <td>{{$item->whatsapp}}</td>
@@ -83,9 +108,9 @@
 </td>
    <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="customer_edit/{{$item->cus_id}}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger" onclick="deleteitem({{$item->cus_id}})" ><i class="fas fa-trash "></i></a>
-  <a type="button" class="btn btn-info" onclick="show({{$item->cus_id}})"><i class="fas fa-eye "></i></a>
+  <a type="button" class="btn btn-outline-success" href="customer_edit/{{$item->cus_id}}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger" onclick="deleteitem({{$item->cus_id}})" ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-info" onclick="show({{$item->cus_id}})"><i class="fas fa-eye "></i></a>
 </div>
      <!-- The Modal -->
      <div class="modal fade" id="myModalcus">
@@ -234,10 +259,17 @@ if (checkBox1{{$item->cus_id}}.checked == true){
 }
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}
+</div>
 </div>
   </div>
   </div>

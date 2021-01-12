@@ -8,7 +8,7 @@
   <div class="col-12 card ">
             <div class="card-header">
               <h2 class="card-title">
-              display advertisements
+              Display Advertisements
               </h2>
               <div class="dropdown so_form_btn">
     <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
@@ -21,7 +21,6 @@
     </div>
   </div>
   <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('adds_add') }}">add new</a>
-
             </div>
 </br>
             @foreach($data1 as $item1)

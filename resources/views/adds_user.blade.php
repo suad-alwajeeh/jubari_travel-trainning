@@ -11,7 +11,7 @@
 <div class="card card-outline card-info">
             <div class="card-header">
               <h2 class="card-title">
-              edit advertisement page
+              add user to advertisement send list 
               </h2>
             </div>
             
@@ -19,14 +19,20 @@
             <div class="card-body">
 <div class="row">
 <div class=" col-md-12" for="sel1">users how send to :</div>
+</div>
 <div class="opp">
       </br>
       @foreach($data as $item) 
       <input id="gg" hidden="hidden" value="{{$item->id}}">
 @endforeach
+<div class="row">
       @foreach($data1 as $item1) 
-        <div style="float:left" id="me{{$item1->au_id}}" class="alert alert-success ">{{$item1->u_name}} <button type="button" class="close" onclick="delete{{$item1->au_id}}()">&times;</button></div> 
-       <script>
+        <div  id="me{{$item1->au_id}}" class="alert alert-success col-md-2 col-sm-12">
+          {{$item1->u_name}} 
+          <button type="button" class="close" onclick="delete{{$item1->au_id}}()">&times;</button>
+        </div> 
+</div>
+      <script>
         function delete{{$item1->au_id}}() {
  
  $.ajax({
@@ -37,7 +43,7 @@
         document.getElementById('me{{$item1->au_id}}').style.display ='none';
        },
        error:function(error){console.log(error);
-       alert("ggggg");
+       //alert("ggggg");
        } 
    });
 } 
@@ -50,7 +56,7 @@ function delete1(tt,oo){
         document.getElementById('mee'+tt).style.display ='none';
        },
        error:function(error){console.log(error);
-       alert("ggggg");
+       //alert("ggggg");
        } 
    });
 
@@ -84,7 +90,7 @@ function delete1(tt,oo){
         $(".opp").prepend('<div style="float:left" id="mee'+m+'" class="alert alert-success">'+m2+' <button type="button" class="close" onclick="delete1('+m+','+m6+')">&times;</button></div> ');
        },
        error:function(error){console.log(error);
-       alert('lll');
+       //alert('lll');
        } 
    });
      }
@@ -98,7 +104,6 @@ function delete1(tt,oo){
                   </div>
                   </div>
                   
-  </div>
   <div class="card-footer" >
    <a href="/adds_user_display" class="btn btn-outline-primary  so_form_btn">ok</a>
     </div>   
