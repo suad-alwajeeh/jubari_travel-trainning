@@ -4,14 +4,19 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-10">
-  <h1 class="text-center">send advertisements to users	</h1>
-  </div>
   
-</div>
-  
-<div class="container">            
+
+<!--form action="airline_display1" method="post"-->
+
+<div class="card card-outline card-info">
+            <div class="card-header">
+              <h2 class="card-title">
+              edit advertisement page
+              </h2>
+            </div>
+            
+            <!-- /.card-header method="post" action="/addadds"  -->
+            <div class="card-body">
 <div class="row">
 <div class=" col-md-12" for="sel1">users how send to :</div>
 <div class="opp">
@@ -61,6 +66,7 @@ function delete1(tt,oo){
 @endforeach
                   <select class="form-control select2" id="empii" name="emp_id" onchange="dep_select2()"  style="width: 100%;">
                   @foreach($data2 as $item3) 
+                  <option  class=" " id="" value="" disable>select user</option>
                   <option  class="so_emp1 " id="dep{{$item3->id}}" value="{{$item3->id}}">{{$item3->name}}</option>
                   <script>
      function dep_select2(){
@@ -91,6 +97,12 @@ function delete1(tt,oo){
 
                   </div>
                   </div>
+                  
+  </div>
+  <div class="card-footer" >
+   <a href="/adds_user_display" class="btn btn-outline-primary  so_form_btn">ok</a>
+    </div>   
+  </div>
   </div>
   </div>
   </div>

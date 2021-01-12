@@ -473,7 +473,9 @@ input[type=number] {
   float: right;
   margin-right: 5px;
 }
+.su_head{border-bottom: 3px solid #87d3ff;}
 
+.su_inf{color:black;}
 .so-alert-message{
   background-color: #8fec8f;
   border: 0px;

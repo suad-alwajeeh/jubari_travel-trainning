@@ -45,7 +45,7 @@ public function adds_user_display()
     ->join('adds_users','adds.id','adds_users.adds_id')->where('adds_users.is_delete',0)
     ->join('users','adds_users.user_id','users.id')->where([['users.is_delete',0],['users.is_active',1]])
     ->select('users.name as u_name','adds_users.id as au_id','adds.adds_text as a_text','adds.adds_name as a_name','adds_users.status as au_status')
-    ->paginate(15);
+    ->paginate(25);
         return view('adds_user_display',['data'=>$affected]);
 }
 public function adds_user_display_row($id)
@@ -93,7 +93,7 @@ public function ok($id){
                      
                     $affected = adds::where('is_delete',0)->orderBy('id', 'DESC')->paginate(30);
                     return view('adds_display',['data'=>$affected,'data1'=>$ststus]);
-            }
+        }
     public function add()
     {
         return view('adds_add');
@@ -112,7 +112,7 @@ public function ok($id){
       $role->adds_type=$req->adds_type;
       $role->is_active=$req->is_active;
        $role->save();
-      $affected = adds::where('is_delete',0)->paginate(7);
+      $affected = adds::where('is_delete',0)->paginate(25);
       return redirect('adds_display');
 }
     public function edit_row(Request $req){
@@ -126,7 +126,7 @@ public function ok($id){
     public function hide_row($id){
         $affected1= adds::where('id',$id)
         ->update(['is_delete'=>'1']);
-        $affected = adds::where('is_delete',0)->paginate(7);
+        $affected = adds::where('is_delete',0)->paginate(25);
         return redirect('adds_display');
 
         }
@@ -149,24 +149,49 @@ public function ok($id){
         public function is_active($id){
             $affected1= adds::where('id',$id)
             ->update(['is_active'=>'1']);
-            $affected = role::where('is_delete',0)->paginate(7);
+            $affected = role::where('is_delete',0)->paginate(25);
             return redirect('adds_display');
             }
             public function is_not_active($id){
                 $affected1= adds::where('id',$id)
                 ->update(['is_active'=>'0']);
-                $affected = adds::where('is_delete',0)->paginate(7);
+                $affected = adds::where('is_delete',0)->paginate(25);
                 return redirect('adds_display');
                 }
                 public function filter($id){
                     if($id==1){
                         $affected1 =[];
-                        $affected = adds::where([['is_delete',0],['is_active',1]])->paginate(7);
+                        $affected = adds::where([['is_delete',0],['is_active',1]])->paginate(25);
                         return view('adds_display',['data'=>$affected,'data1'=>$affected1]);
                     }elseif($id==0){
                         $affected1 =[];
-                        $affected = adds::where([['is_delete',0],['is_active',0]])->paginate(7);
+                        $affected = adds::where([['is_delete',0],['is_active',0]])->paginate(25);
                         return view('adds_display',['data'=>$affected,'data1'=>$affected1]);
                     }
+                }
+
+                public function user_filter($id){
+                    if($id==1){
+                        $affected = DB::table('adds')->where([['adds.is_active',1],['adds.is_delete',0]])
+        ->join('adds_users','adds.id','adds_users.adds_id')->where([['adds_users.is_delete',0],['adds_users.status',2]])
+        ->join('users','adds_users.user_id','users.id')->where([['users.is_delete',0],['users.is_active',1]])
+        ->select('users.name as u_name','adds_users.id as au_id','adds.adds_text as a_text','adds.adds_name as a_name','adds_users.status as au_status')
+        ->paginate(25);
+        return view('adds_user_display',['data'=>$affected]);
+       }elseif($id==2){
+        $affected = DB::table('adds')->where([['adds.is_active',1],['adds.is_delete',0]])
+        ->join('adds_users','adds.id','adds_users.adds_id')->where([['adds_users.is_delete',0],['adds_users.status',2]])
+        ->join('users','adds_users.user_id','users.id')->where([['users.is_delete',0],['users.is_active',1]])
+        ->select('users.name as u_name','adds_users.id as au_id','adds.adds_text as a_text','adds.adds_name as a_name','adds_users.status as au_status')
+        ->paginate(25);
+            return view('adds_user_display',['data'=>$affected]);
+          }elseif($id==3){
+            $affected = DB::table('adds')->where([['adds.is_active',1],['adds.is_delete',0]])
+            ->join('adds_users','adds.id','adds_users.adds_id')->where([['adds_users.is_delete',0],['adds_users.status',3]])
+            ->join('users','adds_users.user_id','users.id')->where([['users.is_delete',0],['users.is_active',1]])
+            ->select('users.name as u_name','adds_users.id as au_id','adds.adds_text as a_text','adds.adds_name as a_name','adds_users.status as au_status')
+            ->paginate(25);
+                return view('adds_user_display',['data'=>$affected]);
+              }
                 }
 }
