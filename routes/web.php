@@ -29,11 +29,15 @@ Route::group(['middleware' => ['auth','role:admin|sale_manager|sale_executive|ac
  Route::get('/','dashboard@index');
   /*****************AIRLINE************** */
 Route::get('/airline_add', 'AirlineController@add');
+Route::get('/is_active_airline/{id}', 'AirlineController@is_active');
+Route::get('/no_active_airline/{id}', 'AirlineController@is_not_active');
 Route::get('/airline_edit/{id}', 'AirlineController@display_row');
 Route::get('/airline_display', 'AirlineController@display');
 Route::get('/airline_delete/{id}', 'AirlineController@hide_row');
 Route::post('/addairline','AirlineController@save1');
 Route::post('/editairline','AirlineController@edit_row');
+Route::get('/airline_display/{id}', 'AirlineController@filter');
+
 /****************customer************** */
 Route::get('/customer_add', 'customerController@add');
 Route::get('/display_row/{id}', 'customerController@display_row');

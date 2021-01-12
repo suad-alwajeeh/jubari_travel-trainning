@@ -25,9 +25,9 @@ class AirlineController extends Controller
         return view('airline_edit',['data'=>$affected]);
                     }
     public function display()
-    {
+    {                        $affected1 =[];
         $affected = Airline::where('is_delete',0)->paginate(10);
-        return view('airline_display',['data'=>$affected]);
+        return view('airline_display',['data'=>$affected,'data1'=>$affected1]);
         }
     public function add()
     {
@@ -92,69 +92,24 @@ class AirlineController extends Controller
             $data['airline']= Airline::where('id',$_GET['id'])->get();
             return json_encode($data);
                         }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-}
+   
+                        public function filter($id){
+                            if($id==1){
+                                $affected1 =[];
+                                $affected = Airline::where([['is_delete',0],['is_active',1]])->paginate(7);
+                                return view('airline_display',['data'=>$affected,'data1'=>$affected1]);
+                            }elseif($id==0){
+                                $affected1 =[];
+                                $affected = Airline::where([['is_delete',0],['is_active',0]])->paginate(7);
+                                return view('airline_display',['data'=>$affected,'data1'=>$affected1]);
+                            }
+                        }
+                        public function is_active($id){
+                            $affected1= Airline::where('id',$id)
+                            ->update(['is_active'=>'1']);
+                            }
+                            public function is_not_active($id){
+                                $affected1= Airline::where('id',$id)
+                                ->update(['is_active'=>'0']);
+                            }
+                        }

@@ -23,13 +23,14 @@
   <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('adds_add') }}">add new</a>
 
             </div>
-
-<div class="container"> 
-<?php $i=1 ?> 
-@foreach($data1 as $item1)
+</br>
+            @foreach($data1 as $item1)
 <div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
   @endforeach
   <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
 
   <table class="table table-hover text-center " id="table">
     <thead>
