@@ -21,7 +21,11 @@
   </div>
 </div>
   
-<div class="container">            
+<div class="container"> 
+<?php $i=1 ?> 
+@foreach($data1 as $item1)
+<div style="float:left" class="alert so-alert-message">{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endforeach
   <table class="table table-striped" id="table">
     <thead>
       <tr>
@@ -34,9 +38,9 @@
       </tr>
     </thead>
     <tbody id="pp">
-    @foreach($data as $item)
+    @forelse($data as $item)
       <tr id="tr{{$item->id}}" class="status{{$item->is_active}}" >
-      <td>{{$item->id}}</td>
+      <td><?php echo $i;?><span style="display:none;">{{$item->id}}</span></td>
       <td>{{$item->adds_name}}</td>
       <td>
       @if($item->adds_type == 1)
@@ -144,7 +148,7 @@ function delete{{$item->id}}() {
              data:{id:{{$item->id}}},
              success:function(response){
                console.log(response);
-              $('#myModalair{{$item->id}}').modal('toggle');
+              $('#myModalair'+{{$item->id}}).modal('toggle');
               document.getElementById('tr{{$item->id}}').style.display ='none';
              },
              error:function(error){console.log(error);
@@ -157,7 +161,13 @@ function delete{{$item->id}}() {
 
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}

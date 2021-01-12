@@ -57,6 +57,7 @@ Route::get('/adds_delete/{id}', 'AddsController@hide_row');
 Route::get('/is_active_adds/{id}', 'AddsController@is_active');
 Route::get('/no_active_adds/{id}', 'AddsController@is_not_active');
 Route::get('/adds_display/{id}', 'AddsController@filter');
+Route::get('/adds_display1/{id}', 'AddsController@display_with_status');
 Route::get('/adds_display', 'AddsController@display');
 Route::get('/adds_user_display', 'AddsController@adds_user_display');
 Route::get('/adds_user_display_row/{id}', 'AddsController@adds_user_display_row');

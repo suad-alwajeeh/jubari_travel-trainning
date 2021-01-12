@@ -77,24 +77,35 @@ public function ok($id){
         ->update(['status'=>'3']);
         }
     public function display()
-    {   $affected2 = DB::table('users')->where('is_delete','0')->get();
-        $affected = adds::where('is_delete',0)->paginate(7);
-        $affected1 = Department::where('is_active',1)->get();
-        return view('adds_display',['data'=>$affected,'data1'=>$affected1,'data2'=>$affected2]);
+   {
+ $affected1 =[];
+   $affected = adds::where('is_delete',0)->orderBy('id', 'DESC')->paginate(30);
+        return view('adds_display',['data'=>$affected,'data1'=>$affected1]);
         }
+        public function display_with_status($id)
+        {  
+            if($id=1) {
+                $ststus=["data"=> 'add advertisement successfully..' ];
+                 }
+                 if($id=2) {
+                     $ststus=["data"=> 'edit advertisement successfully..' ];
+                     }
+                     
+                    $affected = adds::where('is_delete',0)->orderBy('id', 'DESC')->paginate(30);
+                    return view('adds_display',['data'=>$affected,'data1'=>$ststus]);
+            }
     public function add()
     {
         return view('adds_add');
     }
     public function save1(Request $req)
-    {
-     $req->validate([
-        "adds_name"=>"required",
-        "adds_text"=>"required",
-        "adds_type"=>"required",
-        "is_active"=>"required",
-        ]);
-      $role=new adds;
+    {  $active="";
+        if(isset($req->is_active)){
+           $active=1;
+        }else{
+           $active=0;
+        }
+     $role=new adds;
       $role->adds_name=$req->adds_name;
       $role->adds_text=$req->adds_text;
       $role->how_create_it=$req->how_create_it;
@@ -103,7 +114,7 @@ public function ok($id){
        $role->save();
       $affected = adds::where('is_delete',0)->paginate(7);
       return redirect('adds_display');
-    }
+}
     public function edit_row(Request $req){
         $req->validate([
             "adds_name"=>"required",
