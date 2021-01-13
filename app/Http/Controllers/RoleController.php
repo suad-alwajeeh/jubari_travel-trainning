@@ -27,9 +27,9 @@ echo 'ppppp';    }
         return view('role_edit',['data'=>$affected]);
                     }
     public function display()
-    {
+    {     $affected1 =[];
         $affected = Role::where('is_delete',0)->paginate(7);
-        return view('role_display',['data'=>$affected]);
+        return view('role_display',['data'=>$affected,'data1'=>$affected1]);
         }
         public function display_role_user()
         {

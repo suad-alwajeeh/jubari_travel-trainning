@@ -16,7 +16,19 @@ public function display(){
     return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
 
 }
+public function display_with_status($id){
+    if($id=1) {
+        $ststus=["data"=> 'add customer successfully..' ];
+         }
+         if($id=2) {
+             $ststus=["data"=> 'edit customer successfully..' ];
+             }
+    $affected = Customer::where('is_delete',0)
+    ->join('currency','customers.def_currency','currency.cur_id')
+    ->orderBy('customers.cus_id','DESC')->paginate(10);
+    return view('customer_display',['data'=>$affected,'data1'=>$ststus]);
 
+}
 public function display_row($id)
 { 
     $affected = Customer::where('customers.cus_id',$id)

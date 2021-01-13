@@ -50,13 +50,12 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>contact_person</th>
-        <th>contact_title</th>
-        <th>WHATSAPP</th>
+        <th>Customer</th>
+        <th>Contact Person</th>
+        <th>Contact Title</th>
         <th>EMAIL</th>
         <th>CURRANCY</th>
         <th>VIP</th>
-        <th style="display:none">ACTIVE</th>
         <th>OPERATION</th>
       </tr>
     </thead>
@@ -64,9 +63,9 @@
     @forelse($data as $item)
       <tr id="tr{{$item->cus_id}}" >
       <td><?php echo $i;?></td>
+      <td>{{$item->cus_name}}</td>
       <td>{{$item->contact_person}}</td>
       <td>{{$item->contact_title}}</td>
-      <td>{{$item->whatsapp}}</td>
       <td>{{$item->cus_email}}</td>
       <td>{{$item->cur_name}}</td>
       <td>
@@ -87,28 +86,9 @@
                   </div>
 @endif  
 </td>
-<td style="display:none">
-         @if($item->is_active = 0)
-      <div class="form-group">
-                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                      <input onclick="vip{{$item->cus_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch1{{$item->cus_id}}">
-                      <label class="custom-control-label" for="customSwitch1{{$item->cus_id}}"></label>
-                    </div>
-                  </div>
-                  @endif  
-
-                  @if($item->is_active = 1)
-                  <div class="form-group">
-                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                      <input onclick="vip{{$item->cus_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch1{{$item->cus_id}}">
-                      <label class="custom-control-label" for="customSwitch1{{$item->cus_id}}"></label>
-                    </div>
-                  </div>
-@endif  
-</td>
    <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-outline-success" href="customer_edit/{{$item->cus_id}}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('customer_edit/'.$item->cus_id) }}"><i class="fas fa-pencil-alt "></i></a>
   <a type="button" class="btn btn-outline-danger" onclick="deleteitem({{$item->cus_id}})" ><i class="fas fa-trash "></i></a>
   <a type="button" class="btn btn-outline-info" onclick="show({{$item->cus_id}})"><i class="fas fa-eye "></i></a>
 </div>
@@ -183,7 +163,7 @@ success:function(response){
 function deleteitem(id) {
   $('#myModalcus').modal('hide');
   $('#myModalcus_del').modal('show');
-  $('#details1').html('<div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete customer??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="deletei('+id+')" style="width:15%;">ok</button></div></div>');
+  $('#details1').html('<div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete customer??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger so_form_btn" style="float:none" onclick="deletei('+id+')" style="width:15%;">ok</button></div></div>');
   }  
   
 function deletei(id){
@@ -194,8 +174,8 @@ $.ajax({
        success:function(response){console.log(response);
         document.getElementById('tr{{$item->cus_id}}').style.display ='none';
         $('#myModalcus_del').modal('toggle');
-        $('#cus_mess').css('display','block');
-        $('#ttext').text('delete successfully');
+        $('#so-alert-message').html('<div  class="alert so-alert-message" >delete row successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
+
        },
        error:function(error){console.log(error);
        } 

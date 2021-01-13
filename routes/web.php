@@ -45,6 +45,7 @@ Route::get('/display_row/{id}', 'customerController@display_row');
 Route::get('/customer_edit/{id}', 'customerController@display_row_edit');
 Route::get('/customer_display', 'customerController@display');
 Route::get('/customer_display/{id}', 'customerController@filter');
+Route::get('/customer_display1/{id}', 'customerController@display_with_status');
 Route::get('/customer_delete/{id}', 'customerController@hide_row');
 Route::get('/customer/is_active/{id}', 'customerController@is_active');
 Route::get('/customer/no_active/{id}', 'customerController@no_active');
