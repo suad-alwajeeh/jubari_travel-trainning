@@ -29,7 +29,7 @@ class MedicalServiceController extends Controller
 
 public function generate( Request $req)
 {
-  $id=DB::table('medical_services')->latest('document_number')->first();
+  $id=DB::table('medical_services')->latest()->first();
   return json_decode($id->document_number+1);
 }
     
@@ -55,12 +55,13 @@ public function sent_med($id)
 
 
 public function update_med($id){
-  $data['airline']=Airline::where('is_active',1)->get();
   $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
   ->join('services','services.ser_id','=','sup_services.service_id')
   ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>4])->get();
-  $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-$data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
+ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+           $data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
     ->join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')->where('med_id',$id)->get();
    
       return view('update_med',$data);
@@ -73,14 +74,13 @@ $data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_ser
     return back()->with('seccess','Seccess Data Delete');
   }
   public function medical(){
-    $data['airline']=Airline::where('is_active',1)->get();
-    $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-    ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-    ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
-    ->join('services','services.ser_id','=','sup_services.service_id')
-    ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>4])->get();
-    $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-   
+            $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+            ->join('services','services.ser_id','=','sup_services.service_id')
+            ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>4])->get();
+ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
       return view('add_medical',$data);
   } 
   public function send_med($id){
@@ -96,7 +96,7 @@ $data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_ser
   else{
     $affected= MedicalService::where(['med_id'=>$id])
     ->update(['service_status'=>2]);
-    return back()->with('seccess','Seccess Data Delete'); 
+    return back()->with('seccess','Seccess Data Send'); 
  }
     }
 
@@ -153,7 +153,7 @@ public function add_Medical( Request $req)
     $medical->remark=$req->remark;
     $medical->service_status=1;
     $medical->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_medical/1')->with('seccess','Seccess Data Insert');
 }
 
 
@@ -198,14 +198,14 @@ public function updateMed( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_medical/1')->with('seccess','Seccess Data Update');
   }
 
   public function deleteAllmed(Request $request){
     $ids = $request->input('ids');
     $dbs = MedicalService::where('med_id',$ids)
     ->update(['deleted'=>1]);
-    return back();
+    return back()->with('seccess','Seccess Data Delete');
 }
 public function sendAllmed(Request $request){
   $ids = $request->input('ids');
@@ -214,14 +214,14 @@ public function sendAllmed(Request $request){
     $affected1=MedicalService::where($where)->count();
     if($affected1 >0)
    { 
-    return back()->with('error','Seccess Data Not send');
+    return back()->with('failed','failed Data  send');
 
  }
   else{
    
     $dbs = MedicalService::where('med_id',$ids)->update(['service_status'=>2]);
 
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Send');
    
  }
 }
@@ -252,14 +252,14 @@ public function errorMed(){
 
     $affected= MedicalService::where(['med_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Accept');
   }
 
   public function ignore($id){
     $loged_Id=  Auth::user()->id ;
     $affected= MedicalService::where(['med_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Reject');
   }
 
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use App\Service;
+use App\service;
 use App\airline;
 use App\Supplier;
 use App\Employee;
@@ -52,7 +52,7 @@ public function hide_car($id){
   
 public function generate( Request $req)
 {
-  $id=DB::table('car_services')->latest('voucher_number')->first();
+  $id=DB::table('car_services')->latest()->first();
   return json_decode($id->voucher_number+1);
 } 
 
@@ -61,7 +61,10 @@ public function generate( Request $req)
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>3])->get();
-          $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+         $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+                
         $data['cars']=CarService::join('currency','currency.cur_id','=','car_services.cur_id')
         ->join('suppliers','suppliers.s_no','=','car_services.due_to_supp')->where('car_id',$id)->get();
    
@@ -80,18 +83,19 @@ public function generate( Request $req)
   else{
     $affected= CarService::where(['car_id'=>$id])
     ->update(['service_status'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Send');
    
  }
     }
     public function car(){
       $data['airline']=Airline::where('is_active',1)->get();
-      $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-      ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-      ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+      $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
-      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>3])->get();
-      $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>3])->get();
+     $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
      
           return view('add_car',$data);
       } 
@@ -151,7 +155,7 @@ public function add_car( Request $req)
     $car->remark=$req->remark;
     $car->service_status=1;
     $car->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Insert');
 }
 
 public function updateCar( Request $req)
@@ -195,13 +199,13 @@ public function updateCar( Request $req)
 
        ]); 
     }
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_car/1')->with('seccess','Seccess Data Update');
   }
   public function deleteAllcar(Request $request){
     $ids = $request->input('ids');
     $dbs = CarService::where('car_id',$ids)
     ->update(['deleted'=>1]);
-    return back();
+    return back()->with('seccess','Seccess Data Delete');
 }
 public function sendAllcar(Request $request){
   $ids = $request->input('ids');
@@ -210,14 +214,14 @@ public function sendAllcar(Request $request){
     $affected1=CarService::where($where)->count();
     if($affected1 >0)
    { 
-    return back()->with('error','Seccess Data Not send');
+    return back()->with('failed','failed Data  send');
 
  }
   else{
    
     $dbs = CarService::where('car_id',$ids)->update(['service_status'=>2]);
 
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Send');
    
  }
 }
@@ -259,14 +263,14 @@ public function errorCar(){
 
     $affected= CarService::where(['car_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Accept');
   }
 
   public function ignore($id){
     $loged_Id=  Auth::user()->id ;
     $affected= CarService::where(['car_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Reject');
   }
 
 }

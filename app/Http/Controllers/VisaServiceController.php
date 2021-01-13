@@ -32,7 +32,7 @@ class VisaServiceController extends Controller
                     }
 public function generate( Request $req)
 {
-  $id=DB::table('visa_services')->latest('voucher_number')->first();
+  $id=DB::table('visa_services')->latest()->first();
   return json_decode($id->voucher_number+1);
 }
 
@@ -52,7 +52,7 @@ public function generate( Request $req)
       else{
         $affected= VisaService::where(['visa_id'=>$id])
         ->update(['service_status'=>2]);
-        return back()->with('seccess','Seccess Data Delete');
+        return back()->with('seccess','Seccess Data Send');
        
      }
         }
@@ -83,7 +83,10 @@ public function generate( Request $req)
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>6])->get();
-          $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+          $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+                
          $data['visas']=VisaService::join('currency','currency.cur_id','=','visa_services.cur_id')
          ->join('suppliers','suppliers.s_no','=','visa_services.due_to_supp') ->where('visa_id',$id)->get();
            
@@ -92,12 +95,13 @@ public function generate( Request $req)
 
           public function visa(){
             $data['airline']=Airline::where('is_active',1)->get();
-            $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-            ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-            ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
-            ->join('services','services.ser_id','=','sup_services.service_id')
-            ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>6])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+            $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+      ->join('services','services.ser_id','=','sup_services.service_id')
+            ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>6])->get();
+           $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+              
            
               return view('add_visa',$data);
           } 
@@ -142,7 +146,7 @@ public function generate( Request $req)
           
                  ]); 
               }
-              return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+              return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
             }
 
             
@@ -200,13 +204,13 @@ public function add_visa( Request $req)
     $visa->remark=$req->remark;
     $visa->service_status=1;
     $visa->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
 }
 public function deleteAllvisa(Request $request){
   $ids = $request->input('ids');
   $dbs = VisaService::where('visa_id',$ids)
   ->update(['deleted'=>1]);
-  return back();
+  return back()->with('seccess','Seccess Data Delete');
 }
 public function sendAllvisa(Request $request){
 $ids = $request->input('ids');
@@ -215,14 +219,14 @@ $where=['visa_id'=>$ids];
   $affected1=VisaService::where($where)->count();
   if($affected1 >0)
  { 
-  return back()->with('error','Seccess Data Not send');
+  return back()->with('failed','failed Data  send');
 
 }
 else{
  
   $dbs = VisaService::where('visa_id',$ids)->update(['service_status'=>2]);
 
-  return back()->with('seccess','Seccess Data Delete');
+  return back()->with('seccess','Seccess Data Send');
  
 }
 }
@@ -252,13 +256,13 @@ public function accept($id){
 
   $affected= VisaService::where(['bus_id'=>$id])
   ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-  return back()->with('seccess','Seccess Data Delete');
+  return back()->with('seccess','Seccess Data Accept');
 }
 public function ignore($id){
   $loged_Id=  Auth::user()->id ;
   $affected= VisaService::where(['visa_id'=>$id])
   ->update(['errorlog'=>2]);
-  return back()->with('seccess','Seccess Data Delete');
+  return back()->with('seccess','Seccess Data Reject');
 }
 
 

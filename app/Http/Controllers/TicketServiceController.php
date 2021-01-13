@@ -51,7 +51,7 @@ return view('sent_ticket',$data);
 
 public function generate( Request $req)
 {
-  $id=DB::table('ticket_services')->latest('ticket_number')->first();
+  $id=DB::table('ticket_services')->latest()->first();
   return json_decode($id->ticket_number+1);
 }
 public function hide_ticket($id){
@@ -72,35 +72,36 @@ public function hide_ticket($id){
         if($affected1 >0)
        { 
        
-     //return redirect('service')->with('Erroe','Seccess Data Delete');
      json_encode('noorder');
-    // print_r(json_encode($x));
      }
       else{
         $affected= TicketService::where(['tecket_id'=>$id])
         ->update(['service_status'=>2]);
-     return back()->with('Status','Seccess Data Delete');
+     return back()->with('Status','Seccess Data Send');
        
      }
         }
 
         public function ticket(){
-            $data['airline']=Airline::where('is_active',1)->get();
-            $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-            ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-            ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+            $data['airline']=Airline::where('is_active',1)->where('is_delete',0)->get();
+            $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
-            ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>1])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+            ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>1])->get();
+            $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
            
               return view('add_ticket',$data);
           } 
           public function update_ticket($id){
-            $data['airline']=Airline::where('is_active',1)->get();
+            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
             $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>1])->get();
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
+            $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+               
            
             $data['tickets']=TicketService::join('currency','currency.cur_id','=','ticket_services.cur_id')
             ->join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
@@ -140,7 +141,7 @@ public function add_ticket( Request $req)
     }
     if(isset($req->arr_city2))
     {
-        $ticket->arr_city2 =$req->arr_city1;
+        $ticket->arr_city2 =$req->arr_city2;
 
     }
     else{
@@ -152,13 +153,20 @@ public function add_ticket( Request $req)
     if(isset($req->dep_date2))
     {
         $ticket->dep_date2 =$req->dep_date2;
-        $ticket->bursher_time =$req->bursher_time;
 
     }
     else{
         $ticket->dep_date2='';
     }
    
+    if(isset($req->bursher_time))
+    {
+        $ticket->bursher_time =$req->bursher_time;
+
+    }
+    else{
+        $ticket->bursher_time='';
+    }
     if($req->hasfile('attachment'))
     {
        $attchmentFile =$req->file('attachment') ;
@@ -198,7 +206,7 @@ public function add_ticket( Request $req)
     $ticket->remark=$req->remark;
     $ticket->service_status=1;
     $ticket->save();
-return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
 }
 
 public function updateTicket( Request $req)
@@ -283,7 +291,7 @@ $busher='';
 
       ]); 
     }
-return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
 }
 
 
@@ -291,7 +299,7 @@ public function deleteAllticket(Request $request){
     $ids = $request->input('ids');
     $dbs = TicketService::where('tecket_id',$ids)
     ->update(['deleted'=>1]);
-    return back();
+    return back()->with('seccess','Seccess Data Delete');
 }
 public function sendAllticket(Request $request){
   $ids = $request->input('ids');
@@ -300,14 +308,14 @@ public function sendAllticket(Request $request){
     $affected1=TicketService::where($where)->count();
     if($affected1 >0)
    { 
-    return back()->with('error','Seccess Data Not send');
+    return back()->with('failed','failed Data  send');
 
  }
   else{
    
     $dbs = TicketService::where('tecket_id',$ids)->update(['service_status'=>2]);
 
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Send');
    
  }
 }
@@ -339,13 +347,13 @@ public function emp_ticket(){
     $loged_Id=  Auth::user()->id ;
     $affected= TicketService::where(['tecket_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Accept');
   }
   public function ignore($id){
     $loged_Id=  Auth::user()->id ;
     $affected= TicketService::where(['tecket_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Reject');
   }
 
   public function reject_ticket()
