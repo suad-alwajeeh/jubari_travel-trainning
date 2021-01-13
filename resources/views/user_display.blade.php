@@ -1,16 +1,16 @@
 @extends('app_layouts.master')
 @section('main_content')
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-10">
-  <h1 class="text-center">display users	</h1>
-  </div>
-  <div class="col-2">
-  <div class="dropdown">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Users
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
       status 
     </button>
     <div class="dropdown-menu">
@@ -19,29 +19,34 @@
       <a class="dropdown-item " href="/user_display/0">No Active</a>
     </div>
   </div>
-</div>
-<div class="container">  
-@if(Session::has('success'))  
-<div class="alert alert-success" role="alert">
-{{Session::get('success')}}
-</div>
-@endif
-  <table class="table table-striped" id="table">
+ 
+  <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('user_add') }}">add new</a>
+            </div>
+</br>
+            @foreach($data1 as $item1)
+<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endforeach
+  <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
+
+  <table class="table table-hover text-center " id="table">
     <thead>
       <tr>
         <th>#</th>
-        <th>user_name</th>
-        <th>user_email</th>
+        <th>user name</th>
+        <th>user email</th>
         <th>department</th>
         <th>password</th>
-        <th>user_status</th>
+        <th>status</th>
         <th>opration</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
+    @forelse($data as $item)
       <tr id="tr{{$item->u_id}}" class="status{{$item->u_is_active}}" >
-      <td>{{$item->u_id}}</td>
+      <td><?php echo $i;?></td>
       <td>{{$item->u_name}}</td>
       <td>{{$item->u_email}}</td>      
       <td>{{$item->d_name}}</td>
@@ -69,8 +74,8 @@
       </td>   
         <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="{{ url('user_edit/'.$item->u_id) }}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModalair{{$item->u_id}}"  ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('user_edit/'.$item->u_id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger"  data-toggle="modal" data-target="#myModalair{{$item->u_id}}"  ><i class="fas fa-trash "></i></a>
 </div>
         </td>
       </tr>
@@ -86,7 +91,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="delete{{$item->u_id}}()" style="width:15%;">ok</button></div></div>
+      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger so_form_btn" style="float:none" onclick="delete{{$item->u_id}}()" style="width:15%;">ok</button></div></div>
       </div>
    </div>
   </div>
@@ -138,8 +143,9 @@ function delete{{$item->u_id}}() {
              data:{id:{{$item->u_id}}},
              success:function(response){console.log(response);
               $('#myModalair{{$item->u_id}}').modal('toggle');
-
               document.getElementById('tr{{$item->u_id}}').style.display ='none';
+        $('#so-alert-message').html('<div  class="alert so-alert-message" >delete row successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
+
              },
              error:function(error){console.log(error);
              } 
@@ -151,13 +157,20 @@ function delete{{$item->u_id}}() {
 
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}
 
   
-</div>
+  </div>
+  </div>
   </div>
   </div>
   </div>

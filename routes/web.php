@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth','role:admin|sale_manager|sale_executive|ac
   Route::get('/user_notify/{id}','NotificationController@user_notify');
   Route::get('/status_notify/{s}/{from}/{to}/{status}', 'NotificationController@status_notify');
   Route::get('/user_profile/{id}', 'uuserController@user_profile');
+  Route::get('/profile/{id}', 'uuserController@user_profile1_page');
 
 });
 
@@ -86,8 +87,10 @@ Route::get('/employee_dept/{id}', 'uuserController@employee_dept');
 Route::get('/employee_data/{id}', 'uuserController@employee_data');
 Route::get('/user_display', 'uuserController@display');
 Route::get('/user_display/{id}', 'uuserController@filter');
+Route::get('/user_display1/{id}', 'uuserController@display_with_status1');
 Route::post('/adduser','uuserController@save17');
 Route::post('/edituser','uuserController@edit_row');
+Route::get('/checkmail/{id}','uuserController@checkmail');
 /*****************users************** */
 /*****************ROLE************** */
 Route::get('/role_add', 'RoleController@add');

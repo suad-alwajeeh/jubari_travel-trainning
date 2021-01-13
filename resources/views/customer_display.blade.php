@@ -245,7 +245,7 @@ if (checkBox1{{$item->cus_id}}.checked == true){
                       <td class=text-center colspan="10">There is No data in table...
                       <td>
                     </tr>
-     @endforelse
+    @endforelse
     </tbody>
   </table>
   {{$data->links()}}
