@@ -3,14 +3,21 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet' href='https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'>
 <link rel='stylesheet' href='https://unpkg.com/filepond/dist/filepond.min.css'><link rel="stylesheet" href="./style.css">
-
 <div class="content-wrapper">
+  <div class="container p-4">
 
-  <div class="main">
-  <section class="signup">
-      <div class="container">
-        <div class="signup-content">
-          <form method="POST" id="signup-form" action="add_visa" class="signup-form" enctype="multipart/form-data">
+
+    <!-- /.card-header -->
+    <!-- form start -->
+    <div class="card card-outline card-info">
+      <div class="card-header">
+        <h2 class="card-title">
+          Add Bus  Services
+        </h2>
+      </div>
+      <div class="card-body">
+
+          <form method="POST" id="signup-form" action="add_visa"  enctype="multipart/form-data">
           @csrf
             <div class="around">
               <h2 class="form-title">Visa Info</h2>
@@ -49,7 +56,7 @@
 
                     <input type="number" required class="form-control " style="width: 100%;"
                       name="visa_number"  id="number" />
-        <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
+                      <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
 
                   </div>
                 </div>
@@ -59,14 +66,10 @@
 
                     <select class="form-control select2 select2-hidden-accessible" name="visa_status" id="code"
                       style="width: 100%;" data-select2-id="1" tabindex="0" aria-hidden="true">
-
-
-
-                      <option value="1">OK</option>
-                      <option value="2" disabled>Avoid</option>
-                      <option value="3" disabled>Refent</option>
-
-
+                      <option value="1" selected>OK</option>
+                      <option value="2" >Issue</option>
+                      <option value="3" >Void</option>
+                      <option value="4" >Refund</option>
                     </select>
                   </div>
                 </div>
@@ -108,14 +111,13 @@
                         class="form-control select2 select2-hidden-accessible provider" style="width: 100%;" data-select2-id="2"
                         tabindex="0" aria-hidden="true">
 
+                     
                         @if(count($suplier))
                         @foreach($suplier as $sup)
-                       
-                       <option value="{{$sup->s_no}}">{{$sup->supplier_name}}</option>
-                       
+                       <option value="{{$sup->s_no}}">{{$sup->supplier_name}}</option>                   
                         @endforeach
                         </select>
-                        <small class="text-muted" id="remark">{{$sup->supplier_remark}}</small>
+                        <small class="text-muted text-center" id="remark">{{$sup->supplier_remark}}</small>
 
                         @else
                         <select  name="due_to_supp" required
@@ -159,9 +161,15 @@
                         style="width: 100%;" data-select2-id="4" tabindex="0" aria-hidden="true">
 
                         @foreach($emp as $emps)
+                        @if($emps->emp_id==Auth::user()->id )
+                        <option selected value="{{$emps->emp_id}}">{{$emps->emp_first_name}} {{$emps->emp_middel_name}}
+                          {{$emps->emp_thired_name}} {{$emps->emp_last_name}}</option>
+                        
+                        @else
 
                         <option value="{{$emps->emp_id}}">{{$emps->emp_first_name}} {{$emps->emp_middel_name}}
                           {{$emps->emp_thired_name}} {{$emps->emp_last_name}}</option>
+                          @endif
                         @endforeach
 
                       </select>
@@ -223,10 +231,9 @@
           </div>
           </form>
 
-        </div>
-    </div>
-    </section>
+        
 
+  </div>
   </div>
   </div>
 

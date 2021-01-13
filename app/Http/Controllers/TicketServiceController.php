@@ -84,10 +84,8 @@ public function hide_ticket($id){
 
         public function ticket(){
             $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
-            $data['suplier']=Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
-            ->join('currency','currency.cur_id','=','sup_currency.cur_id')
-            ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
-            ->join('services','services.ser_id','=','sup_services.service_id')
+            $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
+      ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>1])->get();
             $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)

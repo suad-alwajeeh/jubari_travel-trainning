@@ -5,13 +5,21 @@
 <link rel='stylesheet' href='https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'>
 <link rel='stylesheet' href='https://unpkg.com/filepond/dist/filepond.min.css'><link rel="stylesheet" href="./style.css">
 
-<div class="content-wrapper">
+<d<div class="content-wrapper">
+  <div class="container p-4">
 
-  <div class="main">
-  <section class="signup">
-        <div class="container">
-          <div class="signup-content">
-<form method="POST" action="add_ticket" enctype="multipart/form-data" id="form1" class="signup-form">
+
+    <!-- /.card-header -->
+    <!-- form start -->
+    <div class="card card-outline card-info">
+      <div class="card-header">
+        <h2 class="card-title">
+          Add Bus  Services
+        </h2>
+      </div>
+      <div class="card-body">
+
+<form method="POST" action="add_ticket" enctype="multipart/form-data" id="form1" >
               @csrf
              
               <div class="around">
@@ -93,7 +101,7 @@ name="Issue_date" id="date"  />
                       <input required class="form-control "
                         style="width: 100%;"  name="ticket_number" id="number" />
                         <small id="helpId2" class="text-muted "></small>
-        <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
+                        <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
 
 
                     </div>
@@ -107,10 +115,10 @@ name="Issue_date" id="date"  />
                       class="form-control select2 select2-hidden-accessible"
                         style="width: 100%;" data-select2-id="6" tabindex="0" aria-hidden="true">
 
-                        <option value="1" >OK</option>
-                        <option value="2" disabled>Avoid</option>
-                        <option value="3" disabled>Refent</option>
-
+                        <option value="1" selected>OK</option>
+                      <option value="2" >Issue</option>
+                      <option value="3" >Void</option>
+                      <option value="4" >Refund</option>
 
                       </select>
                     </div>
@@ -205,11 +213,10 @@ name="Issue_date" id="date"  />
                       <select  name="due_to_supp" required
                       class="form-control select2 select2-hidden-accessible provider"
                         style="width: 100%;" data-select2-id="7" tabindex="0" aria-hidden="true">
+                      
                         @if(count($suplier))
                         @foreach($suplier as $sup)
-                       
-                       <option value="{{$sup->s_no}}">{{$sup->supplier_name}}</option>
-                       
+                       <option value="{{$sup->s_no}}">{{$sup->supplier_name}}</option>                   
                         @endforeach
                         </select>
                         <small class="text-muted text-center" id="remark">{{$sup->supplier_remark}}</small>
@@ -223,7 +230,6 @@ name="Issue_date" id="date"  />
                         </select>
 
                         @endif
-
                     </div>
                   </div>
                   <div class="form-group col-md-12 col-sm-12 col-xm-12">
@@ -257,11 +263,16 @@ name="Issue_date" id="date"  />
                         style="width: 100%;" data-select2-id="1" tabindex="0" aria-hidden="true">
 
                         @foreach($emp as $emps)
+                        @if($emps->emp_id==Auth::user()->id )
+                        <option selected value="{{$emps->emp_id}}">{{$emps->emp_first_name}} {{$emps->emp_middel_name}}
+                          {{$emps->emp_thired_name}} {{$emps->emp_last_name}}</option>
+                        
+                        @else
 
                         <option value="{{$emps->emp_id}}">{{$emps->emp_first_name}} {{$emps->emp_middel_name}}
                           {{$emps->emp_thired_name}} {{$emps->emp_last_name}}</option>
+                          @endif
                         @endforeach
-
                       </select>
 
                     </div>
@@ -321,8 +332,7 @@ name="Issue_date" id="date"  />
           </form>
 
         </div>
-    </div>
-    </section>
+   
 
   </div>
   </div>
