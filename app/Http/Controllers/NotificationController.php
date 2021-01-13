@@ -10,7 +10,6 @@ class NotificationController extends Controller
 {
      public function counter_notify($user_id){
         $wordlist=Notification::select(DB::raw('count(*) as count'))->where([['status',0],['resiver',$user_id]])->get();
-        //$wordlist = Notification::where([['status',0],['resiver',$user_id]])->get();
        echo json_encode($wordlist);
      }
 

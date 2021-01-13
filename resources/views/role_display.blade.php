@@ -1,28 +1,50 @@
 @extends('app_layouts.master')
 @section('main_content')
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-12">
-  <h1 class="text-center">display roles</h1>
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Roles
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+      status 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/role_display">all</a>
+      <a class="dropdown-item " href="/role_display/1"> Active</a>
+      <a class="dropdown-item " href="/role_display/0">No Active</a>
+    </div>
   </div>
-  
-<div class="container">            
-  <table class="table table-striped">
+  <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('role_add') }}">add new</a>
+            </div>
+</br>
+            @foreach($data1 as $item1)
+<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endforeach
+  <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
+
+  <table class="table table-hover text-center " id="table">
     <thead>
       <tr>
         <th>#</th>
-        <th>role_name</th>
-        <th>role_status</th>
-        <th>created_date</th>
+        <th>role name</th>
+        <th>role status</th>
+        <th>created date</th>
         <th>opration</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
+    @forELSE($data as $item)
       <tr id="tr{{$item->id}}" >
-      <td>{{$item->id}}</td>
+      <td><?php echo $i;?></td>
       <td>{{$item->display_name}}</td>
       <td>
       @if($item->is_active == 0)
@@ -48,8 +70,8 @@
       <td>{{$item->created_at}}</td>
         <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="{{ url('role_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('role_edit/'.$item->id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger"  data-toggle="modal" data-target="#myModalair{{$item->id}}"  ><i class="fas fa-trash "></i></a>
 </div>
         </td>
       </tr>
@@ -65,7 +87,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="delete{{$item->id}}()" style="width:15%;">ok</button></div></div>
+      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger so_form_btn" style="float:none" onclick="delete{{$item->id}}()" style="width:15%;">ok</button></div></div>
       </div>
    </div>
   </div>
@@ -104,12 +126,13 @@ function myFunction{{$item->id}}() {
 function delete{{$item->id}}() {
  
        $.ajax({
-             type:'get',
+            type:'get',
              url:'/role_delete/'+{{$item->id}},
              data:{id:{{$item->id}}},
              success:function(response){console.log(response);
-              $('#myModalair{{$item->id}}').modal('toggle');
+              $('#myModalair'+{{$item->id}}).modal('toggle');
               document.getElementById('tr{{$item->id}}').style.display ='none';
+              $('#so-alert-message').html('<div  class="alert so-alert-message" >delete row successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
 
              },
              error:function(error){console.log(error);
@@ -118,13 +141,20 @@ function delete{{$item->id}}() {
   } 
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}
 
   
-</div>
+  </div>
+  </div>
   </div>
   </div>
   </div>

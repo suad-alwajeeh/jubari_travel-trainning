@@ -95,14 +95,18 @@ Route::get('/role_edit/{id}', 'RoleController@display_row');
 Route::get('/role_delete/{id}', 'RoleController@hide_row');
 Route::get('/is_active/{id}', 'RoleController@is_active');
 Route::get('/no_active/{id}', 'RoleController@is_not_active');
+Route::get('/role_display/{id}', 'RoleController@filter');
 Route::get('/role_display', 'RoleController@display');
 Route::get('/role_user_display', 'RoleController@display_role_user');
-Route::get('/role_user_display1/{id}', 'RoleController@display_role_user1');
+Route::get('/role_display1/{id}', 'RoleController@display_with_status');
+Route::get('/role_user_display1/{id}', 'RoleController@display_with_status1');
 Route::get('/role_user_display18/{id}', 'RoleController@display_role_user18');
 Route::get('/user_role_delete/{u_id}', 'RoleController@role_user_hide_row');
 Route::get('/add_role_user', 'RoleController@add_role_user');
 Route::post('/addrole','RoleController@save1');
 Route::post('/addroleuser','RoleController@save_user_role');
+Route::get('/addroleuser1/{r}/{u}/{h}','RoleController@save_user_roleyy');
+Route::get('/addroleuser2/{r}/{u}/{h}','RoleController@save_user_roleyy2');
 Route::post('/editrole','RoleController@edit_row');
 
 //employees
