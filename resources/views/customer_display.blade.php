@@ -7,41 +7,65 @@
         }
     }
 </style>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <div class="container p-4">
-  <div class="row">
-  <div class="col-12">
-  <h1 class="text-center">DISPLAY CUSTOMER</h1>
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Customer
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+      status 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/customer_display">all</a>
+      <a class="dropdown-item " href="/customer_display/1"> Active</a>
+      <a class="dropdown-item " href="/customer_display/0">No Active</a>
+    </div>
   </div>
-  
-<div class="container">   
-<div id="cus_mess" class="alert alert-success alert-dismissible">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong id="ttext">Success!</strong> 
-</div>       
-  <table class="table table-striped text-center">
+  <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
+      vip 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/customer_display/2">vip</a>
+      <a class="dropdown-item " href="/customer_display/3"> no vip</a>
+    </div>
+  </div>
+  <a type="button" class="btn btn-outline-success so_form_btn" href="{{ url('customer_add') }}">add new</a>
+            </div>
+</br>
+            @foreach($data1 as $item1)
+<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endforeach
+  <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
+
+  <table class="table table-hover text-center " id="table">
     <thead>
       <tr>
         <th>ID</th>
-        <th>contact_person</th>
-        <th>contact_title</th>
-        <th>WHATSAPP</th>
+        <th>Customer</th>
+        <th>Contact Person</th>
+        <th>Contact Title</th>
         <th>EMAIL</th>
         <th>CURRANCY</th>
         <th>VIP</th>
-        <th style="display:none">ACTIVE</th>
         <th>OPERATION</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
+    @forelse($data as $item)
       <tr id="tr{{$item->cus_id}}" >
-      <td>{{$item->cus_id}}</td>
+      <td><?php echo $i;?></td>
+      <td>{{$item->cus_name}}</td>
       <td>{{$item->contact_person}}</td>
       <td>{{$item->contact_title}}</td>
-      <td>{{$item->whatsapp}}</td>
       <td>{{$item->cus_email}}</td>
       <td>{{$item->cur_name}}</td>
       <td>
@@ -62,30 +86,11 @@
                   </div>
 @endif  
 </td>
-<td style="display:none">
-         @if($item->is_active = 0)
-      <div class="form-group">
-                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                      <input onclick="vip{{$item->cus_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch1{{$item->cus_id}}">
-                      <label class="custom-control-label" for="customSwitch1{{$item->cus_id}}"></label>
-                    </div>
-                  </div>
-                  @endif  
-
-                  @if($item->is_active = 1)
-                  <div class="form-group">
-                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
-                      <input onclick="vip{{$item->cus_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch1{{$item->cus_id}}">
-                      <label class="custom-control-label" for="customSwitch1{{$item->cus_id}}"></label>
-                    </div>
-                  </div>
-@endif  
-</td>
    <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-success" href="customer_edit/{{$item->cus_id}}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btn-danger" onclick="deleteitem({{$item->cus_id}})" ><i class="fas fa-trash "></i></a>
-  <a type="button" class="btn btn-info" onclick="show({{$item->cus_id}})"><i class="fas fa-eye "></i></a>
+  <a type="button" class="btn btn-outline-success" href="{{ url('customer_edit/'.$item->cus_id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger" onclick="deleteitem({{$item->cus_id}})" ><i class="fas fa-trash "></i></a>
+  <a type="button" class="btn btn-outline-info" onclick="show({{$item->cus_id}})"><i class="fas fa-eye "></i></a>
 </div>
      <!-- The Modal -->
      <div class="modal fade" id="myModalcus">
@@ -158,7 +163,7 @@ success:function(response){
 function deleteitem(id) {
   $('#myModalcus').modal('hide');
   $('#myModalcus_del').modal('show');
-  $('#details1').html('<div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete customer??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="deletei('+id+')" style="width:15%;">ok</button></div></div>');
+  $('#details1').html('<div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete customer??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger so_form_btn" style="float:none" onclick="deletei('+id+')" style="width:15%;">ok</button></div></div>');
   }  
   
 function deletei(id){
@@ -169,8 +174,8 @@ $.ajax({
        success:function(response){console.log(response);
         document.getElementById('tr{{$item->cus_id}}').style.display ='none';
         $('#myModalcus_del').modal('toggle');
-        $('#cus_mess').css('display','block');
-        $('#ttext').text('delete successfully');
+        $('#so-alert-message').html('<div  class="alert so-alert-message" >delete row successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
+
        },
        error:function(error){console.log(error);
        } 
@@ -234,10 +239,17 @@ if (checkBox1{{$item->cus_id}}.checked == true){
 }
 
 </script>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
   {{$data->links()}}
+</div>
 </div>
   </div>
   </div>

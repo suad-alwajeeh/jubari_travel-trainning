@@ -9,14 +9,26 @@ use Illuminate\Http\Request;
 class customerController extends Controller
 {
 public function display(){
-
+    $affected1 =[];
     $affected = Customer::where('is_delete',0)
     ->join('currency','customers.def_currency','currency.cur_id')
     ->orderBy('customers.cus_id','DESC')->paginate(10);
-    return view('customer_display',['data'=>$affected]);
+    return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
 
 }
+public function display_with_status($id){
+    if($id=1) {
+        $ststus=["data"=> 'add customer successfully..' ];
+         }
+         if($id=2) {
+             $ststus=["data"=> 'edit customer successfully..' ];
+             }
+    $affected = Customer::where('is_delete',0)
+    ->join('currency','customers.def_currency','currency.cur_id')
+    ->orderBy('customers.cus_id','DESC')->paginate(10);
+    return view('customer_display',['data'=>$affected,'data1'=>$ststus]);
 
+}
 public function display_row($id)
 { 
     $affected = Customer::where('customers.cus_id',$id)
@@ -127,6 +139,32 @@ public function no_active($id){
     $affected1= Customer::where('cus_id',$id)
     ->update(['is_active'=>'0']);
     return redirect('customer_display')->with('success','update successfully');
-
+}
+public function filter($id){
+    if($id==1){
+        $affected1 =[];
+        $affected = Customer::where([['customers.is_active',1],['customers.is_delete',0]])
+        ->join('currency','customers.def_currency','currency.cur_id')
+        ->orderBy('customers.cus_id','DESC')->paginate(10);
+        return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
+          }elseif($id==0){
+        $affected1 =[];
+        $affected = Customer::where([['customers.is_active',0],['customers.is_delete',0]])
+        ->join('currency','customers.def_currency','currency.cur_id')
+        ->orderBy('customers.cus_id','DESC')->paginate(10);
+        return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
+    }elseif($id==2){
+        $affected1 =[];
+        $affected = Customer::where([['customers.vip',1],['customers.is_delete',0]])
+        ->join('currency','customers.def_currency','currency.cur_id')
+        ->orderBy('customers.cus_id','DESC')->paginate(10);
+        return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
+    }elseif($id==3){
+        $affected1 =[];
+        $affected = Customer::where([['customers.vip',0],['customers.is_delete',0]])
+        ->join('currency','customers.def_currency','currency.cur_id')
+        ->orderBy('customers.cus_id','DESC')->paginate(10);
+        return view('customer_display',['data'=>$affected,'data1'=>$affected1]);
+    }
 }
 }

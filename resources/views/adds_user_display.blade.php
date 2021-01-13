@@ -56,7 +56,7 @@
      </td>
         <td>
         <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btn-info" data-toggle="modal" onclick="getdata{{$item->au_id}}()" data-target="#myModal{{$item->au_id}}" ><i class="fas fa-eye "></i></a>
+  <a type="button" class="btn btn-outline-info" data-toggle="modal" onclick="getdata{{$item->au_id}}()" data-target="#myModal{{$item->au_id}}" ><i class="fas fa-eye "></i></a>
 </div>
      <!-- The Modal -->
      <div class="modal fade" id="myModal{{$item->au_id}}">
