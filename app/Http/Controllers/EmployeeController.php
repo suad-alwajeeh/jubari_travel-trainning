@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use App\Department;
+use App\User;
 class EmployeeController extends Controller
 {
     /**
@@ -15,6 +16,7 @@ class EmployeeController extends Controller
     public function __construct()
     {
     }
+/*********************start display all  new Employees Info ****************************************/
    
     public function index()
     {
@@ -22,7 +24,7 @@ class EmployeeController extends Controller
       $where +=['departments.deleted'=>0];
       $where +=['departments.is_active'=>1];
       $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
-      ->where($where,1)->paginate(6);
+      ->where($where,1)->orderBy('emp_id','DESC')->get();
             return view('employees',$data);
        }
     public function Activate(){
@@ -34,7 +36,7 @@ class EmployeeController extends Controller
          $where +=['departments.deleted'=>0];
          $where +=['departments.is_active'=>1];
          $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
-         ->where($where,1)->paginate(6);
+         ->where($where)->orderBy('emp_id','DESC')->get();
          return json_encode($data);
      }
      
@@ -46,7 +48,7 @@ class EmployeeController extends Controller
         $where +=['departments.deleted'=>0];
         $where +=['departments.is_active'=>1];
         $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
-        ->where($where,1)->paginate(6);
+        ->where($where)->orderBy('emp_id','DESC')->get();
         return json_encode($data);
   }
   
@@ -63,22 +65,36 @@ class EmployeeController extends Controller
     }
     public function insert(){
         $where=['is_active'=>1];
+        $where +=['deleted'=>0];
         $data['emps']=Department::where($where)->get();
         return view('add-employee',$data);
 
     }
+/*********************end display all  new Employees Info ****************************************/
 
+/*********************start  check email  new Employees Info ****************************************/
+public function checkEmail(Request $request){
+    $emp=Employee::where('emp_email',$request->email)->count();
+
+    if($emp>0)
+    return $emp;
+    else
+    return $emp;
+
+}
+/*********************end checvk email Employees Info ****************************************/
+
+/*********************start inser new Employees Info ****************************************/
+   
     public function saved(Request $request)
     {
 $emp=new Employee;
   
-     $active;
      $emp_photo='';
      $attchment='';
-     if($request->is_active=1)
-     {
-          $active=1;
-     }
+     $active='';
+     if(isset($request->is_active))
+     $active=1;
      else
      $active=0;
      if($request->hasfile('emp_photo'))
@@ -116,14 +132,19 @@ $emp=new Employee;
 
     }
    
+/*********************end inser new Employees Info ****************************************/
 
-    
+/*********************Start Display roe for update Employees Info ****************************************/
+
     public function display_row($id)
     { 
         $data['emps'] = Employee::where('emp_id',$id)->get();
-        $data['dept'] = Department::all();
+        $data['dept'] = Department::where('is_active',1)->where('deleted',0)->get();
         return view('update-employee',$data);
-                    }
+    }
+/*********************end Display row for  Employees Info ****************************************/
+
+/*********************Start show more Employees Info ****************************************/
 
                     public function show_row($id)
                     { 
@@ -131,17 +152,17 @@ $emp=new Employee;
                         $data['dept'] = Department::all();
                         return view('show_employee',$data);
                                     }
+/*********************end show more Employees Info ****************************************/
 
+/*********************Update Employees Info ****************************************/
 public function edit_row(Request $req){
     $emp=new Employee;
-  //print_r($req);
-    $active;
+  
     $emp_photo='';
     $attchment='';
-     if($req->is_active=1)
-    {
-         $active=1;
-    }
+    $active='';
+    if(isset($req->is_active))
+    $active=1;
     else
     $active=0;
     $emp_photo='';
@@ -169,22 +190,26 @@ public function edit_row(Request $req){
     else
     $attchment=$req->attchment1;
 }
-
-   
-     
-                        $emp::where('emp_id',$req->id)
+                         $emp::where('emp_id',$req->id)
                         ->update(['emp_first_name'=>$req->emp_first_name,'emp_middel_name'=>$req->emp_medil_name,
                         'is_active'=>$active,'emp_thired_name'=>$req->emp_thired_name,'emp_last_name'=>$req->emp_last_name,
                         'emp_ssn'=>$req->emp_ssn,'account_number'=>$req->account_number,'emp_mobile'=>$req->emp_mobile,
                         'emp_salary'=>$req->emp_salary,'emp_email'=>$req->email,'emp_hirdate'=>$req->emp_hirdate,'dept_id'=>$req->dept_id,
                         'emp_photo'=> $emp_photo,'attchment'=>$attchment,
                         ]);
+                        $user=new User;
+                        $user::where('id',$req->id)
+                        ->update(['email'=>$req->email, ]);
+
                         $data['emps'] = Employee::where('deleted',0)->paginate(7);
-                       //return $emp;
-                       return redirect('employees')->with('seccess','Seccess Data Delete');
+                       return redirect('employees')->with('seccess','Seccess Data Updated');
 
                         
                     }
+
+/*********************End Update Employees Info ****************************************/
+/*********************Start Delete Employees Info ****************************************/
+
     public function hide_row($id){
         $affected1= Employee::where('emp_id',$id)
         ->update(['deleted'=>'1']);
@@ -192,5 +217,7 @@ public function edit_row(Request $req){
         return redirect('employees')->with('seccess','Seccess Data Delete');
 
         }
+/*********************End Delete Employees Info ****************************************/
+
     
 }

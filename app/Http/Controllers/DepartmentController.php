@@ -44,23 +44,20 @@ class DepartmentController extends Controller
     
     public function saved(Request $request)
     {
-
+        $dept=new Department;
+         $active='';
+      if(isset($request->is_active))
+      $active=1;
+      else
+      $active=0;
         $request->validate([
             "name"=>"required",
             ]); 
-     $active;
-     if($request->is_active==1)
-     {
-          $active=1;
-     }
-     else
-     $active=0;
-      $dept=new Department;
+           
       $dept->name=$request->name;
       $dept->is_active=$active;
      
       echo $dept->save();
-      //return $dept->getall();
       return redirect('department')->with('seccess','Seccess Data Insert');
     
     }
@@ -73,11 +70,9 @@ class DepartmentController extends Controller
 
 public function edit_row(Request $req){
                         $dept=new Department;
-                        $active;
-                        if($req->input('is_active')==1)
-                        {
-                             $active=1;
-                        }
+                        $active='';
+                        if(isset($req->is_active))
+                        $active=1;
                         else
                         $active=0;
 
@@ -86,7 +81,7 @@ public function edit_row(Request $req){
                         'is_active'=>$active,
                         ]); 
                         $data['dept'] = Department::where('deleted',0)->paginate(7);
-                        return view('department',$data);
+                        return redirect('department')->with($data);
                         
                     }
     public function hide_row($id){

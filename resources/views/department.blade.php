@@ -10,10 +10,10 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper" >
     <!-- Content Header (Page header) -->
-    @if (session('status'))
+    @if (session('seccess'))
     <div class="alert alert-success" role="alert">
         <button type="button" class="close" data-dismiss="alert">×</button>
-        {{ session('status') }}
+        {{ session('seccess') }}
     </div>
     @elseif(session('failed'))
     <div class="alert alert-danger" role="alert">
@@ -59,8 +59,8 @@
                 <div class="form-group row">
                     <div class="offset-sm-4 col-sm-8">
                         <div class="form-check">
-                            <input type="checkbox" id="is_active" class="form-check-input" name="is_active" >
-                            <label class="form-check-label" for="exampleCheck2">Active</label>
+                            <input type="checkbox"  class="form-check-input" name="is_active" checked id="active">
+                    <label class="form-check-label" for="exampleCheck2">Active</label>
                         </div>
                     </div>
                 </div>
@@ -131,8 +131,8 @@
                     <td>
                     <input type="hidden" id="test">
                     <div class="btn-group btn-group-sm">
-  <a type="button" class="btn btncolor" href="{{ url('/department/department-edit/'.$department->id) }}"><i class="fas fa-pencil-alt "></i></a>
-  <a type="button" class="btn btncolor  deletebtn" ><i class="fas fa-trash  text-white"></i></a>
+  <a  class="m-2" href="{{ url('/department/department-edit/'.$department->id) }}"><i class="fas fa-pencil-alt text-primary "></i></a>
+  <a class="m-2 deletebtn" ><i class="fas fa-trash text-danger"></i></a>
 </div></td>
                   </tr>
                   @endforeach
@@ -238,7 +238,7 @@ $("#dropselect").change(function () {
               console.log(value.length);
               if(value.length>0)
 {myJSON = JSON.parse(data);
-td +='<tr><input type="hidden" class="delete_id" value="'+value[i].id+'"><td>'+value[i].id+'</td><td>'+value[i].name+'</td> <td>'+value[i].created_at+'</td><td><div class="btn-group btn-group-sm"><a type="button" class="btn btncolor" href="/department/department-edit/'+value[i].id+'"><i class="fas fa-pencil-alt "></i></a><a type="button" class="btn btncolor text-white" ><i class="fas fa-trash "></i></a></div></td></tr>';
+td +='<tr><input type="hidden" class="delete_id" value="'+value[i].id+'"><td>'+value[i].id+'</td><td>'+value[i].name+'</td> <td>'+value[i].created_at+'</td><td><div class="btn-group btn-group-sm"><a type="button" class="m-2" href="/department/department-edit/'+value[i].id+'"><i class="fas fa-pencil-alt  text-primary"></i></a><a class="m-2" ><i class="fas fa-trash text-danger "></i></a></div></td></tr>';
 $('.row2').html(td);}
             }
             td='';
