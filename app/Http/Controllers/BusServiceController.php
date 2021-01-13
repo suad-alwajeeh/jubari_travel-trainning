@@ -45,7 +45,7 @@ class BusServiceController extends Controller
 
 public function generate( Request $req)
 {
-  $id=DB::table('bus_services')->latest('bus_number')->first();
+  $id=DB::table('bus_services')->latest()->first();
   return json_decode($id->bus_number+1);
 }
     public function show_add_emp()
@@ -62,7 +62,7 @@ public function generate( Request $req)
       $data['airline']=Airline::where('is_active',1)->get();
       $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
-      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>2])->get();
+      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>2])->get();
       $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
@@ -212,7 +212,7 @@ public function updateBus( Request $req)
       else{
         $affected= BusService::where(['bus_id'=>$id])
         ->update(['service_status'=>2]);
-        return redirect('/service/show_bus/1')->with('seccess','Seccess Data Delete');
+        return redirect('/service/show_bus/1')->with('seccess','Seccess Data Send');
        
      }
         }
@@ -229,8 +229,8 @@ public function updateBus( Request $req)
           $ids = $request->input('ids');
           $dbs = BusService::where('bus_id',$ids)
           ->update(['deleted'=>1]);
-          return back();
-      }
+          return back()->with('seccess','Seccess Data Delete');
+        }
       public function sendAllbus(Request $request){
         $ids = $request->input('ids');
         $where=['bus_id'=>$ids];
@@ -238,14 +238,14 @@ public function updateBus( Request $req)
           $affected1=BusService::where($where)->count();
           if($affected1 >0)
          { 
-          return back()->with('error','Seccess Data Not send');
+          return back()->with('failed','failed Data  send');
       
        }
         else{
          
           $dbs = BusService::where('bus_id',$ids)->update(['service_status'=>2]);
     
-          return back()->with('seccess','Seccess Data Delete');
+          return back()->with('seccess','Seccess Data Send');
          
        }
     }
@@ -293,7 +293,7 @@ public function updateBus( Request $req)
           $loged_Id=  Auth::user()->id ;
           $affected= BusService::where(['bus_id'=>$id])
           ->update(['errorlog'=>2]);
-          return back()->with('seccess','Seccess Data Delete');
+          return back()->with('seccess','Seccess Data Reject');
         }
         public function reject_bus()
         {

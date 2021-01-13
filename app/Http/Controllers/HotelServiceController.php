@@ -26,7 +26,7 @@ class HotelServiceController extends Controller
 
 public function generate( Request $req)
 {
-  $id=DB::table('hotel_services')->latest('voucher_number')->first();
+  $id=DB::table('hotel_services')->latest()->first();
   return json_decode($id->voucher_number+1);
 }
     public function hide_hotel($id){
@@ -54,10 +54,9 @@ public function generate( Request $req)
             }
 
             public function hotel(){
-              $data['airline']=Airline::where('is_active',1)->get();
               $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
-      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>5])->get();
+      ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>5])->get();
               $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
@@ -115,7 +114,7 @@ public function generate( Request $req)
 
        ]); 
     }
-    return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Update');
   }
 
   
@@ -178,7 +177,6 @@ public function add_hotel( Request $req)
 }
 
 public function update_Hotel($id){
-            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
   $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
   ->join('services','services.ser_id','=','sup_services.service_id')
   ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>5])->get();
@@ -213,7 +211,7 @@ public function deleteAllhotel(Request $request){
   $ids = $request->input('ids');
   $dbs = HotelService::where('hotel_id',$ids)
   ->update(['deleted'=>1]);
-  return back();
+  return back()->with('seccess','Seccess Data Delete');
 }
 public function sendAllhotel(Request $request){
 $ids = $request->input('ids');
@@ -222,14 +220,14 @@ $where=['hotel_id'=>$ids];
   $affected1=HotelService::where($where)->count();
   if($affected1 >0)
  { 
-  return back()->with('error','Seccess Data Not send');
+  return back()->with('failed','failed Data  send');
 
 }
 else{
  
   $dbs = HotelService::where('hotel_id',$ids)->update(['service_status'=>2]);
 
-  return back()->with('seccess','Seccess Data Delete');
+  return back()->with('seccess','Seccess Data Send');
  
 }
 }

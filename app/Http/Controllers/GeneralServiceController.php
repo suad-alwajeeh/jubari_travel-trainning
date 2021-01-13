@@ -26,7 +26,7 @@ class GeneralServiceController extends Controller
 
 public function generate( Request $req)
 {
-  $id=DB::table('general_services')->latest('voucher_number')->first();
+  $id=DB::table('general_services')->latest()->first();
   return json_decode($id->voucher_number+1);
 }
     
@@ -70,13 +70,12 @@ public function hide_gen($id){
       else{
         $affected= GeneralService::where(['gen_id'=>$id])
         ->update(['service_status'=>2]);
-        return back()->with('seccess','Seccess Data Delete');
+        return back()->with('seccess','Seccess Data Send');
        
      }
         }
 
         public function update_gen($id){
-            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
           ->join('services','services.ser_id','=','sup_services.service_id')
           ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>7])->get();
@@ -92,10 +91,9 @@ public function hide_gen($id){
 
 
           public function general(){
-            $data['airline']=Airline::where('is_active',1)->where('deleted',0)->get();
             $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
-       ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>7])->get();
+       ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>7])->get();
             $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
@@ -159,7 +157,7 @@ public function add_service( Request $req)
     $general->busher_time=$req->busher_time;
     $general->service_status=1;
     $general->save();
-    return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+    return redirect('/service/show_general/1')->with('seccess','Seccess Data Insert');
 }
 
 
@@ -204,14 +202,14 @@ public function add_service( Request $req)
  
         ]); 
       }
-      return redirect('/service/sales_repo')->with('seccess','Seccess Data Insert');
+      return redirect('/service/show_general/1')->with('seccess','Seccess Data Insert');
     }
     public function deleteAllgen(Request $request){
       $ids = $request->input('ids');
       $dbs = GeneralService::where('gen_id',$ids)
       ->update(['deleted'=>1]);
-      return back();
-  }
+      return back()->with('seccess','Seccess Data Delete');
+    }
   public function sendAllgen(Request $request){
     $ids = $request->input('ids');
     $where=['gen_id'=>$ids];
@@ -219,14 +217,14 @@ public function add_service( Request $req)
       $affected1=GeneralService::where($where)->count();
       if($affected1 >0)
      { 
-      return back()->with('error','Seccess Data Not send');
+      return back()->with('failed','failed Data  send');
   
    }
     else{
      
       $dbs = GeneralService::where('gen_id',$ids)->update(['service_status'=>2]);
 
-      return back()->with('seccess','Seccess Data Delete');
+      return back()->with('seccess','Seccess Data Send');
      
    }
 }
@@ -253,13 +251,13 @@ public function errorGen(){
 
     $affected= GeneralService::where(['gen_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Accept');
   }
   public function ignore($id){
     $loged_Id= Auth::user()->id ;
     $affected= GeneralService::where(['gen_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
+    return back()->with('seccess','Seccess Data Reject');
   }
 
   public function reject_gen()
