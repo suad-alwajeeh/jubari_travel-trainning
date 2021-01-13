@@ -128,7 +128,7 @@ Route::get('/no_active_supplier/{id}', 'ReportController@is_not_active');
 Route::get('/supplierRepo/{id}', 'ReportController@filter');
 Route::get('display_rowRepo/{id}', 'ReportController@display_row');
 Route::get('/export_excel', 'ReportController@ExportIntoExcel');
-Route::get('service_test','ServiceController@index');
+Route::get('services','ServiceController@index');
 Route::get('/service/insert', 'ServiceController@insert');
 Route::get('/service/saved', 'ServiceController@saved');
 Route::get('/service/service_delete/{id}','ServiceController@hide_row');
@@ -219,27 +219,20 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
 Route::group(['middleware' => ['auth','role:sale_manager']], function() {
   //add error log 
   
-Route::get('/displaySalesManager', 'SalesManagerController@display');
-Route::get('/displaySalesManager/CarError', 'SalesManagerController@carError');
-Route::get('/displaySalesManager/HotelError', 'SalesManagerController@hotelError');
-Route::get('/displaySalesManager/VisaError', 'SalesManagerController@visaError');
-Route::get('/displaySalesManager/TicketError', 'SalesManagerController@ticketError');
-Route::get('/displaySalesManager/GenError', 'SalesManagerController@genError');
-Route::get('/displaySalesManager/MedError', 'SalesManagerController@medError');
-Route::get('/displaySalesManager/saved', 'SalesManagerController@saved_bus');
-Route::get('/displaySalesManager/saved_car', 'SalesManagerController@saved_car');
-Route::get('/displaySalesManager/saved_visa', 'SalesManagerController@saved_visa');
-Route::get('/displaySalesManager/saved_ticket', 'SalesManagerController@saved_ticket');
-Route::get('/displaySalesManager/saved_med', 'SalesManagerController@saved_med');
-Route::get('/displaySalesManager/saved_gen', 'SalesManagerController@saved_gen');
-Route::get('/displaySalesManager/saved_hotel', 'SalesManagerController@saved_hotel');
-Route::get('/salesManager/bus_send/{id}','SalesManagerController@send_bus');
-Route::get('/salesManager/car_send/{id}','SalesManagerController@send_car');
-Route::get('/salesManager/hotel_send/{id}','SalesManagerController@send_hotel');
-Route::get('/salesManager/ticket_send/{id}','SalesManagerController@send_ticket');
-Route::get('/salesManager/visa_send/{id}','SalesManagerController@send_visa');
-Route::get('/salesManager/gen_send/{id}','SalesManagerController@send_gen');
-Route::get('/salesManager/med_send/{id}','SalesManagerController@send_med');
+  Route::get('/sales','SalesManagerController@sales_view');
+  Route::get('/sales_review/{id}','SalesManagerController@sales_review');
+  Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
+  Route::get('/sales_finish/{id}/{user}','SalesManagerController@sales_finish');
+  Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
+  Route::get('/sales/bus/{id}','SalesManagerController@bus');
+  Route::get('/sales/car/{id}','SalesManagerController@car');
+  Route::get('/sales/general/{id}','SalesManagerController@general');
+  Route::get('/sales/medical/{id}','SalesManagerController@medical');
+  Route::get('/sales/hotel/{id}','SalesManagerController@hotel');
+  Route::get('/sales/visa/{id}','SalesManagerController@visa');
+  Route::get('/sales/saved/{servic}/{main}/{bill}/{how}/{rec}','SalesManagerController@saved');
+  Route::get('/sales/add_remark/{col}/{old}/{new}/{status}','SalesManagerController@add_remark');
+  Route::get('/sales/send_remark/{m}/{s}/{to}/{from}/{number}','SalesManagerController@send_remark');
 
 // Sales Manager
 Route::get('/remark','dashboard@remark');
