@@ -136,7 +136,6 @@ class accountantController extends Controller
                                          'gen1'=>$affectedg,'gen2'=>$affectedg1,'gen3'=>$affectedtg2,'gen4'=>$affectedtg3,'gen5'=>$affectedtg4,'gen6'=>$affectedtg5,
                                          'vis1'=>$affectedv,'vis2'=>$affectedv1,'vis3'=>$affectedtv2,'vis4'=>$affectedtv3,'vis5'=>$affectedtv4,'vis6'=>$affectedtv5,
                                          'latest'=>$onlyl ]);
-
     }
     
     public function accountant_review($id)
