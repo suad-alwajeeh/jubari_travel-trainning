@@ -11,7 +11,6 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-  <div class="container p-4">
     <!-- Main content -->
     <section class="content">
 
@@ -157,7 +156,6 @@
         </div>
         <!-- /.row -->
 </section>
-</div>
 </div>
 
 <script>
@@ -461,9 +459,8 @@ function sendremark(){
              url:'/accountant/send_remark/'+m+'/'+s+'/'+to+'/'+from+'/'+n,
              data:{id:status},
              success:function(response){
-               //$('#myModal_acc').modal('toggle');
-              // $("#serr"+service).css('display','none'); 
-               //location.reload();   
+               $('#myModal_acc').modal('toggle');
+               location.reload();   
              },
              error:function(error){
                console.log(error);
@@ -473,9 +470,4 @@ function sendremark(){
 
 }
 </script>
-  
-  
-  
   @endsection
-
-

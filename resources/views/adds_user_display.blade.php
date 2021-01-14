@@ -133,13 +133,12 @@
         <tr>
         <td>name</td>
         <td id="au_status{{$item->au_id}}">
-        @if($item->au_status==1)
+        @if($item->au_status=1)
         <span class="badge badge-success">send</span>
-      @elseif($item->au_status==2)
+      @elseif($item->au_status=2)
         <span class="badge badge-secondary">read</span>
-      @elseif($item->au_status==3)
+      @elseif($item->au_status=3)
         <span class="badge badge-warning">cansel</span>
-      
       @endif
         </td>
         </tr>
