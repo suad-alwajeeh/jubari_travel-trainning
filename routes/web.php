@@ -208,7 +208,9 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
 
  Route::group(['middleware' => ['auth','role:accountant']], function() {
   Route::get('/accountant','accountantController@accountant_view');
+  Route::get('/accountant/accountant_finish_by/{id}','accountantController@accountant_finish_by');
   Route::get('/accountant_review/{id}','accountantController@accountant_review');
+  Route::get('/accountant_review/{id}/{status}','accountantController@accountant_review_with_status');
   Route::get('/accountant_finish/{id}/{user}','accountantController@accountant_finish');
   Route::get('/accountant/ticket/{id}','accountantController@ticket');
   Route::get('/accountant/bus/{id}','accountantController@bus');

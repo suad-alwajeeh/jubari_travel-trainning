@@ -22,14 +22,14 @@
                 <div class='col-4'>
                 <div class='row'>
               <div class='col-6'>
-                <button onclick="add_color('#bbb')" class="btn btn-primary"></button>
-                <button class="btn btn-danger"></button>
-                <button class="btn btn-warning"></button>
+                <button onclick="add_color('007bff38')" class="btn bookmarkb"></button>
+                <button onclick="add_color('ff696978')" class="btn  bookmarkr"></button>
+                <button onclick="add_color('fff25c7d')" class="btn bookmarky"></button>
               </div>
               <div class='col-6'>
-                <button class="btn btn-info"></button>
-                <button class="btn btn-secondary"></button>
-                <button class="btn btn-success"></button>
+                <button onclick="add_color('69ff9082')" class="btn bookmarkg"></button>
+                <button onclick="add_color('ff38ef4f')" class="btn bookmarkp"></button>
+                <button onclick="add_color('fff')" class="btn bookmarkw"></button>
               </div>
               </div>
                 </div>
@@ -62,44 +62,57 @@
                 
     <thead>
       <tr>
-      <th>#</th>
+      <th>
+      <input id="selectall" onclick="return selectall()" type="checkbox">
+      </th>
       <th>id</th>
+      <th>issuedDate</th>
+      <th>issuedBy</th>
         <th>passenger</th>
-        <th>issuedBy</th>
-        <th>issuedDate</th>
         <th>provider</th>
         <th>cost</th>
         <th>c</th>
-        <th>customer</th>
         <th>cost</th>
+        <th>status</th>
         <th>opration</th>
       </tr>
     </thead>
     <tbody>
 
-    @foreach($data as $item)
-    @if($item->bookmark_how==Auth::user()->id)
-      <tr style="background-color:{{$item->bookmark}}" id="serr{{$item->t_id}}" >
+    <?php $i=1;?>
+@forelse($data as $lat)
+          @if($lat->bookmark_how==Auth::user()->id)
+      <tr style="background-color:#{{$lat->bookmark}}" id="serr{{$lat->t_id}}" >
       @else
-      <tr style="" id="serr{{$item->t_id}}" >
+      <tr style="" id="serr{{$lat->t_id}}" >
       @endif
       <td>
-      <input type="checkbox" name="serv[]" class="selectbox" value="{{$item->t_id}}"></td>
-<input type="hidden" name="main_serv" value="{{$item->st_id}}">
+      <input type="checkbox" id="serv" onclick="selectone()" name="su_service" class="selectbox " value="{{$lat->t_id}}"></td>
+<input type="hidden" id="main_serv" value="{{$lat->st_id}}">
     </td>
-      <td>{{$item->t_id}}</td>
-      <td>{{$item->t_pn}}</td>
-      <td>{{$item->u_name}}</td>
-      <td>{{$item->t_idate}}</td>
-      <td>{{$item->s_name}}</td>
-      <td>{{$item->t_pc}}</td>
-      <td>{{$item->cur_n}}</td>
-      <td>{{$item->u_name}}</td>
-      <td>{{$item->cost}}</td>
+    <td><?php echo $i; ?></td>
+    <td>{{$lat->t_idate}}</td>
+    <td>{{$lat->u_name}}</td>
+      <td>{{$lat->t_pn}}</td>
+      <td>{{$lat->s_name}}</td>
+      <td>{{$lat->t_pc}}</td>
+      <td>{{$lat->cur_n}}</td>
+      <td>{{$lat->cost}}</td>
+      <td>
+      @if($lat->s_st==1)
+                      <span class="badge badge-success">ok</span>
+                      @elseif($lat->s_st==2)
+                      <span class="badge badge-info">issue</span>
+                      @elseif($lat->s_st==3)
+                      <span class="badge badge-danger">void</span>
+                      @elseif($lat->s_st==4)
+                      <span class="badge badge-primary">refund</span>
+                      @endif
+                      </td>
         <td>
         <div class="btn-group btn-group-sm">
-        <a type="button" class="btn btn-info"   onclick="display_data('{{$item->t_id}}',{{$item->st_id}})" ><i class="fas fa-eye "></i></a>
-        <a type="button" class="btn btn-success" onclick="bill_num()" ><i class="fas fa-plus ">bill_num</i></a>
+        <a type="button" class="btn btn-outline-info"   onclick="display_data('{{$lat->t_id}}',{{$lat->st_id}})" ><i class="fas fa-eye "></i></a>
+        <a type="button" class="btn btn-outline-success" onclick="bill_num()" ><i class="fas fa-plus ">bill_num</i></a>
 </div>
 <!-- The Modal -->
 <div class="modal fade" id="myModal_acc">
@@ -108,8 +121,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-      <a  type="button" class="btn btn-danger" data-dismiss="modal">ok</a>
-      <a  type="button" class="btn btn-success su_send_remark" onclick="sendremark()">send remark</a>
+      <a  type="button" class="btn btn-outline-success su_send_remark" onclick="sendremark()">send remark</a>
      
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
@@ -135,15 +147,21 @@
       <!-- Modal body -->
       <div class="modal-body" id="details1">
       <input type=number class="form-control mt-2 mb-2" id=bill_num name=bill>
-      <input type=text hidden=hidden value="{{$item->uuser_resiver}}" class="form-control mt-2 mb-2" id=user_resiver name=user_resiver>
-      <input type=text hidden=hidden value="{{$item->s_num}}" class="form-control mt-2 mb-2" id=nummm name=nummm>
-      <a  type="button" onclick="send_bill('{{$item->t_id}}',{{$item->st_id}})" class="btn btn-success" data-dismiss="modal">save</a>
-      <a  type="button" class="btn btn-success" data-dismiss="modal">cansel</a>
+      <input type=text hidden=hidden value="{{$lat->uuser_resiver}}" class="form-control mt-2 mb-2" id=user_resiver name=user_resiver>
+      <input type=text hidden=hidden value="{{$lat->s_num}}" class="form-control mt-2 mb-2" id=nummm name=nummm>
+      <a  type="button" onclick="send_bill('{{$lat->t_id}}',{{$lat->st_id}})" class="btn btn-outline-success" data-dismiss="modal">save</a>
+      <a  type="button" class="btn btn-outline-danger" data-dismiss="modal">cansel</a>
       </div>
    </div>
   </div>
 </div>
-     @endforeach
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
                 </div>
@@ -159,11 +177,35 @@
 </div>
 
 <script>
-function add_color(color){
-  var main =$('serv').val();
-  var serv=$('main_serv').val();
-  alert(main);
+  function selectall() {
+    var checkBox = document.getElementById("selectall");
+    if (checkBox.checked == true){
+   $("input[name='su_service']").prop('checked', true);
+    }
+   else if (checkBox.checked == false){
+   $("input[name='su_service']").prop('checked', false);
+    }
+ }
 
+function selectone() {
+  if (!$(this).prop("checked")) {
+    $("#selectall").prop("checked", false);
+  }
+}
+function add_color(color){
+  var user={{ Auth::user()->id }};
+  var main=$('#main_serv').val();
+  var service_checked=[];
+  $.each($("input[name='su_service']:checked"),function(){
+    service_checked.push($(this).val());
+    $('#serr'+$(this).val()).css('background-color','#'+color);
+    $.ajax({
+     url:'/accountant/add_bookmark/'+main+'/'+$(this).val()+'/'+color+'/'+user,
+       type:'get',
+  success:function(response){
+  }
+  });
+  });
 }
 function bill_num(){
   $('#myModalcus_del').modal('show');
@@ -229,9 +271,27 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
+    var bus ='<input hidden=hidden id=num name=num value='+response[0].bus_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'>';
+    bus +='<input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].bus_id+'>';
+    bus +='<h4 class="modal-title">bus service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    bus +='<tr><td>Issue date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr><tr>';
+    bus +='<td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>passenger_name</td><td>'+response[0].passenger_name+'</td><td class="su_t_h"><input id="passenger_name" oninput=send("passenger_name","'+response[0].passenger_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("passenger_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("passenger_name")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>bus_number</td><td>'+response[0].bus_number+'</td><td class="su_t_h"><input id="bus_number" oninput=send("bus_number","'+response[0].bus_number+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("bus_number")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("bus_number")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>Dep_city</td><td>'+response[0].Dep_city+'</td><td class="su_t_h"><input id="Dep_city" oninput=send("Dep_city","'+response[0].Dep_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("Dep_city")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("Dep_city")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>arr_city</td><td>'+response[0].arr_city+'</td><td class="su_t_h"><input id="arr_city" oninput=send("arr_city","'+response[0].arr_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("arr_city")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("arr_city")><i class="fas fa-trash "></i></button></div></td></tr><tr></tbody></table>';
+    bus +='</div><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    bus +='<td>dep_date</td><td>'+response[0].dep_date+'</td><td class="su_t_h"><input id="dep_date" oninput=send("dep_date","'+response[0].dep_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("dep_date")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("dep_date")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>bus_name</td><td>'+response[0].bus_name+'</td><td class="su_t_h"><input id="bus_name" oninput=send("bus_name","'+response[0].bus_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("bus_name")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("bus_name")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>provider</td><td>'+response[0].supplier_name+'</td><td class="su_t_h"><input id="due_to_supp" oninput=send("due_to_supp","'+response[0].due_to_supp+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("due_to_supp")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("due_to_supp")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>provider_cost</td><td>'+response[0].provider_cost+'</td><td class="su_t_h"><input id="provider_cost" oninput=send("provider_cost","'+response[0].provider_cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("provider_cost")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("provider_cost")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>currancy</td><td>'+response[0].cur_name+'</td><td class="su_t_h"><input id="cur_id"  oninput=send("cur_id","'+response[0].cur_id+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("cur_id")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("cur_id")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>cost</td><td>'+response[0].cost+'</td><td class="su_t_h"><input id="cost" oninput=send("cost","'+response[0].cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("cost")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("cost")><i class="fas fa-trash "></i></button></div></td></tr>';
+    bus +='<tr><td>passnger_currency</td><td>'+response[0].cur_name+' </td><td class="su_t_h"><input id="passnger_currency" oninput=send("passnger_currency","'+response[0].passnger_currency+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("passnger_currency")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("passnger_currency")><i class="fas fa-trash "></i></button></div></td></tr></tbody></table></div></div>';
     $('#myModal_acc').modal('show');
-    $('#details').html('<input hidden=hidden id=num name=num value='+response[0].bus_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].bus_id+'><h4 class="modal-title">bus service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody><tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")>cansel</button></div></td></tr><tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")>cansel</button></div></td></tr><tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")>cansel</button></div></td></tr><tr><td>passenger_name</td><td>'+response[0].passenger_name+'</td><td class="su_t_h"><input id="passenger_name" oninput=send("passenger_name","'+response[0].passenger_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("passenger_name")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("passenger_name")>cansel</button></div></td></tr><tr><td>bus_number</td><td>'+response[0].bus_number+'</td><td class="su_t_h"><input id="bus_number" oninput=send("bus_number","'+response[0].bus_number+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("bus_number")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("bus_number")>cansel</button></div></td></tr><tr><td>Dep_city</td><td>'+response[0].Dep_city+'</td><td class="su_t_h"><input id="Dep_city" oninput=send("Dep_city","'+response[0].Dep_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city")>cansel</button></div></td></tr><tr><td>arr_city</td><td>'+response[0].arr_city+'</td><td class="su_t_h"><input id="arr_city" oninput=send("arr_city","'+response[0].arr_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city")>cansel</button></div></td></tr><tr></tbody></table></div><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody><td>dep_date</td><td>'+response[0].dep_date+'</td><td class="su_t_h"><input id="dep_date" oninput=send("dep_date","'+response[0].dep_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date")>cansel</button></div></td></tr><tr><td>bus_name</td><td>'+response[0].bus_name+'</td><td class="su_t_h"><input id="bus_name" oninput=send("bus_name","'+response[0].bus_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("bus_name")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("bus_name")>cansel</button></div></td></tr><tr><td>provider</td><td>'+response[0].supplier_name+'</td><td class="su_t_h"><input id="due_to_supp" oninput=send("due_to_supp","'+response[0].due_to_supp+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("due_to_supp")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("due_to_supp")>cansel</button></div></td></tr><tr><td>provider_cost</td><td>'+response[0].provider_cost+'</td><td class="su_t_h"><input id="provider_cost" oninput=send("provider_cost","'+response[0].provider_cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("provider_cost")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("provider_cost")>cansel</button></div></td></tr><tr><td>currancy</td><td>'+response[0].cur_name+'</td><td class="su_t_h"><input id="cur_id"  oninput=send("cur_id","'+response[0].cur_id+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("cur_id")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("cur_id")>cansel</button></div></td></tr><tr><td>cost</td><td>'+response[0].cost+'</td><td class="su_t_h"><input id="cost" oninput=send("cost","'+response[0].cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("cost")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("cost")>cansel</button></div></td></tr><tr><td>passnger_currency</td><td>'+response[0].cur_name+' </td><td class="su_t_h"><input id="passnger_currency" oninput=send("passnger_currency","'+response[0].passnger_currency+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("passnger_currency")>add remark</button><button type="button" class="btn btn-dark" onclick=hidden_input("passnger_currency")>cansel</button></div></td></tr></tbody></table></div></div>');
-    console.log(response[0]);
+    $('#details').html(bus);
+        console.log(response[0]);
   }
 }
 });
@@ -311,9 +371,9 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var meed='<input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].gen_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var meed='<input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].med_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
     meed+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
-    meed+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
+    meed+='<tr><td>Issue_by</td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>passenger_name</td><td>'+response[0].passenger_name+'</td><td class="su_t_h"><input id="passenger_name" oninput=send("passenger_name","'+response[0].passenger_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("passenger_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("passenger_name")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>medical_info</td><td>'+response[0].	med_info+'</td><td class="su_t_h"><input id="med_info" oninput=send("med_info","'+response[0].med_info+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("med_info")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("med_info")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -433,10 +493,11 @@ $.ajax({
 function send(col,oldval){
   var newval=$('#'+col).val();
   var status=1;
-
+var oold=oldval.replace(/,/g,'-');
+console.log(oold);
 $.ajax({
              type:'get',
-             url:'/accountant/add_remark/'+col+'/'+oldval+'/'+newval+'/'+status,
+             url:'/accountant/add_remark/'+col+'/'+oold+'/'+newval+'/'+status,
              data:{id:status},
              success:function(response){
                console.log(response);
@@ -460,7 +521,7 @@ function sendremark(){
              data:{id:status},
              success:function(response){
                $('#myModal_acc').modal('toggle');
-               location.reload();   
+               $("#serr"+s).css('display','none');
              },
              error:function(error){
                console.log(error);

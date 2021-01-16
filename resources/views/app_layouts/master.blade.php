@@ -85,7 +85,7 @@
 <script>
 $(document).ready(function(){
   var get_image={{ Auth::user()->id }};
-  
+  //SHOW USER IMAGE AND NAME
   $.ajax({
 url:'/user_profile/'+get_image,
 type:'get',
@@ -103,7 +103,7 @@ success:function(response){
    }
 }
 });
-
+//SHOW USER ADDS
   var user_id= {{ Auth::user()->id }};
 $.ajax({
 url:'/adds_user_display_u/'+user_id,
@@ -121,7 +121,7 @@ success:function(response){
       }
 }
 });
-
+//SHOW NOTIFICATION COUNTER
 var uuser_iid={{ Auth::user()->id }};
   
   $.ajax({
@@ -151,8 +151,26 @@ success:function(response){
                     console.log(k[i].id);
                   }
                   $('#notify_body').prepend(k.body);
-
 });
+   }
+}
+});
+  
+  $.ajax({
+url:'/accountant/accountant_finish_by/'+uuser_iid,
+type:'get',
+dataType:'json',
+success:function(response){
+  if(response.length==0){
+    console.log("not found thing");
+  }else{
+  $.map(response ,function(k,v){
+                  console.log(k.ser);
+                  for(var i in k){
+                    console.log(k[i].ser);
+                  }
+                  $('#so_acc_finish').append('<tr><td><a  href="/accountant_finish/'+k.ser+'/'+k.hab+'"><span class="badge badge-info">'+k.finish+'</span></a></td></tr>');               
+                           });
    }
 }
 });
