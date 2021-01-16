@@ -16,30 +16,44 @@
 
       <div class="container-fluid">
         <div class="row" >
-          <div class="col-12" style="display:">
             <div class="info-box">
-            <div class='row'>
-                <div class='col-4'>
-                <div class='row'>
-              <div class='col-6'>
+          <div class='col-1'>
                 <button onclick="add_color('007bff38')" class="btn bookmarkb"></button>
                 <button onclick="add_color('ff696978')" class="btn  bookmarkr"></button>
                 <button onclick="add_color('fff25c7d')" class="btn bookmarky"></button>
-              </div>
-              <div class='col-6'>
                 <button onclick="add_color('69ff9082')" class="btn bookmarkg"></button>
                 <button onclick="add_color('ff38ef4f')" class="btn bookmarkp"></button>
                 <button onclick="add_color('fff')" class="btn bookmarkw"></button>
-              </div>
-              </div>
+          </div>
+          <div class='col-2'>
+                <div class="form-group">
+                  <label>Multiple111111111111111111</label>
+                  <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                    <option>Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
                 </div>
-                <div class='col-4'>
-              
-             
+                   <div class="form-group">
+                  <label>Minimal</label>
+                  <select class="form-control select2" style="width: 100%;">
+                    <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+                </div>
+                </div>
               </div>
                 </div>
 
-            </div>
             
             </div>
             <!-- /.info-box -->
@@ -53,6 +67,8 @@
                 <h3 class="card-title">
                service name
                 </h3>
+                <a type="button" style="float:right;display:none" class="btn btn-outline-success" id="bill_for_all" onclick="bill_all()" ><i class="fas fa-plus ">add bill number for selected item</i></a>
+
               </div>
               
               <!-- /.card-header -->
@@ -87,6 +103,8 @@
       <tr style="" id="serr{{$lat->t_id}}" >
       @endif
       <td>
+      <input type=text hidden=hidden value="{{$lat->s_num}}" class="form-control mt-2 mb-2" id=nummm_all >
+      <input type=text hidden=hidden value="{{$lat->uuser_resiver}}" class="form-control mt-2 mb-2" id=user_resiver_all >
       <input type="checkbox" id="serv" onclick="selectone()" name="su_service" class="selectbox " value="{{$lat->t_id}}"></td>
 <input type="hidden" id="main_serv" value="{{$lat->st_id}}">
     </td>
@@ -111,8 +129,8 @@
                       </td>
         <td>
         <div class="btn-group btn-group-sm">
-        <a type="button" class="btn btn-outline-info"   onclick="display_data('{{$lat->t_id}}',{{$lat->st_id}})" ><i class="fas fa-eye "></i></a>
-        <a type="button" class="btn btn-outline-success" onclick="bill_num()" ><i class="fas fa-plus ">bill_num</i></a>
+        <a type="button" class="btn btn-outline-info su_all_c"   onclick="display_data('{{$lat->t_id}}',{{$lat->st_id}})" ><i class="fas fa-eye "></i></a>
+        <a type="button" class="btn btn-outline-success su_all_c" onclick="bill_num()" ><i class="fas fa-plus ">bill_num</i></a>
 </div>
 <!-- The Modal -->
 <div class="modal fade" id="myModal_acc">
@@ -142,7 +160,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-     <h4> bill_number</h4>
+     <h4> bill number </h4>
       </div>
       <!-- Modal body -->
       <div class="modal-body" id="details1">
@@ -150,6 +168,22 @@
       <input type=text hidden=hidden value="{{$lat->uuser_resiver}}" class="form-control mt-2 mb-2" id=user_resiver name=user_resiver>
       <input type=text hidden=hidden value="{{$lat->s_num}}" class="form-control mt-2 mb-2" id=nummm name=nummm>
       <a  type="button" onclick="send_bill('{{$lat->t_id}}',{{$lat->st_id}})" class="btn btn-outline-success" data-dismiss="modal">save</a>
+      <a  type="button" class="btn btn-outline-danger" data-dismiss="modal">cansel</a>
+      </div>
+   </div>
+  </div>
+</div>
+<div class="modal fade text-center" id="bill_all">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+     <h4> bill number </h4>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body" id="details1">
+      <input type=number class="form-control mt-2 mb-2" id=bill_num_all name=bill>
+      <a  type="button" onclick="add_bill_for_all()" class="btn btn-outline-success" data-dismiss="modal">save</a>
       <a  type="button" class="btn btn-outline-danger" data-dismiss="modal">cansel</a>
       </div>
    </div>
@@ -180,9 +214,13 @@
   function selectall() {
     var checkBox = document.getElementById("selectall");
     if (checkBox.checked == true){
+      $('.su_all_c').addClass('disabled'); 
+      $('#bill_for_all').css('display','block');
    $("input[name='su_service']").prop('checked', true);
     }
    else if (checkBox.checked == false){
+    $('.su_all_c').removeClass('disabled'); 
+    $('#bill_for_all').css('display','none');
    $("input[name='su_service']").prop('checked', false);
     }
  }
@@ -190,7 +228,28 @@
 function selectone() {
   if (!$(this).prop("checked")) {
     $("#selectall").prop("checked", false);
+    $('.su_all_c').removeClass('disabled'); 
+    $('#bill_for_all').css('display','none');
+
   }
+}
+function add_bill_for_all(){
+  var num=$('#nummm_all').val();
+  var user={{ Auth::user()->id }};
+  var main=$('#main_serv').val();
+  var resiver=$('#user_resiver_all').val();
+  var bill=$('#bill_num_all').val();
+  var service_checked=[];
+  $.each($("input[name='su_service']:checked"),function(){
+    service_checked.push($(this).val());
+    $.ajax({
+     url:'/accountant/bill_num/'+$(this).val()+'/'+main+'/'+bill+'/'+user+'/'+resiver+'/'+num,
+       type:'get',
+  success:function(response){
+    location.reload();
+  }
+  });
+  });
 }
 function add_color(color){
   var user={{ Auth::user()->id }};
@@ -209,6 +268,11 @@ function add_color(color){
 }
 function bill_num(){
   $('#myModalcus_del').modal('show');
+  
+}
+function bill_all(){
+  $('#bill_all').modal('show');
+  
 }
 function send_bill(service,main){
 var bill=$('#bill_num').val();
@@ -219,7 +283,7 @@ $.ajax({
      url:'/accountant/bill_num/'+service+'/'+main+'/'+bill+'/'+user+'/'+reciver+'/'+num,
        type:'get',
   success:function(response){
-    $("#serr"+service).css('display','none');    
+location.reload();
   }
   });
 }
