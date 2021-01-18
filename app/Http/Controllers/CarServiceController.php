@@ -19,6 +19,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 class CarServiceController extends Controller
 {
@@ -30,7 +32,7 @@ public function show_car($id)
 
  $data['car']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
  ->join('currency','currency.cur_id','=','car_services.cur_id')
- ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->paginate(10);
+ ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->orderBy('car_services.created_at','DESC')->paginate(10);
 return view('show_car',$data);
 }  
 public function sent_car($id)
@@ -39,7 +41,7 @@ public function sent_car($id)
 
  $data['car']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
  ->join('currency','currency.cur_id','=','car_services.cur_id')
- ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->paginate(10);
+ ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->orderBy('car_services.created_at','DESC')->paginate(10);
 return view('sent_car',$data);
 } 
 public function hide_car($id){
@@ -102,6 +104,9 @@ public function generate( Request $req)
      
 public function add_car( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $car=new CarService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -155,7 +160,38 @@ public function add_car( Request $req)
     $car->remark=$req->remark;
     $car->service_status=1;
     $car->save();
-    return redirect('/service/show_car/1')->with('seccess','Seccess Data Insert');
+    if( $loged_id==$req->due_to_customer )
+{    return redirect('/service/show_car/1')->with('seccess','Seccess Data Insert');
+}    
+else{
+  $emp=Employee::all();
+  foreach($emp as $emps){
+    if($emps->emp_id==$loged_id)
+   {
+      $name=$emps->emp_first_name.'  ';
+      $name .=$emps->emp_last_name;
+   
+  }
+  }
+ 
+  $message5='<div class=dropdown-divider></div><a onclick=status_notify("Car service",'.$loged_id.','.$req->due_to_customer.') href=/emp_car  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add services Car by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+  $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+  $message=$datav['message'];
+  DB::table('notifications')->insert(
+     ['sender' => $loged_id, 
+     'resiver' => $req->due_to_customer,
+     'body'=>$message ,
+     'status'=>0 ,
+     'main_service'=>3,
+     'servic_id'=>$car_id,
+     'created_at'=>$date,
+     'updated_at'=>$date1,
+     ]
+  );
+  event(new MyEvent($datav));
+  return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+
+}
 }
 
 public function updateCar( Request $req)
@@ -183,7 +219,7 @@ public function updateCar( Request $req)
        'voucher_number'=>$req->voucher_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-      'attachment'=>$img 
+      'attachment'=>$img ,'errorlog'=>0
 
        ]); 
 
@@ -195,7 +231,7 @@ public function updateCar( Request $req)
        'car_status'=>$req->car_status,'car_info'=>$req->car_info,
        'voucher_number'=>$req->voucher_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
-      'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1
+      'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
        ]); 
     }
@@ -225,13 +261,25 @@ public function sendAllcar(Request $request){
    
  }
 }
- 
+public function show_add_emp()
+{
+  $loged_Id=  Auth::user()->id ;
+
+ $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
+ ->join('currency','currency.cur_id','=','car_services.cur_id')
+ ->join('employees','employees.emp_id','=','car_services.due_to_customer')
+ ->where(['car_services.service_status'=>1,'car_services.deleted'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>1])
+ ->orderBy('car_services.created_at','DESC')->paginate(10);
+return view('carError',$data);
+} 
 public function errorCar(){
   $loged_Id=  Auth::user()->id ;
   $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-  ->join('currency','currency.cur_id','=','car_services.cur_id')
+  ->join('currency','currency.cur_id','=','car_services.cur_id') 
+  ->join('employees','employees.emp_id','=','car_services.due_to_customer')
   ->join('logs','logs.service_id','=','car_services.car_id')
-  ->where(['car_services.errorlog'=>1,'car_services.user_status'=>0,'car_services.user_id'=>$loged_Id])->paginate(10);
+  ->where(['car_services.errorlog'=>1,'car_services.user_status'=>0,'logs.status'=>0,'car_services.user_id'=>$loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
+
   
             return view('salesErrorCar',$data);
   }
@@ -243,7 +291,7 @@ public function errorCar(){
 
    $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
    ->join('currency','currency.cur_id','=','car_services.cur_id')
-   ->where(['car_services.deleted'=>0,'car_services.errorlog'=>2,'car_services.user_status'=>1,'car_services.user_id'=> $loged_Id])->paginate(10);
+   ->where(['car_services.deleted'=>0,'car_services.errorlog'=>2,'car_services.user_status'=>1,'car_services.user_id'=> $loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
   return view('reject_car',$data);
   } 
 
@@ -253,7 +301,7 @@ public function errorCar(){
 
     $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
     ->join('currency','currency.cur_id','=','car_services.cur_id')
-    ->where(['car_services.deleted'=>0,'car_services.user_status'=>1,'car_services.errorlog'=>0,'car_services.due_to_customer'=>$loged_Id])->paginate(10);
+    ->where(['car_services.deleted'=>0,'car_services.user_status'=>1,'car_services.errorlog'=>0,'car_services.due_to_customer'=>$loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
 //json_decode
     return view('emp_car',$data);
   }
@@ -263,15 +311,79 @@ public function errorCar(){
 
     $affected= CarService::where(['car_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Accept');
-  }
+    // $message5="";
+    // $date1=date("Y/m/d") ;
+    // $date=now(); 
+    //       $emp=Employee::all();
+    //       foreach($emp as $emps){
+    //         if($emps->emp_id==$loged_id)
+    //        {
+    //           $name=$emps->emp_first_name.'  ';
+    //           $name .=$emps->emp_last_name;
+    //           $customer=$emps->due_to_customer;
+           
+    //       }
+    //     }
+         
+    //       $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Car Service",'.$loged_id.','.$customer.') href=/reject_car  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Car That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+    //       $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+    //       $message=$datav['message'];
+    //       DB::table('notifications')->insert(
+    //          ['sender' => $loged_id, 
+    //          'resiver' => $customer,
+    //          'body'=>$message ,
+    //          'status'=>0 ,
+    //          'main_service'=>3,
+    //          'servic_id'=>$id,
+    //          'created_at'=>$date,
+    //          'updated_at'=>$date1,
+    //          ]
+    //       );
+    //       event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Accept');
+          }
 
   public function ignore($id){
-    $loged_Id=  Auth::user()->id ;
-    $affected= CarService::where(['car_id'=>$id])
+    $loged_id=  Auth::user()->id ;
+  
+    $affected2= CarService::where(['car_id'=>$id])
+    ->get();
+    foreach($affected2 as $aff){     
+        $customer=$aff->due_to_customer; 
+  } 
+     $affected= CarService::where(['car_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Reject');
-  }
+    $message5="";
+    $date1=date("Y/m/d") ;
+    $date=now(); 
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+              $customer=$emps->due_to_customer;
+           
+          }
+        }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject Car Service",'.$loged_id.','.$customer.') href=/reject_car  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services Car That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>3,
+             'servic_id'=>$id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Reject');
+          }
 
 }
 

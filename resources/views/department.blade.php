@@ -34,6 +34,13 @@
       </div><!-- /.container-fluid -->
     </section>
 
+    <div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/department"> Department</a></li>
+=            </ol>
+  </div>
+  </br>
+  </br>
     <!-- Main content -->
      <!--  start add Modal -->
  <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

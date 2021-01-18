@@ -193,8 +193,8 @@ public function show_remark()
     $loged_id=  Auth::user()->id ;
 
  $data['log']=Logs::join('employees','employees.emp_id','=','logs.remarker_id')
- ->join('services','services.ser_id','=','logs.service_id')
- ->where(['status'=>1,'editor_id'=>$loged_id])->get();
+ ->join('services','services.ser_id','=','logs.main_servic_id')
+ ->where(['status'=>3,'editor_id'=>$loged_id])->get();
 
     return view('show_remark',$data);
                 }  

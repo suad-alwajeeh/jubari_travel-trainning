@@ -22,6 +22,60 @@
         @php
 
         $_GLOBALS['admin_link']='
+     
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-ad"></i>
+                <p>
+                    Users
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/user_add" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Add new</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user_display" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Display users</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-ad"></i>
+                <p>
+                    advertisements
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/adds_add" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Add new</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adds_display" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Display advertisements</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/adds_user_display" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>users advertisements</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
         <li class="nav-item">
             <a href="/department" class="nav-link">
                 <i class="fa fa-building-o"></i>
@@ -47,6 +101,36 @@
                     <a href="/employees" class="nav-link">
                         <i class="fas fa-eye nav-icon"></i>
                         <p>Display Employee</p>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                    ROLES
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="/role_add" class="nav-link">
+                        <i class="fas fa-plus-circle nav-icon"></i>
+                        <p>ADD NEW</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/role_display" class="nav-link">
+                        <i class="fas fa-eye nav-icon"></i>
+                        <p>DISPLAY ALL</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/role_user_display" class="nav-link">
+                        <i class="far fa-eye nav-icon"></i>
+                        <p>DISPLAY users roles</p>
                     </a>
                 </li>
 
@@ -125,96 +209,14 @@
 
             </ul>
         </li>
-
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-tasks"></i>
-                <p>
-                    ROLES
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/role_add" class="nav-link">
-                        <i class="fas fa-plus-circle nav-icon"></i>
-                        <p>ADD NEW</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/role_display" class="nav-link">
-                        <i class="fas fa-eye nav-icon"></i>
-                        <p>DISPLAY ALL</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/role_user_display" class="nav-link">
-                        <i class="far fa-eye nav-icon"></i>
-                        <p>DISPLAY users roles</p>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
+      
         <li class="nav-item">
             <a href="/services" class="nav-link">
                 <i class="fas fa-user-cog nav-icon"></i>
                 <p>Service</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-ad"></i>
-                <p>
-                    advertisements
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/adds_add" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Add new</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/adds_display" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Display advertisements</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/adds_user_display" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>users advertisements</p>
-                    </a>
-                </li>
-
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="nav-icon fas fa-ad"></i>
-                <p>
-                    Users
-                    <i class="right fas fa-angle-left"></i>
-                </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="/user_add" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Add new</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/user_display" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Display users</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
+      
         <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-tasks"></i>

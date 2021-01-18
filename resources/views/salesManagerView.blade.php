@@ -22,6 +22,16 @@
         {{ session('failed') }}
     </div>
     @endif
+    
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right ">
+              <li class="breadcrumb-item"><a href="/sales"> Sales Manager</a></li>
+              <li class="breadcrumb-item active">Review Services</li>
+
+            </ol>
+  </div>
+  </br>
+  </br>
   <div class="container p-4">
     <!-- Main content -->
     <section class="content">
@@ -84,21 +94,27 @@
     <thead>
       <tr>
         <th>id</th>
-        <th>passenger</th>
-        <th>issuedBy</th>
-        <th>issuedDate</th>
-        <th>provider</th>
-        <th>provider cost</th>
-        <th>currency</th>
-        <th>customer</th>
-        <th>passenger cost</th>
+        <th>Service Number</th>
+        <th>Passenger Name</th>
+        <th>Employee Name</th>
+        <th>Issue Date</th>
+        <th>Provider Name</th>
+        <th>Provider Cost</th>
+        <th>Provider Currency</th>
+        <th>Passenger Cost</th>
+        <th>Passenger Currency</th>
         <th>opration</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
+    <?php $i=1 ?>
+    @forelse($data as $item)
+
       <tr id="serr{{$item->t_id}}" >
-      <td>{{$item->t_id}}</td>
+      <td>
+                                                        <?php echo $i;?>
+                                                    </td>
+      <td>{{$item->s_num}}</td>
       <td>{{$item->t_pn}}</td>
       <td>{{$item->u_name}}</td>
       <td>{{$item->t_idate}}</td>
@@ -155,7 +171,13 @@
    </div>
   </div>
 </div>
-     @endforeach
+<?php $i++ ?>
+@empty
+                                        <tr>
+                                            <td colspan="10">There is No data 
+                                            <td>
+                                        </tr>
+     @endforelse
     </tbody>
   </table>
                 </div>
@@ -321,7 +343,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var meed='<input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].gen_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var meed='<input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].med_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
     meed+='<tr><td>Issue Date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>Employee Name<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';

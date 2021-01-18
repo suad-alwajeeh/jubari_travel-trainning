@@ -19,6 +19,15 @@
     {{ session('failed') }}
   </div>
   @endif
+                
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right ">
+              <li class="breadcrumb-item"><a href="/services"> Services</a></li>
+
+            </ol>
+  </div>
+  </br>
+  </br>
   <!--  start add Modal -->
   <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

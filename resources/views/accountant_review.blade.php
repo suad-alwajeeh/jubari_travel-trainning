@@ -36,11 +36,11 @@
                 <div class="form-group col-3">
                   <label>status</label>
                   <select onchange="filter_item('service_status','in')" id="service_status" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-                  <option value="1,2,3,4">all</option>
-                  <option value="1">ok</option>
-                  <option value="2">issue</option>
-                  <option value="3">void</option>
-                  <option value="4">refund</option>
+                  <option value="(1,2,3,4)">all</option>
+                  <option value="(1)">ok</option>
+                  <option value="(2)">issue</option>
+                  <option value="(3)">void</option>
+                  <option value="(4)">refund</option>
                   </select>
                 </div>
                    <div class="form-group col-2">

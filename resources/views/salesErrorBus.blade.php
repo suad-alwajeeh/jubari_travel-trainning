@@ -71,7 +71,9 @@
                     </thead>
                     <tbody>
                       <?php $i=1 ?>
-                      @foreach($data as $item)
+                      <tr> </tr>
+                      
+                      @forelse($data as $item)
                       <tr>
                        
                         <input type="hidden" class="id" value="{{$item->bus_id}}">
@@ -79,144 +81,312 @@
                         <td>
                           <?php echo $i;?>
                         </td>
-                        
-                        @foreach(json_decode($item->remark_body) as $model=>$val)
-                       @if($model=='issue_date')
-                        @if($val=='null')
-                         <td> {{ $item->Issue_date}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->Issue_date}}</td>
-                         @endif
-                         @endif
-                         
-                         @if($model=='refernce')
-                        @if($val=='null')
-                         <td> {{ $item->refernce}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->refernce}}</td>
-                         @endif
-                         @endif
+                        <?php
+ $m= (explode("|",$item->remark_body));
+ $mv=[];
+ foreach($m as $mm)
+ {
+   $ss= explode(",",$mm);
+   array_push($mv,$ss); 
+    
+ } 
+?>
 
-                         @if($model=='passenger_name')
-                        @if($val=='null')
-                         <td> {{ $item->passenger_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passenger_name}}</td>
-                         @endif
-                         @endif
+                      <?php
+                         $issue_date=false;
+                       $refernce=false;
+                       $passenger_name=false;
+                       $bus_status=false;
+                       $bus_name=false;
+                       $bus_number=false;
+                       $Dep_city=false;
+                       $arr_city=false;
+                       $dep_date=false;
+                       $due_to_supp=false;
+                       $provider_cost=false;
+                       $provider_cost=false;
+                       $cur_id=false;
+                       $due_to_customer=false;
+                       $passnger_currency=false;
+                       $cost=false;
+                          $x=0;      
+
+                            for( $i=0;$i<sizeof($mv);$i++){
+                        if ($mv[$i][$x]==='Issue_date') {
+                         $issue_date=true;
+                         break;
+                        }
+                        else{
+                          $issue_date=false;
+                        }
+                      }
+                      for( $i=0;$i<sizeof($mv);$i++){
+
+                      if ($mv[$i][$x]==='refernce') {
+                        $refernce=true;
+                        break;
+                       }
+                       else{
+                        $refernce=false;
+                      }
+                      }
+                      for( $i=0;$i<sizeof($mv);$i++){
+
+                     if ($mv[$i][$x]==='passenger_name') {
+                      $passenger_name=true;
+                      break;
+                     }
+                     else{
+                      $passenger_name=false;
+                    }
+                      }
+                      for( $i=0;$i<sizeof($mv);$i++){
+
+                   if ($mv[$i][$x]==='bus_status') {
+                    $bus_status=true;
+                    break;
+                   }
+                   else{
+                    $bus_status=false;
+                  }
+                      }
+                      for( $i=0;$i<sizeof($mv);$i++){
+
+                 if ($mv[$i][$x]==='bus_name') {
+                  $bus_name=true;
+                  break;
+                 }
+                 else{
+                  $bus_name=false;
+                }}
+                for( $i=0;$i<sizeof($mv);$i++){
+
+              if ($mv[$i][$x]==='bus_number') {
+                $bus_number=true;
+                break;
+               }
+               else{
+                $bus_number=false;
+              }}
+              for( $i=0;$i<sizeof($mv);$i++){
+             
+             if ($mv[$i][$x]==='Dep_city') {
+              $Dep_city=true;
+              break;
+             }}
+             for( $i=0;$i<sizeof($mv);$i++){
+          
+           if ($mv[$i][$x]==='arr_city') {
+            $arr_city=true;
+            break;
+           }}
+           for( $i=0;$i<sizeof($mv);$i++){
+        
+         if ($mv[$i][$x]==='dep_date') {
+          $dep_date=true;
+          break;
+         }}
+         for( $i=0;$i<sizeof($mv);$i++){
+      
+       if ($mv[$i][$x]==='due_to_supp') {
+        $due_to_supp=true;
+        break;
+       }}
+    
+       for( $i=0;$i<sizeof($mv);$i++){
+    
+     if ($mv[$i][$x]==='provider_cost') {
+      $provider_cost=true;
+      break;
+     }}
+     for( $i=0;$i<sizeof($mv);$i++){
+
+     if ($mv[$i][$x]==='cur_id') {
+      $cur_id=true;
+      break;
+     }}
+     for( $i=0;$i<sizeof($mv);$i++){
+
+     if ($mv[$i][$x]==='user_id') {
+      $due_to_customer=true;
+      break;
+     }}
+     for( $i=0;$i<sizeof($mv);$i++){
+
+     if ($mv[$i][$x]==='cost') {
+      $cost=true;
+      break;
+     }}
+     for( $i=0;$i<sizeof($mv);$i++){
+
+     if ($mv[$i][$x]==='passnger_currency') {
+      $passnger_currency=true;
+      break;
+     }
+         }
+                      if($issue_date)
+                      echo" <td class='text-red'>  $item->Issue_date</td>";
+                      else
+                      echo"<td>$item->Issue_date</td>";
                        
-
-                         @if($model=='bus_name')
-                        @if($val=='null')
-                         <td> {{ $item->bus_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->bus_name}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='bus_number')
-                        @if($val=='null')
-                         <td> {{ $item->bus_number}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->bus_number}}</td>
-                         @endif
-                         @endif
-                         
-                        @if($model=='bus_status')
-                        @if($val=='null')
-                         <td> OK</td>
-                         @else
-                         <td class="text-red"> OK</td>
-                         @endif
-                         @endif
-
-                         @if($model=='Dep_city')
-                        @if($val=='null')
-                         <td> {{ $item->Dep_city}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->Dep_city}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='arr_city')
-                        @if($val=='null')
-                         <td> {{ $item->arr_city}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->arr_city}}</td>
-                         @endif
-                         @endif
-                         @if($model=='dep_date')
-                        @if($val=='null')
-                         <td> {{ $item->dep_date}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->dep_date}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='due_to_supp')
-                        @if($val=='null')
-                         <td> {{ $item->due_to_supp}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->due_to_supp}}</td>
-                         @endif
-                         @endif
-
-
-                         @if($model=='provider_cost')
-                        @if($val=='null')
-                         <td> {{ $item->provider_cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->provider_cost}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='cur_id')
-                        @if($val=='null')
-                         <td> {{ $item->cur_id}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cur_id}}</td>
-                         @endif
-                         @endif
-
-
-                         @if($model=='due_to_customer')
-                        @if($val=='null')
-                         <td> {{ $item->due_to_customer}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->due_to_customer}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='cost')
-                        @if($val=='null')
-                         <td> {{ $item->cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cost}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='passnger_currency')
-                        @if($val=='null')
-                         <td> {{ $item->passnger_currency}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passnger_currency}}</td>
-                         @endif
-                         @endif
-
-
-  @endforeach
                     
+                      if ($refernce) {
+                        echo" <td class='text-red'>  $item->refernce</td>";
+                       }
+                     else
+                     {
+                       echo"<td>  $item->refernce</td>";
+ 
+                     } 
+
+
+                     if ($passenger_name) {
+                      echo" <td class='text-red'>  $item->passenger_name</td>";
+                     }
+                   else
+                   {
+                     echo"<td> $item->passenger_name</td>";
+
+                   } 
+
+                   if ($bus_status) {
+                     if( $item->bus_status==1)
+                    echo" <td class='text-red'>  OK</td>";
+                    elseif ( $item->bus_status==2)
+                    echo" <td class='text-red'>  Issue</td>";
+                    elseif ( $item->bus_status==3)
+                    echo" <td class='text-red'>  Void</td>";
+                    else
+                    echo" <td class='text-red'>  Refund</td>";
+
+                   }
+                 else
+                 {
+                  if( $item->bus_status==1)
+                  echo" <td >  OK</td>";
+                  elseif ( $item->bus_status==2)
+                  echo" <td >  Issue</td>";
+                  elseif ( $item->bus_status==3)
+                  echo" <td >  Void</td>";
+                  else
+                  echo" <td>  Refund</td>";
+                 } 
+
+                 if ($bus_number) {
+                  echo" <td class='text-red'>  $item->bus_number</td>";
+                 }
+               else
+               {
+                 echo"<td> $item->bus_number</td>";
+               } 
+              
+                   if ($bus_name) {
+                    echo" <td class='text-red'>  $item->bus_name</td>";
+                   }
+                 else
+                 {
+                   echo"<td>  $item->bus_name</td>";
+
+                 } 
+
+              
+
+               if ($Dep_city) {
+                echo" <td class='text-red'> $item->Dep_city</td>";
+               }
+             else
+             {
+               echo"<td>  $item->Dep_city</td>";
+
+             } 
+
+             if ($arr_city) {
+              echo" <td class='text-red'> $item->arr_city</td>";
+             }
+           else
+           {
+             echo"<td> $item->arr_city</td>";
+
+           } 
+           if ($dep_date) {
+            echo" <td class='text-red'>  $item->dep_date</td>";
+           }
+         else
+         {
+           echo"<td>  $item->dep_date</td>";
+
+         } 
+         if ($due_to_supp) {
+          echo" <td class='text-red'> $item->supplier_name</td>";
+         }
+       else
+       {
+         echo"<td> $item->supplier_name</td>";
+
+       } 
+       if ($provider_cost) {
+        echo" <td class='text-red'> $item->provider_cost</td>";
+       }
+     else
+     {
+       echo"<td>  $item->provider_cost</td>";
+
+     } 
+     if ($cur_id) {
+      echo" <td class='text-red'>  $item->cur_name</td>";
+     }
+   else
+   {
+     echo"<td>  $item->cur_name</td>";
+  
+   } 
+
+     if ($due_to_customer) {
+      
+      echo" <td class='text-red'>$item->emp_first_name   $item->emp_last_name</td>";
+     }
+   else
+   {
+     echo"<td> $item->emp_first_name   $item->emp_last_name</td>";
+
+   } 
+
+  
+
+ if ($cost) {
+  echo" <td class='text-red'> $item->cost</td>";
+ }
+else
+{
+ echo"<td> $item->cost</td>";
+
+} 
+if ($passnger_currency) {
+  echo" <td class='text-red'>  $item->passnger_currency</td>";
+ }
+else
+{
+ echo"<td>  $item->passnger_currency</td>";
+
+} 
+                    
+                   
+                     
+                      ?>
+                       
                       
                         <td>
-                          <a class="btn sendbtn btncolor text-white"><i class="fa fa-paper-plane"
-                              aria-hidden="true"></i></a>
-                              <a class="btn btncolor" type="button"
-                            href="{{ url('/sales/update_bus/'.$item->bus_id) }}"><i class="fa fa-pencil-alt"
+                         
+                              <a class="" 
+                            href="{{ url('/sales/up_err_bus/'.$item->bus_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>
-
-                      @endforeach
+@empty
+<tr>
+                                            <td colspan="10">There is No data 
+                  </td>
+                                        </tr>                         @endforelse
                     </tbody>
                   </table>
                 </div>
@@ -234,6 +404,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

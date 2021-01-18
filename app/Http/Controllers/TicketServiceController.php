@@ -19,6 +19,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 
 class TicketServiceController extends Controller
@@ -29,7 +31,7 @@ class TicketServiceController extends Controller
 
  $data['ticket']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
  ->join('currency','currency.cur_id','=','ticket_services.cur_id')
- ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 return view('show_ticket',$data);
 
 
@@ -42,7 +44,7 @@ return view('show_ticket',$data);
 
  $data['ticket']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
  ->join('currency','currency.cur_id','=','ticket_services.cur_id')
- ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 return view('sent_ticket',$data);
 
 
@@ -114,6 +116,9 @@ public function hide_ticket($id){
           
 public function add_ticket( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $ticket=new TicketService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -206,7 +211,38 @@ public function add_ticket( Request $req)
     $ticket->remark=$req->remark;
     $ticket->service_status=1;
     $ticket->save();
-return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
+if( $loged_id==$req->due_to_customer )
+{    
+  return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
+}    else{
+      $emp=Employee::all();
+      foreach($emp as $emps){
+        if($emps->emp_id==$loged_id)
+       {
+          $name=$emps->emp_first_name.'  ';
+          $name .=$emps->emp_last_name;
+       
+      }
+      }
+     
+      $message5='<div class=dropdown-divider></div><a onclick=status_notify("Ticket service",'.$loged_id.','.$req->due_to_customer.') href=/emp_ticket  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add services Ticket by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+      $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+      $message=$datav['message'];
+      DB::table('notifications')->insert(
+         ['sender' => $loged_id, 
+         'resiver' => $req->due_to_customer,
+         'body'=>$message ,
+         'status'=>0 ,
+         'main_service'=>1,
+         'servic_id'=>$tick_id,
+         'created_at'=>$date,
+         'updated_at'=>$date1,
+         ]
+      );
+      event(new MyEvent($datav));
+      return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+    
+    }
 }
 
 public function updateTicket( Request $req)
@@ -274,7 +310,7 @@ $busher='';
        'ticket_number'=>$req->ticket_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>1,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-      'attachment'=>$img ,'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher
+      'attachment'=>$img ,'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher,'errorlog'=>0
 
        ]); 
 
@@ -287,7 +323,7 @@ $busher='';
       'ticket_number'=>$req->ticket_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
      'cost'=>$req->cost,'service_id'=>1,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-     'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher
+     'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher,'errorlog'=>0
 
       ]); 
     }
@@ -325,9 +361,10 @@ public function errorTicket(){
   $loged_Id=  Auth::user()->id ;
             $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
             ->join('currency','currency.cur_id','=','ticket_services.cur_id')
-            ->join('logs','logs.service_id','=','ticket_services.tecket_id')
+  ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
+  ->join('logs','logs.service_id','=','ticket_services.tecket_id')
             ->join('airlines','airlines.id','=','ticket_services.airline_id')
-            ->where(['ticket_services.errorlog'=>1,'ticket_services.user_status'=>0,'ticket_services.user_id'=>$loged_Id])->paginate(10);
+            ->where(['ticket_services.errorlog'=>1,'ticket_services.user_status'=>0,'ticket_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 //json_decode
             return view('salesErrorTicket',$data);
   }
@@ -338,23 +375,97 @@ public function emp_ticket(){
     $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
     ->join('currency','currency.cur_id','=','ticket_services.cur_id')
     ->join('airlines','airlines.id','=','ticket_services.airline_id')
-    ->where(['ticket_services.deleted'=>0,'ticket_services.user_status'=>1,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=>$loged_Id])->paginate(10);
+    ->where(['ticket_services.deleted'=>0,'ticket_services.user_status'=>1,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=>$loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 //json_decode
     return view('emp_ticket',$data);
   }
+  public function show_add_emp()
+  {
+    $loged_Id=  Auth::user()->id ;
 
+   $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
+   ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+   ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
+   ->where(['ticket_services.service_status'=>1,'ticket_services.deleted'=>0,'ticket_services.user_id'=> $loged_Id,'ticket_services.user_status'=>1])
+   ->orderBy('ticket_services.created_at','DESC')->paginate(10);
+  return view('ticketError',$data);
+  } 
   public function accept($id){
     $loged_Id=  Auth::user()->id ;
     $affected= TicketService::where(['tecket_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Accept');
-  }
+    // $message5="";
+    // $date1=date("Y/m/d") ;
+    // $date=now(); 
+    //       $emp=Employee::all();
+    //       foreach($emp as $emps){
+    //         if($emps->emp_id==$loged_id)
+    //        {
+    //           $name=$emps->emp_first_name.'  ';
+    //           $name .=$emps->emp_last_name;
+    //           $customer=$emps->due_to_customer;
+           
+    //       }
+    //     }
+         
+    //       $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Visa Service",'.$loged_id.','.$customer.') href=/reject_ticket  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Ticket That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+    //       $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+    //       $message=$datav['message'];
+    //       DB::table('notifications')->insert(
+    //          ['sender' => $loged_id, 
+    //          'resiver' => $customer,
+    //          'body'=>$message ,
+    //          'status'=>0 ,
+    //          'main_service'=>1,
+    //          'servic_id'=>$id,
+    //          'created_at'=>$date,
+    //          'updated_at'=>$date1,
+    //          ]
+    //       );
+    //       event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Accept');
+          }
   public function ignore($id){
-    $loged_Id=  Auth::user()->id ;
-    $affected= TicketService::where(['tecket_id'=>$id])
+    $loged_id=  Auth::user()->id ;
+  
+    $affected2= TicketService::where(['tecket_id'=>$id])
+    ->get();
+    foreach($affected2 as $aff){     
+        $customer=$aff->due_to_customer; 
+  } 
+      $affected= TicketService::where(['tecket_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Reject');
-  }
+    $message5="";
+    $date1=date("Y/m/d") ;
+    $date=now(); 
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+              $customer=$emps->due_to_customer;
+           
+          }
+        }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject Ticket Service",'.$loged_id.','.$customer.') href=/reject_ticket  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services Ticket That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>1,
+             'servic_id'=>$id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Reject');
+          }
 
   public function reject_ticket()
   {
@@ -362,7 +473,7 @@ public function emp_ticket(){
 
    $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
    ->join('currency','currency.cur_id','=','ticket_services.cur_id')
-   ->where(['ticket_services.deleted'=>0,'ticket_services.errorlog'=>2,'ticket_services.user_status'=>1,'ticket_services.user_id'=> $loged_Id])->paginate(10);
+   ->where(['ticket_services.deleted'=>0,'ticket_services.errorlog'=>2,'ticket_services.user_status'=>1,'ticket_services.user_id'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
   return view('reject_ticket',$data);
   } 
 }

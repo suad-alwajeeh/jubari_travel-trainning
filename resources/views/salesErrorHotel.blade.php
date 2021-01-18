@@ -71,157 +71,341 @@
                     </thead>
                     <tbody>
                       <?php $i=1 ?>
-                      @foreach($data as $item)
+                      @forelse($data as $item)
                       <tr>
                       
                         <td>
                           <?php echo $i;?>
                         </td>
-                        @foreach(json_decode($item->remark_body) as $model=>$val)
-
-@if($model=='issue_date')
-@if($val=='null')
- <td> {{ $item->Issue_date}}</td>
- @else
- <td class="text-red"> {{ $item->Issue_date}}</td>
- @endif
- @endif
- 
- @if($model=='refernce')
-@if($val=='null')
- <td> {{ $item->refernce}}</td>
- @else
- <td class="text-red"> {{ $item->refernce}}</td>
- @endif
- @endif
-
- @if($model=='passenger_name')
-@if($val=='null')
- <td> {{ $item->passenger_name}}</td>
- @else
- <td class="text-red"> {{ $item->passenger_name}}</td>
- @endif
- @endif
-   
-  @if($model=='voucher_number')
-@if($val=='null')
- <td> {{ $item->voucher_number}}</td>
- @else
- <td class="text-red"> {{ $item->voucher_number}}</td>
- @endif
- @endif
- @if($model=='hotel_name')
-@if($val=='null')
- <td> {{ $item->hotel_name}}</td>
- @else
- <td class="text-red"> {{ $item->hotel_name}}</td>
- @endif
- @endif 
-
- @if($model=='country')
-@if($val=='null')
- <td> {{ $item->country}}</td>
- @else
- <td class="text-red"> {{ $item->country}}</td>
- @endif
- @endif
-
-
-  @if($model=='city')
-@if($val=='null')
- <td> {{ $item->city}}</td>
- @else
- <td class="text-red"> {{ $item->city}}</td>
- @endif
- @endif 
-
- @if($model=='check_in')
-@if($val=='null')
- <td> {{ $item->check_in}}</td>
- @else
- <td class="text-red"> {{ $item->check_in}}</td>
- @endif
- @endif 
-
- @if($model=='check_out')
-@if($val=='null')
- <td> {{ $item->check_out}}</td>
- @else
- <td class="text-red"> {{ $item->check_out}}</td>
- @endif
- @endif 
-@if($model=='hotel_status')
-@if($val=='null')
- <td> OK</td>
- @else
- <td class="text-red"> OK</td>
- @endif
- @endif
-                       
-                        @if($model=='due_to_supp')
-                        @if($val=='null')
-                         <td> {{ $item->supplier_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->supplier_name}}</td>
-                         @endif
-                         @endif
-
-
-                         @if($model=='provider_cost')
-                        @if($val=='null')
-                         <td> {{ $item->provider_cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->provider_cost}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='cur_id')
-                        @if($val=='null')
-                         <td> {{ $item->cur_id}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cur_id}}</td>
-                         @endif
-                         @endif
-
-                         
-                         @if($model=='due_to_customer')
-                        @if($val=='null')
-                         <td> {{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @else
-                         <td class="text-red"> {{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='cost')
-                        @if($val=='null')
-                         <td> {{ $item->cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cost}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='passnger_currency')
-                        @if($val=='null')
-                         <td> {{ $item->passnger_currency}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passnger_currency}}</td>
-                         @endif
-                         @endif
-
-
-  @endforeach
+                        <input type="hidden" class="id" value="{{$item->hotel_id}}">
                     
+   
+
+                        <?php
+ $m= (explode("|",$item->remark_body));
+ $mv=[];
+ foreach($m as $mm)
+ {
+   $ss= explode(",",$mm);
+   array_push($mv,$ss); 
+    
+ } 
+
+?>
+
+                          <?php
+                      $issue_date=false;
+                      $refernce=false;
+                      $passenger_name=false;
+                      $hotel_status=false;
+                      $hotel_name=false;
+                      $voucher_number=false;
+                      $country=false;
+                      $city=false;
+                      $check_in=false;
+                      $check_out=false;
+                      $due_to_supp=false;
+                      $provider_cost=false;
+                      $provider_cost=false;
+                      $cur_id=false;
+                      $due_to_customer=false;
+                      $passnger_currency=false;
+                      $cost=false;
+                         $x=0;      
+
+                           for( $i=0;$i<sizeof($mv);$i++){
+                       if ($mv[$i][$x]==='Issue_date') {
+                        $issue_date=true;
+                        break;
+                       }
+                       else{
+                         $issue_date=false;
+                       }
+                     }
+                     for( $i=0;$i<sizeof($mv);$i++){
+
+                     if ($mv[$i][$x]==='refernce') {
+                       $refernce=true;
+                       break;
+                      }
+                      else{
+                       $refernce=false;
+                     }
+                     }
+                     for( $i=0;$i<sizeof($mv);$i++){
+
+                    if ($mv[$i][$x]==='passenger_name') {
+                     $passenger_name=true;
+                     break;
+                    }
+                    else{
+                     $passenger_name=false;
+                   }
+                     }
+                     for( $i=0;$i<sizeof($mv);$i++){
+
+                  if ($mv[$i][$x]==='hotel_status') {
+                   $hotel_status=true;
+                   break;
+                  }
+                  else{
+                   $hotel_status=false;
+                 }
+                     }
+                     for( $i=0;$i<sizeof($mv);$i++){
+
+                if ($mv[$i][$x]==='hotel_name') {
+                 $hotel_name=true;
+                 break;
+                }
+                else{
+                 $hotel_name=false;
+               }}
+               for( $i=0;$i<sizeof($mv);$i++){
+
+             if ($mv[$i][$x]==='voucher_number') {
+               $voucher_number=true;
+               break;
+              }
+              else{
+               $voucher_number=false;
+             }}
+             for( $i=0;$i<sizeof($mv);$i++){
+            
+            if ($mv[$i][$x]==='country') {
+             $country=true;
+             break;
+            }}
+            for( $i=0;$i<sizeof($mv);$i++){
+         
+          if ($mv[$i][$x]==='city') {
+           $city=true;
+           break;
+          }}
+          for( $i=0;$i<sizeof($mv);$i++){
+       
+        if ($mv[$i][$x]==='check_in') {
+         $check_in=true;
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+        if ($mv[$i][$x]==='check_out') {
+          $check_out=true;
+          break;
+         }}
+        for( $i=0;$i<sizeof($mv);$i++){
+     
+      if ($mv[$i][$x]==='due_to_supp') {
+       $due_to_supp=true;
+       break;
+      }}
+   
+      for( $i=0;$i<sizeof($mv);$i++){
+   
+    if ($mv[$i][$x]==='provider_cost') {
+     $provider_cost=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+
+    if ($mv[$i][$x]==='cur_id') {
+     $cur_id=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+
+    if ($mv[$i][$x]==='user_id') {
+     $due_to_customer=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+
+    if ($mv[$i][$x]==='cost') {
+     $cost=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+
+    if ($mv[$i][$x]==='passnger_currency') {
+     $passnger_currency=true;
+     break;
+    }
+        }
+                     if($issue_date)
+                     echo" <td class='text-red'>  $item->Issue_date</td>";
+                     else
+                     echo"<td>$item->Issue_date</td>";
                       
-                        <td>
+                   
+                     if ($refernce) {
+                       echo" <td class='text-red'>  $item->refernce</td>";
+                      }
+                    else
+                    {
+                      echo"<td>  $item->refernce</td>";
+
+                    } 
+
+
+                    if ($passenger_name) {
+                     echo" <td class='text-red'>  $item->passenger_name</td>";
+                    }
+                  else
+                  {
+                    echo"<td> $item->passenger_name</td>";
+
+                  } 
+                  if ($voucher_number) {
+                    echo" <td class='text-red'>  $item->voucher_number</td>";
+                   }
+                 else
+                 {
+                   echo"<td> $item->voucher_number</td>";
+                 } 
+                 
+               
+             
+                  if ($hotel_name) {
+                   echo" <td class='text-red'>  $item->hotel_name</td>";
+                  }
+                else
+                {
+                  echo"<td>  $item->hotel_name</td>";
+
+                } 
+
+             
+
+              if ($country) {
+               echo" <td class='text-red'> $item->country</td>";
+              }
+            else
+            {
+              echo"<td>  $item->country</td>";
+
+            } 
+
+            if ($city) {
+             echo" <td class='text-red'> $item->city</td>";
+            }
+          else
+          {
+            echo"<td> $item->city</td>";
+
+          } 
+          if ($check_in) {
+           echo" <td class='text-red'>  $item->check_in</td>";
+          }
+        else
+        {
+          echo"<td>  $item->check_in</td>";
+
+        } 
+        if ($check_out) {
+          echo" <td class='text-red'>  $item->check_out</td>";
+         }
+       else
+       {
+         echo"<td>  $item->check_out</td>";
+
+       } 
+        if ($hotel_status) {
+          if( $item->hotel_status==1)
+         echo" <td class='text-red'>  OK</td>";
+         elseif ( $item->hotel_status==2)
+         echo" <td class='text-red'>  Issue</td>";
+         elseif ( $item->hotel_status==3)
+         echo" <td class='text-red'>  Void</td>";
+         else
+         echo" <td class='text-red'>  Refund</td>";
+
+        }
+      else
+      {
+       if( $item->hotel_status==1)
+       echo" <td >  OK</td>";
+       elseif ( $item->hotel_status==2)
+       echo" <td >  Issue</td>";
+       elseif ( $item->hotel_status==3)
+       echo" <td >  Void</td>";
+       else
+       echo" <td>  Refund</td>";
+      } 
+
+        if ($due_to_supp) {
+         echo" <td class='text-red'> $item->supplier_name</td>";
+        }
+      else
+      {
+        echo"<td> $item->supplier_name</td>";
+
+      } 
+      if ($provider_cost) {
+       echo" <td class='text-red'> $item->provider_cost</td>";
+      }
+    else
+    {
+      echo"<td>  $item->provider_cost</td>";
+
+    } 
+    if ($cur_id) {
+     echo" <td class='text-red'>  $item->cur_name</td>";
+    }
+  else
+  {
+    echo"<td>  $item->cur_name</td>";
+ 
+  } 
+
+    if ($due_to_customer) {
+     
+     echo" <td class='text-red'>$item->emp_first_name   $item->emp_last_name</td>";
+    }
+  else
+  {
+    echo"<td> $item->emp_first_name   $item->emp_last_name</td>";
+
+  } 
+
+ 
+
+if ($cost) {
+ echo" <td class='text-red'> $item->cost</td>";
+}
+else
+{
+echo"<td> $item->cost</td>";
+
+} 
+if ($passnger_currency) {
+ echo" <td class='text-red'>  $item->passnger_currency</td>";
+}
+else
+{
+echo"<td>  $item->passnger_currency</td>";
+
+} 
+                   
+                  
+                  
+                     
+                      ?>
+
+            <td>
                         
-                              <a class="btn btncolor" type="button"
-                            href="{{ url('/sales/update_hotel/'.$item->hotel_id) }}"><i class="fa fa-pencil-alt"
+                              <a 
+                            href="{{ url('/sales/update_hotel/'.$item->hotel_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>
 
-                      @endforeach
-                    </tbody>
+
+                      @empty
+                        <tr>
+                                            <td colspan="10">There is No data 
+                  </td>
+                                        </tr>   
+                                                             @endforelse                    </tbody>
                   </table>
                 </div>
                 <!-- /.table-responsive -->
@@ -238,6 +422,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

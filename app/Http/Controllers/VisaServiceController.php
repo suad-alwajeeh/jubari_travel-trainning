@@ -19,6 +19,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 
 class VisaServiceController extends Controller
@@ -63,7 +65,7 @@ public function generate( Request $req)
 
          $data['visa']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
          ->join('currency','currency.cur_id','=','visa_services.cur_id')
-         ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->paginate(10);
+         ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
         return view('show_visa',$data);
         } 
         
@@ -74,7 +76,7 @@ public function generate( Request $req)
 
          $data['visa']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
          ->join('currency','currency.cur_id','=','visa_services.cur_id')
-         ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->paginate(10);
+         ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
         return view('sent_visa',$data);
         } 
 
@@ -130,7 +132,7 @@ public function generate( Request $req)
                  'voucher_number'=>$req->voucher_number,
                 'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
                 'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-                'attachment'=>$img 
+                'attachment'=>$img ,'errorlog'=>0
           
                  ]); 
           
@@ -142,7 +144,7 @@ public function generate( Request $req)
                  'visa_status'=>$req->visa_status,'visa_type'=>$req->visa_type,'country'=>$req->country,'visa_info'=>$req->visa_info,
                  'voucher_number'=>$req->voucher_number,
                 'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
-                'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1
+                'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
           
                  ]); 
               }
@@ -152,6 +154,9 @@ public function generate( Request $req)
             
 public function add_visa( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $visa=new VisaService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -204,7 +209,38 @@ public function add_visa( Request $req)
     $visa->remark=$req->remark;
     $visa->service_status=1;
     $visa->save();
-    return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
+    if( $loged_id==$req->due_to_customer )
+    {    
+      return redirect('/service/show_visa/1')->with('seccess','Seccess Data Insert');
+    }    else{
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+           
+          }
+          }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Visa service",'.$loged_id.','.$req->due_to_customer.') href=/emp_visa  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add services Visa by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $req->due_to_customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>6,
+             'servic_id'=>$visa_id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+        
+        }
 }
 public function deleteAllvisa(Request $request){
   $ids = $request->input('ids');
@@ -235,8 +271,9 @@ public function errorVisa(){
   $loged_Id=  Auth::user()->id ;
             $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
             ->join('currency','currency.cur_id','=','visa_services.cur_id')
-            ->join('logs','logs.service_id','=','visa_services.visa_id')
-            ->where(['visa_services.errorlog'=>1,'visa_services.user_status'=>0,'visa_services.user_id'=>$loged_Id])->paginate(10);
+  ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
+  ->join('logs','logs.service_id','=','visa_services.visa_id')
+            ->where(['visa_services.errorlog'=>1,'visa_services.user_status'=>0,'visa_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('visa_services.created_at','DESC')->paginate(10);
 //json_decode
             return view('salesErrorVisa',$data);
   }
@@ -246,23 +283,104 @@ public function emp_visa(){
 
   $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
   ->join('currency','currency.cur_id','=','visa_services.cur_id')
-  ->where(['visa_services.deleted'=>0,'visa_services.user_status'=>1,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=>$loged_Id])->paginate(10);
+  ->where(['visa_services.deleted'=>0,'visa_services.user_status'=>1,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=>$loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 //json_decode
   return view('emp_visa',$data);
 }
+public function show_add_emp()
+{
+  $loged_Id=  Auth::user()->id ;
 
+ $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
+ ->join('currency','currency.cur_id','=','visa_services.cur_id')
+ ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
+ ->where(['visa_services.service_status'=>1,'visa_services.deleted'=>0,'visa_services.user_id'=> $loged_Id,'visa_services.user_status'=>1])
+ ->orderBy('visa_services.created_at','DESC')->paginate(10);
+return view('visaError',$data);
+} 
 public function accept($id){
   $loged_Id=  Auth::user()->id ;
-
+  
+  $affected2= VisaService::where(['visa_id'=>$id])
+  ->get();
+  foreach($affected2 as $aff){     
+      $customer=$aff->due_to_customer; 
+} 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now(); 
+        $emp=Employee::all();
+        foreach($emp as $emps){
+          if($emps->emp_id==$loged_Id)
+         {
+            $name=$emps->emp_first_name.'  ';
+            $name .=$emps->emp_last_name;
+         
+        }
+      }
+       
   $affected= VisaService::where(['bus_id'=>$id])
   ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-  return back()->with('seccess','Seccess Data Accept');
+       
+        $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Visa Service",'.$loged_id.','.$customer.') href=/#  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Visa That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+        $datav=['to'=>$customer,'from'=>$loged_Id,'message'=> $message5,'date'=>$date];
+        $message=$datav['message'];
+        DB::table('notifications')->insert(
+           ['sender' => $loged_Id, 
+           'resiver' => $customer,
+           'body'=>$message ,
+           'status'=>0 ,
+           'main_service'=>6,
+           'servic_id'=>$id,
+           'created_at'=>$date,
+           'updated_at'=>$date1,
+           ]
+        );
+        event(new MyEvent($datav));
+        return back()->with('seccess','Seccess Data Accept');
+      
 }
 public function ignore($id){
-  $loged_Id=  Auth::user()->id ;
+  $loged_id=  Auth::user()->id ;
+  
+  $affected2= VisaService::where(['visa_id'=>$id])
+  ->get();
+  foreach($affected2 as $aff){     
+      $customer=$aff->due_to_customer; 
+} 
   $affected= VisaService::where(['visa_id'=>$id])
   ->update(['errorlog'=>2]);
-  return back()->with('seccess','Seccess Data Reject');
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now(); 
+        $emp=Employee::all();
+        foreach($emp as $emps){
+          if($emps->emp_id==$loged_id)
+         {
+            $name=$emps->emp_first_name.'  ';
+            $name .=$emps->emp_last_name;
+         
+        }
+      }
+       
+        $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject Visa Service",'.$loged_id.','.$customer.') href=/reject_visa  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services Visa That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+        $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+        $message=$datav['message'];
+        DB::table('notifications')->insert(
+           ['sender' => $loged_id, 
+           'resiver' => $customer,
+           'body'=>$message ,
+           'status'=>0 ,
+           'main_service'=>6,
+           'servic_id'=>$id,
+           'created_at'=>$date,
+           'updated_at'=>$date1,
+           ]
+        );
+        event(new MyEvent($datav));
+        return back()->with('seccess','Seccess Data Reject');
+      
+        
 }
 
 
@@ -272,7 +390,7 @@ public function reject_visa()
 
  $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
  ->join('currency','currency.cur_id','=','visa_services.cur_id')
- ->where(['visa_services.deleted'=>0,'visa_services.errorlog'=>2,'visa_services.user_status'=>1,'visa_services.user_id'=> $loged_Id])->paginate(10);
+ ->where(['visa_services.deleted'=>0,'visa_services.errorlog'=>2,'visa_services.user_status'=>1,'visa_services.user_id'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 return view('reject_visa',$data);
 } 
 

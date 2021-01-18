@@ -123,11 +123,11 @@ class dashboard extends Controller
 print_r($req->remark_id);
       $log->remarker_id=$req->remark_id;
       $log->remark_body=$req->remark_body;
-      $log->main_servic_id=$req->bus_id;
-      $log->service_id=$req->service_id;
+      $log->main_servic_id=$req->service_id;
+      $log->service_id=$req->bus_id;
       $log->editor_id=$req->emp_id;
       $log->number=$req->bus_number;
-      $log->status=1;
+      $log->status=3;
       $log->save();
     
     }
@@ -136,12 +136,12 @@ print_r($req->remark_id);
       $log=new Logs;
       $log->remarker_id=$req->ticket_remark_id;
       $log->remark_body=$req->ticket_remark_body;
-      $log->main_servic_id=$req->ticket_id;
-      $log->service_id=$req->ticket_service_id;
+      $log->main_servic_id=$req->ticket_service_id;
+      $log->service_id=$req->ticket_id;
       $log->editor_id=$req->ticket_emp_id;
       $log->number=$req->ticket_number;
 
-      $log->status=1;
+      $log->status=3;
       $log->save();
     
     }
@@ -150,12 +150,12 @@ print_r($req->remark_id);
       $log=new Logs;
       $log->remarker_id=$req->car_remark_id;
       $log->remark_body=$req->car_remark_body;
-      $log->main_servic_id=$req->car_id;
-      $log->service_id=$req->car_service_id;
+      $log->main_servic_id=$req->car_service_id;
+      $log->service_id=$req->car_id;
       $log->editor_id=$req->car_emp_id;
       $log->number=$req->car_voucher_number;
 
-      $log->status=1;
+      $log->status=3;
       $log->save();
     
     }
@@ -163,12 +163,12 @@ print_r($req->remark_id);
       $log=new Logs;
       $log->remarker_id=$req->hotel_remark_id;
       $log->remark_body=$req->hotel_remark_body;
-      $log->main_servic_id=$req->hotel_id;
-      $log->service_id=$req->hotel_service_id;
+      $log->main_servic_id=$req->hotel_service_id;
+      $log->service_id=$req->hotel_id;
       $log->editor_id=$req->hotel_emp_id;
       $log->number=$req->hotel_voucher_number;
 
-      $log->status=1;
+      $log->status=3;
       $log->save();
     
     }
@@ -177,10 +177,10 @@ print_r($req->remark_id);
 print_r($req->remark_id);
       $log->remarker_id=$req->visa_remark_id;
       $log->remark_body=$req->visa_remark_body;
-      $log->main_servic_id=$req->visa_id;
-      $log->service_id=$req->visa_service_id;
+      $log->main_servic_id=$req->visa_service_id;
+      $log->service_id=$req->visa_id;
       $log->editor_id=$req->visa_emp_id;
-      $log->status=1;
+      $log->status=3;
       $log->number=$req->visa_voucher_number;
       $log->save();
     
@@ -190,10 +190,10 @@ print_r($req->remark_id);
       $log=new Logs;
       $log->remarker_id=$req->med_remark_id;
       $log->remark_body=$req->med_remark_body;
-      $log->main_servic_id=$req->med_id;
-      $log->service_id=$req->med_service_id;
+      $log->main_servic_id=$req->med_service_id;
+      $log->service_id=$req->med_id;
       $log->editor_id=$req->med_emp_id;
-      $log->status=1;
+      $log->status=3;
       $log->number=$req->document_number;
 
       $log->save();
@@ -203,12 +203,12 @@ print_r($req->remark_id);
       $log=new Logs;
       $log->remarker_id=$req->gen_remark_id;
       $log->remark_body=$req->gen_remark_body;
-      $log->main_servic_id=$req->gen_id;
-      $log->service_id=$req->gen_service_id;
+      $log->main_servic_id=$req->gen_service_id;
+      $log->service_id=$req->gen_id;
       $log->editor_id=$req->gen_emp_id;
       $log->number=$req->gen_voucher_number;
 
-      $log->status=1;
+      $log->status=3;
       $log->save();
     
     }

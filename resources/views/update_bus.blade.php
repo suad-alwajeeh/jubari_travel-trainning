@@ -6,7 +6,14 @@
     href='https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'>
 <link rel='stylesheet' href='https://unpkg.com/filepond/dist/filepond.min.css'>
 <link rel="stylesheet" href="./style.css">
-
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/show_bus/1">Bus Services</a></li>
+              <li class="breadcrumb-item active">Update Bus Services</li>
+            </ol>
+  </div>
+  </br>
+  </br>
 <div class="content-wrapper">
     <div class="container p-4">
 
@@ -273,7 +280,6 @@
                                     <div id="gallery" />
                                 </div>
                                 @else
-
                                 <div class="images text-center mx-auto">
                                     @foreach(explode(',', $bus->attachment) as $img)
                                     <img class="" src="{{asset('img/user_attchment/'.$img)}}" alt=" ">

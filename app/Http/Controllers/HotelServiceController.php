@@ -18,6 +18,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 class HotelServiceController extends Controller
 {
@@ -98,7 +100,7 @@ public function generate( Request $req)
        'check_in'=>$req->check_in,'check_out'=>$req->check_out,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-      'attachment'=>$img 
+      'attachment'=>$img ,'errorlog'=>0
 
        ]); 
 
@@ -110,7 +112,7 @@ public function generate( Request $req)
        'hotel_status'=>$req->hotel_status,
        'voucher_number'=>$req->voucher_number,'country'=>$req->country,'city'=>$req->city,'hotel_name'=>$req->hotel_name,
        'check_in'=>$req->check_in,'check_out'=>$req->check_out,'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
-      'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1
+      'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
        ]); 
     }
@@ -120,6 +122,9 @@ public function generate( Request $req)
   
 public function add_hotel( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $hotel=new HotelService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -173,7 +178,38 @@ public function add_hotel( Request $req)
     $hotel->remark=$req->remark;
     $hotel->service_status=1;
     $hotel->save();
-    return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Insert');
+    if( $loged_id==$req->due_to_customer )
+    {    
+      return redirect('/service/show_hotel/1')->with('seccess','Seccess Data Insert');
+    }    else{
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+           
+          }
+          }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Hotel service",'.$loged_id.','.$req->due_to_customer.') href=/emp_car  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add services Hotel by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $req->due_to_customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>5,
+             'servic_id'=>$hotel_id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+        
+        }
 }
 
 public function update_Hotel($id){
@@ -194,7 +230,7 @@ public function update_Hotel($id){
 
  $data['hotel']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
  ->join('currency','currency.cur_id','=','hotel_services.cur_id')
- ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 return view('show_hotel',$data);
 }
 
@@ -204,7 +240,7 @@ return view('show_hotel',$data);
 
  $data['hotel']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
  ->join('currency','currency.cur_id','=','hotel_services.cur_id')
- ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 return view('sent_hotel',$data);
 }
 public function deleteAllhotel(Request $request){
@@ -234,43 +270,114 @@ else{
 
 
 
-public function errorHotel(){
-  $loged_Id=  Auth::user()->id ;
-            $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-            ->join('currency','currency.cur_id','=','hotel_services.cur_id')
-            ->join('sup_services','sup_services.sup_id','=','suppliers.s_no')
-            ->join('logs','logs.service_id','=','hotel_services.hotel_id')
-            ->where(['hotel_services.errorlog'=>1,'hotel_services.user_status'=>0,'hotel_services.user_id'=>$loged_Id])->paginate(10);
-//json_decode
-            return view('salesErrorHotel',$data);
-  }
-
-
 
 public function emp_hotel(){
     $loged_Id=  Auth::user()->id ;
 
     $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
     ->join('currency','currency.cur_id','=','hotel_services.cur_id')
-    ->where(['hotel_services.deleted'=>0,'hotel_services.user_status'=>1,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=>$loged_Id])->paginate(10);
+    ->where(['hotel_services.deleted'=>0,'hotel_services.user_status'=>1,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=>$loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 //json_decode
     return view('emp_hotel',$data);
   }
+  public function show_add_emp()
+  {
+    $loged_Id=  Auth::user()->id ;
 
+   $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
+   ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+   ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
+   ->where(['hotel_services.service_status'=>1,'hotel_services.deleted'=>0,'hotel_services.user_id'=> $loged_Id,'hotel_services.user_status'=>1])
+   ->orderBy('hotel_services.created_at','DESC')->paginate(10);
+  return view('hotelError',$data);
+  } 
+  public function errorHotel(){
+    $loged_Id=  Auth::user()->id ;
+    $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
+    ->join('currency','currency.cur_id','=','hotel_services.cur_id') 
+    ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
+    ->join('logs','logs.service_id','=','hotel_services.hotel_id')
+    ->where(['hotel_services.errorlog'=>1,'hotel_services.user_status'=>0,'logs.status'=>0,'hotel_services.user_id'=>$loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
+              return view('salesErrorHotel',$data);
+    }
+  
   public function accept($id){
     $loged_Id=  Auth::user()->id ;
 
     $affected= HotelService::where(['hotel_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Delete');
-  }
+    // $message5="";
+    // $date1=date("Y/m/d") ;
+    // $date=now(); 
+    //       $emp=Employee::all();
+    //       foreach($emp as $emps){
+    //         if($emps->emp_id==$loged_id)
+    //        {
+    //           $name=$emps->emp_first_name.'  ';
+    //           $name .=$emps->emp_last_name;
+    //           $customer=$emps->due_to_customer;
+           
+    //       }
+    //     }
+         
+    //       $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Hotel Service",'.$loged_id.','.$customer.') href=/reject_hotel  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Hotel That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+    //       $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+    //       $message=$datav['message'];
+    //       DB::table('notifications')->insert(
+    //          ['sender' => $loged_id, 
+    //          'resiver' => $customer,
+    //          'body'=>$message ,
+    //          'status'=>0 ,
+    //          'main_service'=>5,
+    //          'servic_id'=>$id,
+    //          'created_at'=>$date,
+    //          'updated_at'=>$date1,
+    //          ]
+    //       );
+    //       event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Accept');
+          }
 
   public function ignore($id){
-    $loged_Id=  Auth::user()->id ;
-    $affected= HotelService::where(['hotel_id'=>$id])
+    $loged_id=  Auth::user()->id ;
+  
+    $affected2= HotelService::where(['hotel_id'=>$id])
+    ->get();
+    foreach($affected2 as $aff){     
+        $customer=$aff->due_to_customer; 
+  }     $affected= HotelService::where(['hotel_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Delete');
-  }
+    $message5="";
+    $date1=date("Y/m/d") ;
+    $date=now(); 
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+              $customer=$emps->due_to_customer;
+           
+          }
+        }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject Hotel Service",'.$loged_id.','.$customer.') href=/reject_hotel  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services Hotel That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>5,
+             'servic_id'=>$id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Reject');
+          }
 
   public function reject_hotel()
   {
@@ -278,7 +385,7 @@ public function emp_hotel(){
 
    $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
    ->join('currency','currency.cur_id','=','hotel_services.cur_id')
-   ->where(['hotel_services.deleted'=>0,'hotel_services.errorlog'=>2,'hotel_services.user_status'=>1,'hotel_services.user_id'=> $loged_Id])->paginate(10);
+   ->where(['hotel_services.deleted'=>0,'hotel_services.errorlog'=>2,'hotel_services.user_status'=>1,'hotel_services.user_id'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
   return view('reject_hotel',$data);
   } 
 }

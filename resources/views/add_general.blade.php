@@ -6,6 +6,15 @@
 <link rel='stylesheet' href='https://unpkg.com/filepond/dist/filepond.min.css'>
 <link rel="stylesheet" href="./style.css">
 
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/show_general/1">General Services</a></li>
+              <li class="breadcrumb-item active">Add General Services</li>
+            </ol>
+  </div>
+  </br>
+  </br>
+ 
 <div class="content-wrapper">
     <div class="container p-4">
 

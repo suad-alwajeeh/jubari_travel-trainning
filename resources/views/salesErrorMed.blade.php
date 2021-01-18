@@ -55,6 +55,7 @@
                         <th>Report Status </th>
                         <th>From city </th>
                         <th>Document Number </th>
+                        <th>Medical Info </th>
                         <th>Supplier</th>
                         <th>Supplier Cost</th>
                         <th>Supplier Cuurency</th>
@@ -66,130 +67,295 @@
                     </thead>
                     <tbody>
                       <?php $i=1 ?>
-                      @foreach($data as $item)
+                      @forelse($data as $item)
                       <tr>
                      <td>
                           <?php echo $i;?>
                         </td>
 
-                        @foreach(json_decode($item->remark_body) as $model=>$val)
-
-@if($model=='issue_date')
-@if($val=='null')
- <td> {{ $item->Issue_date}}</td>
- @else
- <td class="text-red"> {{ $item->Issue_date}}</td>
- @endif
- @endif
- 
- @if($model=='refernce')
-@if($val=='null')
- <td> {{ $item->refernce}}</td>
- @else
- <td class="text-red"> {{ $item->refernce}}</td>
- @endif
- @endif
-
- @if($model=='passenger_name')
-@if($val=='null')
- <td> {{ $item->passenger_name}}</td>
- @else
- <td class="text-red"> {{ $item->passenger_name}}</td>
- @endif
- @endif
-
-  
-@if($model=='report_status')
-@if($val=='null')
- <td> OK</td>
- @else
- <td class="text-red"> OK</td>
- @endif
- @endif
-
- @if($model=='from_city')
-@if($val=='null')
- <td> {{$item->from_city}}</td>
- @else
- <td class="text-red"> {{$item->med_name}}</td>
- @endif
- @endif 
-
-
-  @if($model=='document_number')
-@if($val=='null')
- <td> {{$item->document_number}}</td>
- @else
- <td class="text-red"> {{$item->document_number}}</td>
- @endif
- @endif
-
                   
-                  
-                        @if($model=='due_to_supp')
-                        @if($val=='null')
-                         <td> {{ $item->supplier_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->supplier_name}}</td>
-                         @endif
-                         @endif
+                        <input type="hidden" class="id" value="{{$item->med_id}}">
+
+                        <?php
+ $m= (explode("|",$item->remark_body));
+ $mv=[];
+ foreach($m as $mm)
+ {
+   $ss= explode(",",$mm);
+   array_push($mv,$ss); 
+    
+ } 
+
+?>
+
+                          <?php
+                 $issue_date=false;
+                 $refernce=false;
+                 $passenger_name=false;
+                 $report_status=false;
+                 $from_city=false;
+                 $document_number=false;
+                 $med_info=false;
+                 
+                 $due_to_supp=false;
+                 $provider_cost=false;
+                 $provider_cost=false;
+                 $cur_id=false;
+                 $due_to_customer=false;
+                 $passnger_currency=false;
+                 $cost=false;
+                    $x=0;      
+
+                      for( $i=0;$i<sizeof($mv);$i++){
+                  if ($mv[$i][$x]==='Issue_date') {
+                   $issue_date=true;
+                   break;
+                  }
+                  else{
+                    $issue_date=false;
+                  }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+                if ($mv[$i][$x]==='refernce') {
+                  $refernce=true;
+                  break;
+                 }
+                 else{
+                  $refernce=false;
+                }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+               if ($mv[$i][$x]==='passenger_name') {
+                $passenger_name=true;
+                break;
+               }
+               else{
+                $passenger_name=false;
+              }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+             if ($mv[$i][$x]==='report_status') {
+              $report_status=true;
+              break;
+             }
+             else{
+              $report_status=false;
+            }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+           if ($mv[$i][$x]==='from_city') {
+            $from_city=true;
+            break;
+           }
+           else{
+            $from_city=false;
+          }}
+          for( $i=0;$i<sizeof($mv);$i++){
+
+        if ($mv[$i][$x]==='document_number') {
+          $document_number=true;
+          break;
+         }
+         else{
+          $document_number=false;
+        }}
+       
+        for( $i=0;$i<sizeof($mv);$i++){
+
+          if ($mv[$i][$x]==='med_info') {
+           $med_info=true;
+           break;
+          }}
+        for( $i=0;$i<sizeof($mv);$i++){
+
+ if ($mv[$i][$x]==='due_to_supp') {
+  $due_to_supp=true;
+  break;
+ }}
+
+ for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='provider_cost') {
+$provider_cost=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='cur_id') {
+$cur_id=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='user_id') {
+$due_to_customer=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='cost') {
+$cost=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='passnger_currency') {
+$passnger_currency=true;
+break;
+}
+   }
+                if($issue_date)
+                echo" <td class='text-red'>  $item->Issue_date</td>";
+                else
+                echo"<td>$item->Issue_date</td>";
+                 
+              
+                if ($refernce) {
+                  echo" <td class='text-red'>  $item->refernce</td>";
+                 }
+               else
+               {
+                 echo"<td>  $item->refernce</td>";
+
+               } 
 
 
-                         @if($model=='provider_cost')
-                        @if($val=='null')
-                         <td> {{ $item->provider_cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->provider_cost}}</td>
-                         @endif
-                         @endif
+               if ($passenger_name) {
+                echo" <td class='text-red'>  $item->passenger_name</td>";
+               }
+             else
+             {
+               echo"<td> $item->passenger_name</td>";
 
-                         @if($model=='cur_id')
-                        @if($val=='null')
-                         <td> {{ $item->cur_id}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cur_id}}</td>
-                         @endif
-                         @endif
+             } 
+
+             if ($report_status) {
+               if( $item->report_status==1)
+              echo" <td class='text-red'>  OK</td>";
+              elseif ( $item->report_status==2)
+              echo" <td class='text-red'>  Issue</td>";
+              elseif ( $item->report_status==3)
+              echo" <td class='text-red'>  Void</td>";
+              else
+              echo" <td class='text-red'>  Refund</td>";
+
+             }
+           else
+           {
+            if( $item->report_status==1)
+            echo" <td >  OK</td>";
+            elseif ( $item->report_status==2)
+            echo" <td >  Issue</td>";
+            elseif ( $item->report_status==3)
+            echo" <td >  Void</td>";
+            else
+            echo" <td>  Refund</td>";
+           } 
+
+         
+        
+             if ($from_city) {
+              echo" <td class='text-red'>  $item->from_city</td>";
+             }
+           else
+           {
+             echo"<td>  $item->from_city</td>";
+
+           } 
+           if ($document_number) {
+            echo" <td class='text-red'>  $item->document_number</td>";
+           }
+         else
+         {
+           echo"<td> $item->document_number</td>";
+         } 
+         if ($med_info) {
+          echo" <td class='text-red'>  $item->med_info</td>";
+         }
+       else
+       {
+         echo"<td> $item->med_info</td>";
+       } 
+
+        
+
+   if ($due_to_supp) {
+    echo" <td class='text-red'> $item->supplier_name</td>";
+   }
+ else
+ {
+   echo"<td> $item->supplier_name</td>";
+
+ } 
+ if ($provider_cost) {
+  echo" <td class='text-red'> $item->provider_cost</td>";
+ }
+else
+{
+ echo"<td>  $item->provider_cost</td>";
+
+} 
+if ($cur_id) {
+echo" <td class='text-red'>  $item->cur_name</td>";
+}
+else
+{
+echo"<td>  $item->cur_name</td>";
+
+} 
+
+if ($due_to_customer) {
+
+echo" <td class='text-red'>$item->emp_first_name   $item->emp_last_name</td>";
+}
+else
+{
+echo"<td> $item->emp_first_name   $item->emp_last_name</td>";
+
+} 
 
 
-                         @if($model=='due_to_customer')
-                        @if($val=='null')
-                         <td>{{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @else
-                         <td class="text-red"> {{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @endif
-                         @endif
 
-                         @if($model=='cost')
-                        @if($val=='null')
-                         <td> {{ $item->cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cost}}</td>
-                         @endif
-                         @endif
+if ($cost) {
+echo" <td class='text-red'> $item->cost</td>";
+}
+else
+{
+echo"<td> $item->cost</td>";
 
-                         @if($model=='passnger_currency')
-                        @if($val=='null')
-                         <td> {{ $item->passnger_currency}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passnger_currency}}</td>
-                         @endif
-                         @endif
+} 
+if ($passnger_currency) {
+echo" <td class='text-red'>  $item->passnger_currency</td>";
+}
+else
+{
+echo"<td>  $item->passnger_currency</td>";
+
+} 
+              
+      
+                      ?>
 
 
-  @endforeach
-                    
                       
                         <td>
                         
-                              <a class="btn btncolor" type="button"
-                            href="{{ url('/sales/update_med/'.$item->med_id) }}"><i class="fa fa-pencil-alt"
+                              <a 
+                            href="{{ url('/sales/update_med/'.$item->med_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>
 
-                      @endforeach
-                    </tbody>
+                      @empty
+                        <tr>
+                                            <td colspan="10">There is No data 
+                  </td>
+                                        </tr>   
+                                                             @endforelse                    </tbody>
                   </table>
                 </div>
                 <!-- /.table-responsive -->
@@ -206,6 +372,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

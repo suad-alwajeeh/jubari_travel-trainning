@@ -42,267 +42,448 @@
             aria-labelledby="custom-tabs-four-profile-tab">
             <div class="card">
               <div class="card-header border-transparent">
-             
-              <!-- /.card-header -->
-              <div class="card-body p-0">
-                <div class="table-responsive">
-                  <table class="table m-0">
-                    <thead>
-                      <tr>
-                        <th>ID </th>
-                        <th>Issue Date </th>
-                        <th> Refernce </th>
-                        <th>Passenger Name</th>
-                        <th>Voucher Number </th>
-                        <th>Car Info </th>
-                        <th>Car Status </th>
-                        <th>Dept City </th>
-                        <th> Arr City </th>
-                        <th> Dept Date </th>
-                        <th>Supplier</th>
-                        <th>Supplier Cost</th>
-                        <th>Supplier Cuurency</th>
-                        <th>Employee Name</th>
-                        <th>Passenger Cost </th>
-                        <th>Passenger Currency </th>
-                        <th>Remark</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php $i=1 ?>
-                      @foreach($data as $item)
-                      <tr>
-                        <input type="hidden" class="id" value="{{$item->car_id}}">
-                            <td>
-                          <?php echo $i;?>
-                        </td>
-                        @foreach(json_decode($item->remark_body) as $model=>$val)
 
-                        @if($model=='issue_date')
-                        @if($val=='null')
-                         <td> {{ $item->Issue_date}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->Issue_date}}</td>
-                         @endif
-                         @endif
-                         
-                         @if($model=='refernce')
-                        @if($val=='null')
-                         <td> {{ $item->refernce}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->refernce}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='passenger_name')
-                        @if($val=='null')
-                         <td> {{ $item->passenger_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passenger_name}}</td>
-                         @endif
-                         @endif
-                         @if($model=='car_info')
-                        @if($val=='null')
-                         <td> {{ $item->car_info}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->car_info}}</td>
-                         @endif
-                         @endif   
-                          @if($model=='voucher_number')
-                        @if($val=='null')
-                         <td> {{ $item->voucher_number}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->voucher_number}}</td>
-                         @endif
-                         @endif
-                         
-                        @if($model=='car_status')
-                        @if($val=='null')
-                         <td> OK</td>
-                         @else
-                         <td class="text-red"> OK</td>
-                         @endif
-                         @endif
-                        @if($model=='Dep_city')
-                        @if($val=='null')
-                         <td> {{ $item->Dep_city}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->Dep_city}}</td>
-                         @endif
-                         @endif
-
-                         @if($model=='arr_city')
-                        @if($val=='null')
-                         <td> {{ $item->arr_city}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->arr_city}}</td>
-                         @endif
-                         @endif
-                         @if($model=='dep_date')
-                        @if($val=='null')
-                         <td> {{ $item->dep_date}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->dep_date}}</td>
-                         @endif
-                         @endif
-
-                        @if($model=='due_to_supp')
-                        @if($val=='null')
-                         <td> {{ $item->supplier_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->supplier_name}}</td>
-                         @endif
-                         @endif
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table m-0">
+                      <thead>
+                        <tr>
+                          <th>ID </th>
+                          <th>Issue Date </th>
+                          <th> Refernce </th>
+                          <th>Passenger Name</th>
+                          <th>Car Status </th>
+                          <th>Voucher Number </th>
+                          <th>Car Info </th>
+                          <th>Dept City </th>
+                          <th> Arr City </th>
+                          <th> Dept Date </th>
+                          <th>Supplier</th>
+                          <th>Supplier Cost</th>
+                          <th>Supplier Cuurency</th>
+                          <th>Employee Name</th>
+                          <th>Passenger Cost </th>
+                          <th>Passenger Currency </th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php $i=1 ?>
+                        @forelse($data as $item)
+                        <tr>
+                          <input type="hidden" class="id" value="{{$item->car_id}}">
+                          <td>
+                            <?php echo $i;?>
+                          </td>
 
 
-                         @if($model=='provider_cost')
-                        @if($val=='null')
-                         <td> {{ $item->provider_cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->provider_cost}}</td>
-                         @endif
-                         @endif
+                          <?php
+ $m= (explode("|",$item->remark_body));
+ $mv=[];
+ foreach($m as $mm)
+ {
+   $ss= explode(",",$mm);
+   array_push($mv,$ss); 
+    
+ } 
 
-                         @if($model=='cur_id')
-                         @if($val=='null')
-                         <td> {{ $item->cur_name}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cur_name}}</td>
-                         @endif
-                         @endif
+?>
+
+                          <?php
+                 $issue_date=false;
+                 $refernce=false;
+                 $passenger_name=false;
+                 $car_status=false;
+                 $car_info=false;
+                 $voucher_number=false;
+                 $Dep_city=false;
+                 $arr_city=false;
+                 $dep_date=false;
+                 $due_to_supp=false;
+                 $provider_cost=false;
+                 $provider_cost=false;
+                 $cur_id=false;
+                 $due_to_customer=false;
+                 $passnger_currency=false;
+                 $cost=false;
+                    $x=0;      
+
+                      for( $i=0;$i<sizeof($mv);$i++){
+                  if ($mv[$i][$x]==='Issue_date') {
+                   $issue_date=true;
+                   break;
+                  }
+                  else{
+                    $issue_date=false;
+                  }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+                if ($mv[$i][$x]==='refernce') {
+                  $refernce=true;
+                  break;
+                 }
+                 else{
+                  $refernce=false;
+                }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+               if ($mv[$i][$x]==='passenger_name') {
+                $passenger_name=true;
+                break;
+               }
+               else{
+                $passenger_name=false;
+              }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+             if ($mv[$i][$x]==='car_status') {
+              $car_status=true;
+              break;
+             }
+             else{
+              $car_status=false;
+            }
+                }
+                for( $i=0;$i<sizeof($mv);$i++){
+
+           if ($mv[$i][$x]==='car_info') {
+            $car_info=true;
+            break;
+           }
+           else{
+            $car_info=false;
+          }}
+          for( $i=0;$i<sizeof($mv);$i++){
+
+        if ($mv[$i][$x]==='voucher_number') {
+          $voucher_number=true;
+          break;
+         }
+         else{
+          $voucher_number=false;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+       
+       if ($mv[$i][$x]==='Dep_city') {
+        $Dep_city=true;
+        break;
+       }}
+       for( $i=0;$i<sizeof($mv);$i++){
+    
+     if ($mv[$i][$x]==='arr_city') {
+      $arr_city=true;
+      break;
+     }}
+     for( $i=0;$i<sizeof($mv);$i++){
+  
+   if ($mv[$i][$x]==='dep_date') {
+    $dep_date=true;
+    break;
+   }}
+   for( $i=0;$i<sizeof($mv);$i++){
+
+ if ($mv[$i][$x]==='due_to_supp') {
+  $due_to_supp=true;
+  break;
+ }}
+
+ for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='provider_cost') {
+$provider_cost=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='cur_id') {
+$cur_id=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='due_to_customer') {
+$due_to_customer=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='cost') {
+$cost=true;
+break;
+}}
+for( $i=0;$i<sizeof($mv);$i++){
+
+if ($mv[$i][$x]==='passnger_currency') {
+$passnger_currency=true;
+break;
+}
+   }
+                if($issue_date)
+                echo" <td class='text-red'>  $item->Issue_date</td>";
+                else
+                echo"<td>$item->Issue_date</td>";
+                 
+              
+                if ($refernce) {
+                  echo" <td class='text-red'>  $item->refernce</td>";
+                 }
+               else
+               {
+                 echo"<td>  $item->refernce</td>";
+
+               } 
 
 
-                         @if($model=='due_to_customer')
-                        @if($val=='null')
-                         <td>{{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @else
-                         <td class="text-red"> {{$item->emp_first_name}} {{$item->emp_last_name}}</td>
-                         @endif
-                         @endif
+               if ($passenger_name) {
+                echo" <td class='text-red'>  $item->passenger_name</td>";
+               }
+             else
+             {
+               echo"<td> $item->passenger_name</td>";
 
-                         @if($model=='cost')
-                        @if($val=='null')
-                         <td> {{ $item->cost}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->cost}}</td>
-                         @endif
-                         @endif
+             } 
 
-                         @if($model=='passnger_currency')
-                        @if($val=='null')
-                         <td> {{ $item->passnger_currency}}</td>
-                         @else
-                         <td class="text-red"> {{ $item->passnger_currency}}</td>
-                         @endif
-                         @endif
+             if ($car_status) {
+               if( $item->car_status==1)
+              echo" <td class='text-red'>  OK</td>";
+              elseif ( $item->car_status==2)
+              echo" <td class='text-red'>  Issue</td>";
+              elseif ( $item->car_status==3)
+              echo" <td class='text-red'>  Void</td>";
+              else
+              echo" <td class='text-red'>  Refund</td>";
+
+             }
+           else
+           {
+            if( $item->car_status==1)
+            echo" <td >  OK</td>";
+            elseif ( $item->car_status==2)
+            echo" <td >  Issue</td>";
+            elseif ( $item->car_status==3)
+            echo" <td >  Void</td>";
+            else
+            echo" <td>  Refund</td>";
+           } 
+
+           if ($voucher_number) {
+            echo" <td class='text-red'>  $item->voucher_number</td>";
+           }
+         else
+         {
+           echo"<td> $item->voucher_number</td>";
+         } 
+        
+             if ($car_info) {
+              echo" <td class='text-red'>  $item->car_info</td>";
+             }
+           else
+           {
+             echo"<td>  $item->car_info</td>";
+
+           } 
+
+        
+
+         if ($Dep_city) {
+          echo" <td class='text-red'> $item->Dep_city</td>";
+         }
+       else
+       {
+         echo"<td>  $item->Dep_city</td>";
+
+       } 
+
+       if ($arr_city) {
+        echo" <td class='text-red'> $item->arr_city</td>";
+       }
+     else
+     {
+       echo"<td> $item->arr_city</td>";
+
+     } 
+     if ($dep_date) {
+      echo" <td class='text-red'>  $item->dep_date</td>";
+     }
+   else
+   {
+     echo"<td>  $item->dep_date</td>";
+
+   } 
+   if ($due_to_supp) {
+    echo" <td class='text-red'> $item->supplier_name</td>";
+   }
+ else
+ {
+   echo"<td> $item->supplier_name</td>";
+
+ } 
+ if ($provider_cost) {
+  echo" <td class='text-red'> $item->provider_cost</td>";
+ }
+else
+{
+ echo"<td>  $item->provider_cost</td>";
+
+} 
+if ($cur_id) {
+echo" <td class='text-red'>  $item->cur_name</td>";
+}
+else
+{
+echo"<td>  $item->cur_name</td>";
+
+} 
+
+if ($due_to_customer) {
+
+echo" <td class='text-red'>$item->emp_first_name   $item->emp_last_name</td>";
+}
+else
+{
+echo"<td> $item->emp_first_name   $item->emp_last_name</td>";
+
+} 
 
 
-  @endforeach
-                    
-                      
-                        <td>
-                         
-                              <a class="btn btncolor" type="button"
-                            href="{{ url('/sales/update_car/'.$item->car_id) }}"><i class="fa fa-pencil-alt"
-                              aria-hidden="true"></i></a>                        </td>
-                      </tr>
-                      <?php $i++ ?>
 
-                      @endforeach
-                    </tbody>
-                  </table>
+if ($cost) {
+echo" <td class='text-red'> $item->cost</td>";
+}
+else
+{
+echo"<td> $item->cost</td>";
+
+} 
+if ($passnger_currency) {
+echo" <td class='text-red'>  $item->passnger_currency</td>";
+}
+else
+{
+echo"<td>  $item->passnger_currency</td>";
+
+} 
+          
+                      ?>
+
+
+                          <td>
+
+                            <a 
+                              href="{{ url('/sales/update_car/'.$item->car_id) }}"><i class="fa fa-pencil-alt text-primary"
+                                aria-hidden="true"></i></a>
+                          </td>
+                        </tr>
+                        <?php $i++ ?>
+
+
+                        @empty
+                        <tr>
+                                            <td colspan="10">There is No data 
+                  </td>
+                                        </tr>   
+                                                             @endforelse
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.table-responsive -->
                 </div>
-                <!-- /.table-responsive -->
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer clearfix">
-                {{$data->links()}}
+                <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                  {{$data->links()}}
+                </div>
               </div>
             </div>
-          </div>
 
+          </div>
+          <!-- /.card -->
         </div>
-        <!-- /.card -->
       </div>
     </div>
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<script>
+  <script>
 
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
 
-    $('.sendbtn').click(function (e) {
-      e.preventDefault();
-      var id = $(this).closest("tr").find('.id').val();
-      console.log(id);
+      $('.sendbtn').click(function (e) {
+        e.preventDefault();
+        var id = $(this).closest("tr").find('.id').val();
+        console.log(id);
 
-      //alert(id);
-      swal({
-        title: "Are you sure?",
-        text: "Do you want send this Service!",
-        icon: "success",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            var data = {
-              '_token': $('input[name=_token]').val(),
-              'id': id,
-            };
+        //alert(id);
+        swal({
+          title: "Are you sure?",
+          text: "Do you want send this Service!",
+          icon: "success",
+          buttons: true,
+          dangerMode: true,
+        })
+          .then((willDelete) => {
+            if (willDelete) {
+              var data = {
+                '_token': $('input[name=_token]').val(),
+                'id': id,
+              };
 
-            $.ajax({
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-              type: "GET",
-              url: '/salesManager/car_send/' + id,
-              data: data,
-              success: function (response) {
-                // cartdata=response;
-                //console.log('cartdata');
-                console.log(response[0]);
+              $.ajax({
+                headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "GET",
+                url: '/salesManager/car_send/' + id,
+                data: data,
+                success: function (response) {
+                  // cartdata=response;
+                  //console.log('cartdata');
+                  console.log(response[0]);
 
-                if (response[0] == '<') {
-                  swal("Send Successfully", {
-                    icon: "success",
-                  }).then((willDelete) => {
-                    location.reload();
-                  });
+                  if (response[0] == '<') {
+                    swal("Send Successfully", {
+                      icon: "success",
+                    }).then((willDelete) => {
+                      location.reload();
+                    });
+                  }
+                  else {
+                    swal("upload file before", {
+                      icon: "error",
+                    }).then((willDelete) => {
+                      location.reload();
+                    });
+
+
+                  }
                 }
-                else {
-                  swal("upload file before", {
-                    icon: "error",
-                  }).then((willDelete) => {
-                    location.reload();
-                  });
+              });
+            }
 
 
-                }
-              }
-            });
-          }
+          });
+      });
 
 
-        });
     });
-
-
-  });
-</script>
+  </script>
 
 
 
-@endsection
+  @endsection

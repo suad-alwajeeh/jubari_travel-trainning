@@ -19,6 +19,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 
 class MedicalServiceController extends Controller
@@ -39,7 +41,7 @@ public function show_med($id)
         
  $data['med']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
  ->join('currency','currency.cur_id','=','medical_services.cur_id')
- ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
  return view('show_med',$data);
 } 
 
@@ -49,7 +51,7 @@ public function sent_med($id)
         
  $data['med']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
  ->join('currency','currency.cur_id','=','medical_services.cur_id')
- ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
  return view('sent_med',$data);
 } 
 
@@ -102,6 +104,9 @@ public function update_med($id){
 
 public function add_Medical( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $medical=new MedicalService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -153,7 +158,38 @@ public function add_Medical( Request $req)
     $medical->remark=$req->remark;
     $medical->service_status=1;
     $medical->save();
-    return redirect('/service/show_medical/1')->with('seccess','Seccess Data Insert');
+    if( $loged_id==$req->due_to_customer )
+    {    
+      return redirect('/service/show_medical/1')->with('seccess','Seccess Data Insert');
+    }    else{
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+           
+          }
+          }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Medical service",'.$loged_id.','.$req->due_to_customer.') href=/emp_med  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add Medical General by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $req->due_to_customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>4,
+             'servic_id'=>$med_id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+        
+        }
 }
 
 
@@ -182,7 +218,7 @@ public function updateMed( Request $req)
        'document_number'=>$req->document_number,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>4,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-      'attachment'=>$img 
+      'attachment'=>$img ,'errorlog'=>0
 
        ]); 
 
@@ -194,7 +230,7 @@ public function updateMed( Request $req)
        'report_status'=>$req->report_status,'med_info'=>$req->med_info,
        'document_number'=>$req->document_number,
       'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
-      'cost'=>$req->cost,'service_id'=>4,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1
+      'cost'=>$req->cost,'service_id'=>4,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
        ]); 
     }
@@ -230,9 +266,10 @@ public function sendAllmed(Request $request){
 public function errorMed(){
   $loged_Id=  Auth::user()->id ;
             $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-            ->join('currency','currency.cur_id','=','medical_services.cur_id')
+  ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
+  ->join('currency','currency.cur_id','=','medical_services.cur_id')
             ->join('logs','logs.service_id','=','medical_services.med_id')
-            ->where(['medical_services.errorlog'=>1,'medical_services.user_status'=>0,'medical_services.user_id'=>$loged_Id])->paginate(10);
+            ->where(['medical_services.errorlog'=>1,'medical_services.user_status'=>0,'medical_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('medical_services.created_at','DESC')->paginate(10);
 //json_decode
             return view('salesErrorMed',$data);
   }
@@ -242,25 +279,100 @@ public function errorMed(){
 
     $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
     ->join('currency','currency.cur_id','=','medical_services.cur_id')
-    ->where(['medical_services.deleted'=>0,'medical_services.user_status'=>1,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=>$loged_Id])->paginate(10);
+    ->where(['medical_services.deleted'=>0,'medical_services.user_status'=>1,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=>$loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
 //json_decode
     return view('emp_med',$data);
   }
+  public function show_add_emp()
+  {
+    $loged_Id=  Auth::user()->id ;
+
+   $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
+   ->join('currency','currency.cur_id','=','medical_services.cur_id')
+   ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
+   ->where(['medical_services.service_status'=>1,'medical_services.deleted'=>0,'medical_services.user_id'=> $loged_Id,'medical_services.user_status'=>1])
+   ->orderBy('medical_services.created_at','DESC')->paginate(10);
+  return view('mederror',$data);
+  } 
 
   public function accept($id){
     $loged_Id=  Auth::user()->id ;
 
     $affected= MedicalService::where(['med_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Accept');
-  }
+    // $message5="";
+    // $date1=date("Y/m/d") ;
+    // $date=now(); 
+    //       $emp=Employee::all();
+    //       foreach($emp as $emps){
+    //         if($emps->emp_id==$loged_id)
+    //        {
+    //           $name=$emps->emp_first_name.'  ';
+    //           $name .=$emps->emp_last_name;
+    //           $customer=$emps->due_to_customer;
+           
+    //       }
+    //     }
+         
+    //       $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Medical Service",'.$loged_id.','.$customer.') href=/reject_med  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Medical That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+    //       $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+    //       $message=$datav['message'];
+    //       DB::table('notifications')->insert(
+    //          ['sender' => $loged_id, 
+    //          'resiver' => $customer,
+    //          'body'=>$message ,
+    //          'status'=>0 ,
+    //          'main_service'=>4,
+    //          'servic_id'=>$id,
+    //          'created_at'=>$date,
+    //          'updated_at'=>$date1,
+    //          ]
+    //       );
+    //       event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Accept');
+          }
 
   public function ignore($id){
-    $loged_Id=  Auth::user()->id ;
-    $affected= MedicalService::where(['med_id'=>$id])
+    $loged_id=  Auth::user()->id ;
+  
+    $affected2= CarService::where(['car_id'=>$id])
+    ->get();
+    foreach($affected2 as $aff){     
+        $customer=$aff->due_to_customer; 
+  } 
+      $affected= MedicalService::where(['med_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Reject');
-  }
+    $message5="";
+    $date1=date("Y/m/d") ;
+    $date=now(); 
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+              $customer=$emps->due_to_customer;
+           
+          }
+        }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject Medical Service",'.$loged_id.','.$customer.') href=/reject_med  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services Medical That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>4,
+             'servic_id'=>$id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Reject');
+          }
 
 
   public function reject_med()
@@ -269,7 +381,7 @@ public function errorMed(){
 
    $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
    ->join('currency','currency.cur_id','=','medical_services.cur_id')
-   ->where(['medical_services.deleted'=>0,'medical_services.errorlog'=>2,'medical_services.user_status'=>1,'medical_services.user_id'=> $loged_Id])->paginate(10);
+   ->where(['medical_services.deleted'=>0,'medical_services.errorlog'=>2,'medical_services.user_status'=>1,'medical_services.user_id'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
   return view('reject_med',$data);
   } 
 }

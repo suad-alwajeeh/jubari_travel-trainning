@@ -1,6 +1,13 @@
 @extends('app_layouts.master')
 @section('main_content')
-
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/services"> Services</a></li>
+              <li class="breadcrumb-item active">Update Servces Services</li>
+            </ol>
+  </div>
+  </br>
+  </br>
 <div class="content-wrapper">
   <div class="container p-4">
 

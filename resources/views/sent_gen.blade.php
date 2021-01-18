@@ -28,12 +28,22 @@
         {{ session('failed') }}
     </div>
     @endif
-    <section class="content-header">
+    <section class="content-header bg-white">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1> General Service</h1>
                 </div>
+                         
+<div class="col-6">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/show_general/1"> General</a></li>
+              <li class="breadcrumb-item active">Sent General Services</li>
+
+            </ol>
+  </div>
+  </br>
+  </br>
                 <div class="col-sm-6">
 
                 </div>

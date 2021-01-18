@@ -13,7 +13,7 @@
   
 <div class="col-12">
             <ol class="breadcrumb float-sm-right bg-white">
-              <li class="breadcrumb-item"><a href="/sales"> Sales Manager</a></li>
+              <li class="breadcrumb-item"><a href="/service/sales_repo"> Sales Excutive</a></li>
               <li class="breadcrumb-item active">Finshed Services</li>
 
             </ol>
@@ -90,13 +90,11 @@
         <th>Provider Currency</th>
         <th>Passenger Cost</th>
         <th>Passenger Currency</th>
-        <th>opration</th>>
+        <th>opration</th>
       </tr>
     </thead>
     <tbody>
-    <?php $i=1 ?>
     @forelse($data as $item)
-
       <tr id="serr{{$item->t_id}}" >
       <td>
                                                         <?php echo $i;?>

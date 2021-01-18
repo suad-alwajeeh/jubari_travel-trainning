@@ -3,6 +3,15 @@
 
 
 <!-- Content Wrapper. Contains page content -->
+
+<div class="col-12 ">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item active ">  Services Status</li>
+            </ol>
+  </div>
+  </br>
+  </br>
+ 
 <div class="content-wrapper">
     <div class="container p-4">
         <!-- Main content -->
@@ -1006,7 +1015,7 @@
                 console.log(emp_id);
                 $.ajax({
                     url: "{{url('dashboard/addBusRemark')}}",
-                    data: { bus_id: bus_id, emp_id: emp_id, remark_id: remark_id, remark_body: remark_body, service_id: service_id,bus_number:bus_number },
+                    data: { bus_id:bus_id, emp_id:emp_id, remark_id:remark_id, remark_body: remark_body,service_id: service_id,bus_number:bus_number },
                     success: function (data) {
                         console.log('sec');
                         $('#add').remove();
@@ -1288,7 +1297,7 @@ console.log(gen_id);
 
                 $.ajax({
                     url: "{{url('dashboard/addGenRemark')}}",
-                    data: { gen_id: gen_id, gen_emp_id: gen_emp_id, gen_remark_id: gen_remark_id, gen_remark_body: gen_remark_body, gen_service_id: gen_service_id,gen_voucher_number:gen_voucher_number },
+                    data: { gen_id: gen_id,gen_emp_id: gen_emp_id,gen_remark_id: gen_remark_id, gen_remark_body: gen_remark_body, gen_service_id: gen_service_id,gen_voucher_number:gen_voucher_number },
                     success: function (data) {
                         console.log('sec');
                         $('#add').remove();

@@ -3,6 +3,14 @@
 
 
 <!-- Content Wrapper. Contains page content -->
+
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/sales_repo"> Services</a></li>
+            </ol>
+  </div>
+  </br>
+  </br>
 <div class="content-wrapper">
 <section class="content-header">
         <div class="container-fluid">
@@ -93,9 +101,27 @@
 
                                                     <td> {{ $item->passenger_name}}</td>
 
-                                                    <td> OK</td>
-                                                    <td> {{ $item->voucher_number}}</td>
-                                                    <td> OK</td>
+                                                    @if($gens->offered_status==1)
+                                                <td>OK</td>
+                                                @elseif($gens->offered_status==2)
+                                                <td>Issue</td>
+                                                @elseif($gens->offered_status==3)
+                                                <td>Void</td>
+                                                @elseif($gens->offered_status==4)
+                                                <td>Refund</td>
+                                                @endif
+                                                <td> {{ $item->voucher_number}}</td>
+
+
+                                                @if($gens->service_status==1)
+                                                <td>OK</td>
+                                                @elseif($gens->service_status==2)
+                                                <td>Issue</td>
+                                                @elseif($gens->service_status==3)
+                                                <td>Void</td>
+                                                @elseif($gens->service_status==4)
+                                                <td>Refund</td>
+                                                @endif
                                                     <td> {{ $item->gen_info}}</td>
                                                     <td> {{ $item->supplier_name}}</td>
                                                     <td> {{ $item->provider_cost}}</td>
@@ -105,15 +131,20 @@
                                                     <td> {{ $item->passnger_currency}}</td>
 
                                                     <td>
-                                                        <a class="btn btncolor" type="button"
+                                                        <a class="m-2" 
                                                             href="{{ url('/service/update_gen/'.$item->gen_id) }}"><i
-                                                                class="fa fa-pencil-alt" aria-hidden="true"></i></a>
-                                                        <a type="button" class="btn  deletebtn btncolor text-white"><i
-                                                                class="fas fa-trash "></i></a>
+                                                                class="fa fa-pencil-alt text-primary" aria-hidden="true"></i></a>
+                                                        <a type="button" class="m-2  deletebtn  "><i
+                                                                class="fas fa-trash text-danger "></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php $i++ ?>
-                                                @endforeach
+                                                @empty
+                                        <tr>
+                                            <td colspan="10">There is No data 
+                                            <td>
+                                        </tr>
+                                        @endforelse
 
                                             </tbody>
                                         </table>

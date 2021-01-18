@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Content Wrapper. Contains page content -->
+  
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/employees"> Employee</a></li>
+            </ol>
+  </div>
+  </br>
+  </br>
   <div class="content-wrapper" >
     <!-- Content Header (Page header) -->
    

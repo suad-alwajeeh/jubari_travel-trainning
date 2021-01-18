@@ -3,6 +3,14 @@
 
 
 <!-- Content Wrapper. Contains page content -->
+
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/sales_repo"> Services</a></li>
+            </ol>
+  </div>
+  </br>
+  </br>
 <div class="content-wrapper">
 <section class="content-header">
         <div class="container-fluid">
@@ -82,7 +90,7 @@
                                             </thead>
                                             <tbody>
                                                 <?php $i=1 ?>
-                                                @foreach($data as $item)
+                                                @forelse($data as $item)
                                                 <tr>
                                                     <input type="hidden" class="id" value="{{$item->car_id}}">
                                                     <td>
@@ -93,7 +101,15 @@
                                                     <td> {{ $item->passenger_name}}</td>
                                                     <td> {{ $item->car_info}}</td>
                                                     <td> {{ $item->voucher_number}}</td>
-                                                    <td> OK</td>
+                                                    @if($cars->car_status==1)
+                                                <td>OK</td>
+                                                @elseif($cars->car_status==2)
+                                                <td>Issue</td>
+                                                @elseif($cars->car_status==3)
+                                                <td>Void</td>
+                                                @elseif($cars->car_status==4)
+                                                <td>Refund</td>
+                                                @endif
                                                     <td> {{ $item->Dep_city}}</td>
                                                     <td> {{ $item->arr_city}}</td>
                                                     <td> {{ $item->dep_date}}</td>
@@ -109,15 +125,20 @@
 
 
                                                     <td>
-                                                        <a class="btn btncolor" type="button"
+                                                        <a class="m-2" 
                                                             href="{{ url('/service/update_car/'.$item->car_id) }}"><i
-                                                                class="fa fa-pencil-alt" aria-hidden="true"></i></a>
-                                                        <a type="button" class="btn  deletebtn btncolor text-white"><i
-                                                                class="fas fa-trash "></i></a>
+                                                                class="fa fa-pencil-alt text-primary" aria-hidden="true"></i></a>
+                                                        <a class="m-2  deletebtn  "><i
+                                                                class="fas fa-trash text-danger"></i></a>
                                                     </td>
                                                 </tr>
                                                 <?php $i++ ?>
-                                                @endforeach
+                                                @empty
+                                        <tr>
+                                            <td colspan="10">There is No data 
+                                            <td>
+                                        </tr>
+                                        @endforelse
 
                                             </tbody>
                                         </table>

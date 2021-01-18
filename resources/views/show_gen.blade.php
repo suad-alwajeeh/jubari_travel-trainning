@@ -34,6 +34,16 @@
                 <div class="col-sm-6">
                     <h1> General Service</h1>
                 </div>
+                                           
+<div class="col-6">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/service/sales_repo"> Services</a></li>
+              <li class="breadcrumb-item active"> General Services</li>
+
+            </ol>
+  </div>
+  </br>
+  </br>
                 <div class="col-sm-6">
 
                 </div>

@@ -24,7 +24,7 @@ class EmployeeController extends Controller
       $where +=['departments.deleted'=>0];
       $where +=['departments.is_active'=>1];
       $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
-      ->where($where,1)->orderBy('emp_id','DESC')->get();
+      ->where($where)->orderBy('emp_id','DESC')->get();
             return view('employees',$data);
        }
     public function Activate(){

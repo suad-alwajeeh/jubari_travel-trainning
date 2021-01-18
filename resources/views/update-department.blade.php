@@ -2,7 +2,14 @@
 @section('main_content')
 
 
-
+<div class="col-12">
+            <ol class="breadcrumb float-sm-right bg-white">
+              <li class="breadcrumb-item"><a href="/department">Department</a></li>
+              <li class="breadcrumb-item active">Update Department </li>
+            </ol>
+  </div>
+  </br>
+  </br>
 <div class="container">
 
    

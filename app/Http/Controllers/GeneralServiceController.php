@@ -19,6 +19,8 @@ use App\GeneralService;
 use App\User;
 use App\users;
 use Auth;
+use App\Events\MyEvent;
+use App\Events\Notification;
 use Illuminate\Support\Facades\DB;
 class GeneralServiceController extends Controller
 {
@@ -36,7 +38,7 @@ public function show_gen($id)
 
  $data['gen']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
  ->join('currency','currency.cur_id','=','general_services.cur_id')
- ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('show_gen',$data);
 }  
 
@@ -46,7 +48,7 @@ public function sent_gen($id)
 
  $data['gen']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
  ->join('currency','currency.cur_id','=','general_services.cur_id')
- ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->paginate(10);
+ ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('sent_gen',$data);
 } 
 public function hide_gen($id){
@@ -104,6 +106,9 @@ public function hide_gen($id){
           
 public function add_service( Request $req)
 { 
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
     $general=new GeneralService;
     $data = random_bytes(16);
     $data[6] = chr(ord($data[6]) & 0x0f | 0x40); 
@@ -157,7 +162,37 @@ public function add_service( Request $req)
     $general->busher_time=$req->busher_time;
     $general->service_status=1;
     $general->save();
-    return redirect('/service/show_general/1')->with('seccess','Seccess Data Insert');
+    if( $loged_id==$req->due_to_customer )
+{    return redirect('/service/show_general/1')->with('seccess','Seccess Data Insert');
+}    else{
+      $emp=Employee::all();
+      foreach($emp as $emps){
+        if($emps->emp_id==$loged_id)
+       {
+          $name=$emps->emp_first_name.'  ';
+          $name .=$emps->emp_last_name;
+       
+      }
+      }
+     
+      $message5='<div class=dropdown-divider></div><a onclick=status_notify("General service",'.$loged_id.','.$req->due_to_customer.') href=/emp_gen  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add services General by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+      $datav=['to'=>$req->due_to_customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+      $message=$datav['message'];
+      DB::table('notifications')->insert(
+         ['sender' => $loged_id, 
+         'resiver' => $req->due_to_customer,
+         'body'=>$message ,
+         'status'=>0 ,
+         'main_service'=>7,
+         'servic_id'=>$gen_id,
+         'created_at'=>$date,
+         'updated_at'=>$date1,
+         ]
+      );
+      event(new MyEvent($datav));
+      return redirect('/service/sent_bus/2')->with('seccess','Seccess Data Insert');
+    
+    }
 }
 
 
@@ -186,7 +221,7 @@ public function add_service( Request $req)
          'voucher_number'=>$req->voucher_number,'general_status'=>$req->general_status ,
         'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
         'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
-        'attachment'=>$img 
+        'attachment'=>$img ,'errorlog'=>0
   
          ]); 
   
@@ -198,7 +233,7 @@ public function add_service( Request $req)
         'offered_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
         'voucher_number'=>$req->voucher_number,'general_status'=>$req->general_status ,
        'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
-       'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1
+       'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
  
         ]); 
       }
@@ -228,12 +263,25 @@ public function add_service( Request $req)
      
    }
 }
+
+public function show_add_emp()
+{
+  $loged_Id=  Auth::user()->id ;
+
+ $data['data']=CarService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
+ ->join('currency','currency.cur_id','=','general_services.cur_id')
+ ->join('employees','employees.emp_id','=','general_services.due_to_customer')
+ ->where(['general_services.service_status'=>1,'general_services.deleted'=>0,'general_services.user_id'=> $loged_Id,'general_services.user_status'=>1])
+ ->orderBy('general_services.created_at','DESC')->paginate(10);
+return view('genError',$data);
+} 
 public function errorGen(){
   $loged_Id=  Auth::user()->id ;
             $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
             ->join('currency','currency.cur_id','=','general_services.cur_id')
+            ->join('employees','employees.emp_id','=','general_services.due_to_customer')
             ->join('logs','logs.service_id','=','general_services.gen_id')
-            ->where(['general_services.errorlog'=>1,'general_services.user_status'=>0,'general_services.user_id'=>$loged_Id])->paginate(10);
+            ->where(['general_services.errorlog'=>1,'general_services.user_status'=>0,'general_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('general_services.created_at','DESC')->paginate(10);
              return view('salesErrorGen',$data);
   }
 
@@ -242,7 +290,7 @@ public function errorGen(){
 
     $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
     ->join('currency','currency.cur_id','=','general_services.cur_id')
-    ->where(['general_services.deleted'=>0,'general_services.user_status'=>1,'general_services.errorlog'=>0,'general_services.due_to_customer'=>$loged_Id])->paginate(10);
+    ->where(['general_services.deleted'=>0,'general_services.user_status'=>1,'general_services.errorlog'=>0,'general_services.due_to_customer'=>$loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
     return view('emp_gen',$data);
   }
 
@@ -251,14 +299,78 @@ public function errorGen(){
 
     $affected= GeneralService::where(['gen_id'=>$id])
     ->update(['user_id'=>$loged_Id,'user_status'=>0]);
-    return back()->with('seccess','Seccess Data Accept');
-  }
+    // $message5="";
+    // $date1=date("Y/m/d") ;
+    // $date=now(); 
+    //       $emp=Employee::all();
+    //       foreach($emp as $emps){
+    //         if($emps->emp_id==$loged_id)
+    //        {
+    //           $name=$emps->emp_first_name.'  ';
+    //           $name .=$emps->emp_last_name;
+    //           $customer=$emps->due_to_customer;
+           
+    //       }
+    //     }
+         
+    //       $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept General Service",'.$loged_id.','.$customer.') href=/reject_gen  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services General That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+    //       $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+    //       $message=$datav['message'];
+    //       DB::table('notifications')->insert(
+    //          ['sender' => $loged_id, 
+    //          'resiver' => $customer,
+    //          'body'=>$message ,
+    //          'status'=>0 ,
+    //          'main_service'=>7,
+    //          'servic_id'=>$id,
+    //          'created_at'=>$date,
+    //          'updated_at'=>$date1,
+    //          ]
+    //       );
+    //       event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Accept');
+          }
   public function ignore($id){
-    $loged_Id= Auth::user()->id ;
+    $loged_id=  Auth::user()->id ;
+  
+   $affected2= GeneralService::where(['gen_id'=>$id])
+   ->get();
+   foreach($affected2 as $aff){     
+       $customer=$aff->due_to_customer; 
+ }
     $affected= GeneralService::where(['gen_id'=>$id])
     ->update(['errorlog'=>2]);
-    return back()->with('seccess','Seccess Data Reject');
-  }
+    $message5="";
+    $date1=date("Y/m/d") ;
+    $date=now(); 
+          $emp=Employee::all();
+          foreach($emp as $emps){
+            if($emps->emp_id==$loged_id)
+           {
+              $name=$emps->emp_first_name.'  ';
+              $name .=$emps->emp_last_name;
+              $customer=$emps->due_to_customer;
+           
+          }
+        }
+         
+          $message5='<div class=dropdown-divider></div><a onclick=status_notify("Reject General Service",'.$loged_id.','.$customer.') href=/reject_gen  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Reject services General That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+          $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+          $message=$datav['message'];
+          DB::table('notifications')->insert(
+             ['sender' => $loged_id, 
+             'resiver' => $customer,
+             'body'=>$message ,
+             'status'=>0 ,
+             'main_service'=>7,
+             'servic_id'=>$id,
+             'created_at'=>$date,
+             'updated_at'=>$date1,
+             ]
+          );
+          event(new MyEvent($datav));
+          return back()->with('seccess','Seccess Data Reject');
+          }
 
   public function reject_gen()
   {
@@ -266,7 +378,7 @@ public function errorGen(){
 
    $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
    ->join('currency','currency.cur_id','=','general_services.cur_id')
-   ->where(['general_services.deleted'=>0,'general_services.errorlog'=>2,'general_services.user_status'=>1,'general_services.user_id'=> $loged_Id])->paginate(10);
+   ->where(['general_services.deleted'=>0,'general_services.errorlog'=>2,'general_services.user_status'=>1,'general_services.user_id'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
   return view('reject_gen',$data);
   } 
 }
