@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 class BusServiceController extends Controller
 {
     //
+/**********************show  services  *******************/
 
     public function show_bus($id)
     {
@@ -36,6 +37,8 @@ class BusServiceController extends Controller
      ->where(['bus_services.service_status'=>$id,'bus_services.deleted'=>0,'bus_services.errorlog'=>0,'bus_services.due_to_customer'=> $loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
     return view('show_bus',$data);
     } 
+/**********************show sent services  *******************/
+
  public function sent_bus($id)
     {
       $loged_Id=  Auth::user()->id ;
@@ -46,12 +49,15 @@ class BusServiceController extends Controller
     return view('sent_bus',$data);
     } 
 
+/**********************generate bus number *******************/
 
 public function generate( Request $req)
 {
   $id=DB::table('bus_services')->latest()->first();
   return json_decode($id->bus_number+1);
 }
+/**********************show  services add to other by me  *******************/
+
     public function show_add_emp()
     {
       $loged_Id=  Auth::user()->id ;
@@ -63,8 +69,9 @@ public function generate( Request $req)
      ->orderBy('bus_services.created_at','DESC')->paginate(10);
     return view('Buserror',$data);
     } 
+/**********************show add bus services  *******************/
+
     public function bus(){
-      $data['airline']=Airline::where('is_active',1)->get();
       $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
       ->join('services','services.ser_id','=','sup_services.service_id')
       ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'sup_services.service_id'=>2])->get();
@@ -74,6 +81,7 @@ public function generate( Request $req)
           return view('add_bus',$data);
       } 
 
+/**********************add bus services  *******************/
       
 public function add_bus( Request $req)
 { 
@@ -137,7 +145,52 @@ public function add_bus( Request $req)
     $bus->save();
    
     if( $loged_id==$req->due_to_customer )
-{    
+{   
+  
+   
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now();
+  $manager=User::join('role_user','role_user.user_id','=','users.id')
+  ->join('roles','roles.id','=','role_user.role_id')
+  ->where('roles.id',2)->get();
+
+
+
+  
+  foreach($manager as $aff){     
+      $customer_id=$aff->user_id; 
+      $customer=$aff->user_name; 
+} 
+  
+  $message5="";
+  $date1=date("Y/m/d") ;
+  $date=now(); 
+        $emp=Employee::all();
+        foreach($emp as $emps){
+          if($emps->emp_id==$loged_id)
+         {
+            $name=$emps->emp_first_name.'  ';
+            $name .=$emps->emp_last_name;
+         
+        }
+      }
+       
+        $message5='<div class=dropdown-divider></div><a onclick=status_notify("Add Visa Service",'.$loged_id.','.$customer_id.') href=/remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add New Services Visa  <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+        $datav=['to'=>$customer_id,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+        $message=$datav['message'];
+        DB::table('notifications')->insert(
+           ['sender' => $loged_id, 
+           'resiver' => $customer_id,
+           'body'=>$message ,
+           'status'=>0 ,
+           'main_service'=>2,
+           'servic_id'=>$bus_id,
+           'created_at'=>$date,
+           'updated_at'=>$date1,
+           ]
+        );
+        event(new MyEvent($datav));
   return redirect('/service/show_bus/1')->with('seccess','Seccess Data Insert');
 } 
 else{
@@ -170,6 +223,8 @@ else{
 
 }
  }
+/**********************updste busservices  *******************/
+
 public function updateBus( Request $req)
 { 
     $bus=new BusService;
@@ -214,6 +269,7 @@ public function updateBus( Request $req)
     return redirect('/service/show_bus/1')->with('seccess','Seccess Data Update');
   }
 
+/**********************update bus error services  *******************/
 
   public function updateBus2( Request $req)
 { 
@@ -228,9 +284,10 @@ public function updateBus( Request $req)
      'errorlog'=>0
 
        ]); 
-return $req;
-   // return redirect('/service/show_bus/1')->with('seccess','Seccess Data Update');
+    return redirect('/service/show_bus/1')->with('seccess','Seccess Data Update');
   }
+/**********************show update bus  services  page *******************/
+
     public function update_Bus($id){
       $data['airline']=Airline::where('is_active',1)->get();
           $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
@@ -245,6 +302,7 @@ return $req;
        
           return view('update_bus',$data);
       } 
+/**********************send singel services  *******************/
 
     public function send_bus($id){
         echo $id;
@@ -266,6 +324,7 @@ return $req;
        
      }
         }
+/**********************delete services  *******************/
 
     public function hide_bus($id){
         echo $id;
@@ -275,12 +334,16 @@ return $req;
         return back()->with('seccess','Seccess Data Delete');
     
         }
+/**********************delete multi service services  *******************/
+
         public function deleteAllbus(Request $request){
           $ids = $request->input('ids');
           $dbs = BusService::where('bus_id',$ids)
           ->update(['deleted'=>1]);
           return back()->with('seccess','Seccess Data Delete');
         }
+/**********************send multi services  *******************/
+
       public function sendAllbus(Request $request){
         $ids = $request->input('ids');
         $where=['bus_id'=>$ids];
@@ -299,6 +362,8 @@ return $req;
          
        }
     }
+/**********************show error bus  services  page *******************/
+
     public function errorBus(){
       $loged_Id=  Auth::user()->id ;
                 $data=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
@@ -319,16 +384,21 @@ return $req;
                
                 return view('salesErrorBus',['data'=>$data,'err'=>$mv]);
       }
+/**********************show update bus error services  *******************/
+
       public function update_Bus2($id){
             $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppliers.s_no')
             ->join('services','services.ser_id','=','sup_services.service_id')
             ->where(['suppliers.is_active'=>1,'suppliers.is_deleted'=>0,'services.ser_id'=>2])->get();
            
            
-            $data['emp']=Employee::where('is_active',1)->where('deleted',0)->get();      
-            $data['data']=BusService::join('currency','currency.cur_id','=','bus_services.cur_id')
+            $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
+            ->where('users.is_active',1)->where('users.is_delete',0)
+            ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
+             $data['data']=BusService::join('currency','currency.cur_id','=','bus_services.cur_id')
             ->join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-            ->join('logs','logs.service_id','=','bus_services.bus_id')
+            ->join('employees','employees.emp_id','=','bus_services.due_to_customer')
+              ->join('logs','logs.service_id','=','bus_services.bus_id')
             ->where('bus_services.bus_id',$id)->get();
             foreach( $data['data'] as $aff){     
               $sup=$aff->due_to_supp;
@@ -349,41 +419,46 @@ return $req;
   //json_decode
           return view('emp_bus',$data);
         }
+/**********************accept bus   services   add by other *******************/
         
         public function accept($id){
           $loged_id=  Auth::user()->id ;
-          // $custo=BusService::where(['bus_id'=>$id])->get();
-          // $customer=$custo->due_to_customer;
-
+          $affected2= BusService::where(['bus_id'=>$id])
+          ->get();
+          foreach($affected2 as $aff){     
+              $customer=$aff->due_to_customer; 
+        } 
+          $message5="";
+          $date1=date("Y/m/d") ;
+          $date=now(); 
+                $emp=Employee::all();
+                foreach($emp as $emps){
+                  if($emps->emp_id==$loged_id)
+                 {
+                    $name=$emps->emp_first_name.'  ';
+                    $name .=$emps->emp_last_name;
+                 
+                }
+              }
+               
           $affected= BusService::where(['bus_id'=>$id])
           ->update(['user_id'=>$loged_id,'user_status'=>0,'errorlog'=>4]);
-        //   $message5="";
-        //   $date1=date("Y/m/d") ;
-        //   $date=now(); 
-        //         $emp=Employee::all();
-        //         foreach($emp as $emps){
-        //           if($emps->emp_id==$loged_id)
-        //          {
-        //             $name=$emps->emp_first_name.'  ';
-        //             $name .=$emps->emp_last_name;                 
-        //         }
-        //       }
-               
-        //         $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Bus Service",'.$loged_id.','.$customer.') href=/reject_bus  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Bus That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
-        //         $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
-        //         $message=$datav['message'];
-        //         DB::table('notifications')->insert(
-        //            ['sender' =>$loged_id, 
-        //            'resiver' =>$customer,
-        //            'body'=>$message ,
-        //            'status'=>0 ,
-        //            'main_service'=>2,
-        //            'servic_id'=>$id,
-        //            'created_at'=>$date,
-        //            'updated_at'=>$date1,
-        //            ]
-        //         );
-        //         event(new MyEvent($datav));
+    
+                $message5='<div class=dropdown-divider></div><a onclick=status_notify("Accept Bus Service",'.$loged_id.','.$customer.') href=/#  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Accept services Bus That Added by you <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+                $datav=['to'=>$customer,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
+                $message=$datav['message'];
+                DB::table('notifications')->insert(
+                   ['sender' =>$loged_id, 
+                   'resiver' =>$customer,
+                   'body'=>$message ,
+                   'status'=>0 ,
+                   'main_service'=>2,
+                   'servic_id'=>$id,
+                   'created_at'=>$date,
+                   'updated_at'=>$date1,
+                   ]
+                );
+                event(new MyEvent($datav));
                return back()->with('seccess','Seccess Data Accept');
                       }
   
@@ -425,6 +500,7 @@ return $req;
                 event(new MyEvent($datav));
                 return back()->with('seccess','Seccess Data Reject');
                       }
+                      /****************show reject services****************** */
         public function reject_bus()
         {
           $loged_Id=  Auth::user()->id ;

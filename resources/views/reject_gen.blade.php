@@ -113,13 +113,13 @@
                                                 <td> {{ $item->voucher_number}}</td>
 
 
-                                                @if($gens->service_status==1)
+                                                @if($gens->general_status==1)
                                                 <td>OK</td>
-                                                @elseif($gens->service_status==2)
+                                                @elseif($gens->general_status==2)
                                                 <td>Issue</td>
-                                                @elseif($gens->service_status==3)
+                                                @elseif($gens->general_status==3)
                                                 <td>Void</td>
-                                                @elseif($gens->service_status==4)
+                                                @elseif($gens->general_status==4)
                                                 <td>Refund</td>
                                                 @endif
                                                     <td> {{ $item->gen_info}}</td>
