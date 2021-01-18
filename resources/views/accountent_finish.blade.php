@@ -19,37 +19,7 @@
         <div class="row" >
           <div class="col-12" style="display:none">
             <div class="info-box">
-            <div class='row'>
-                <div class='col-4'>
-                <div class='row'>
-              <div class='col-6'>
-                <button class="btn btn-primary"></button>
-                <button class="btn btn-danger"></button>
-                <button class="btn btn-warning"></button>
-              </div>
-              <div class='col-6'>
-                <button class="btn btn-info"></button>
-                <button class="btn btn-secondary"></button>
-                <button class="btn btn-success"></button>
-              </div>
-              </div>
-                </div>
-                <div class='col-4'>
-                <div class='row'>
-              <div class='col-6'>
-                <button class="btn btn-primary"></button>
-                <button class="btn btn-danger"></button>
-                <button class="btn btn-warning"></button>
-              </div>
-              <div class='col-6'>
-                <button class="btn btn-info"></button>
-                <button class="btn btn-secondary"></button>
-                <button class="btn btn-success"></button>
-              </div>
-              </div>
-                </div>
-
-            </div>
+           
             
             </div>
             <!-- /.info-box -->
@@ -57,7 +27,7 @@
           <!-- /.col -->
           <div class="col-12">
 
-            <!-- TABLE: LATEST ORDERS -->
+            <!-- TABLE: itemEST ORDERS -->
             <div class="card">
               <div class="card-header border-transparent">
                 <h3 class="card-title">service name</h3>
@@ -70,32 +40,59 @@
                 
     <thead>
       <tr>
-      <th>servic_num</th>
-      <th>bill_num</th>
-        <th>passenger</th>
-        <th>issuedBy</th>
-        <th>issuedDate</th>
+      <th>id</th>
+      <th>type</th>
+      <th>bill num</th>
+      <th>issue date</th>
+      <th>issue by</th>
+      <th>passenger</th>
         <th>provider</th>
-        <th>cost</th>
         <th>c</th>
         <th>cost</th>
-        <th>customer</th>
+        <th>status</th>
         <th>opration</th>
       </tr>
     </thead>
     <tbody>
-    @foreach($data as $item)
-      <tr id="serr{{$item->t_id}}" >
-      <td>{{$item->s_num}}</td>
+    <?php $i=1;?>
+@forelse($data as $item)
+   <tr id="serr{{$item->t_id}}" >
+   <td><?php echo $i;?></td>
+   <td>
+                      @if($item->st_id==1)
+                      Ticket
+                      @elseif($item->st_id==2)
+                      Bus
+                      @elseif($item->st_id==3)
+                      Car	
+                      @elseif($item->st_id==4)
+                      Medical
+                      @elseif($item->st_id==5)
+                      Hotel	
+                      @elseif($item->st_id==6)
+                      Visa	
+                      @elseif($item->st_id==7)
+                      General	
+                      @endif
+                      </td>
       <td>{{$item->bill}}</td>
-      <td>{{$item->t_pn}}</td>
-      <td>{{$item->u_name}}</td>
       <td>{{$item->t_idate}}</td>
+      <td>{{$item->u_name}}</td>
+      <td>{{$item->t_pn}}</td>
       <td>{{$item->s_name}}</td>
-      <td>{{$item->t_pc}}</td>
       <td>{{$item->cur_n}}</td>
       <td>{{$item->cost}}</td>
-      <td>{{$item->u_name}}</td>
+      <td>
+       @if($item->s_st==1)
+                      <span class="badge badge-success">ok</span>
+                      @elseif($item->s_st==2)
+                      <span class="badge badge-info">issue</span>
+                      @elseif($item->s_st==3)
+                      <span class="badge badge-danger">void</span>
+                      @elseif($item->s_st==4)
+                      <span class="badge badge-primary">refund</span>
+                      @endif
+                      </td>
         <td>
         <div class="btn-group btn-group-sm">
         <a type="button" class="btn btn-info"   onclick="display_data('{{$item->t_id}}',{{$item->st_id}})" ><i class="fas fa-eye "></i></a>
@@ -121,7 +118,13 @@
         </td>
       </tr>
    
-     @endforeach
+      <?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
     </tbody>
   </table>
                 </div>

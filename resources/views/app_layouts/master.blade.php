@@ -162,15 +162,10 @@ type:'get',
 dataType:'json',
 success:function(response){
   if(response.length==0){
-    console.log("not found thing");
+    console.log("hhhhhhhhhhhhhhhhhh");
   }else{
-  $.map(response ,function(k,v){
-                  console.log(k.ser);
-                  for(var i in k){
-                    console.log(k[i].ser);
-                  }
-                  $('#so_acc_finish').append('<tr><td><a  href="/accountant_finish/'+k.ser+'/'+k.hab+'"><span class="badge badge-info">'+k.finish+'</span></a></td></tr>');               
-                           });
+    console.log("hhhhhhhhhhhhhhhhhuuuuuuuuuuuuuuuuuuuuuuuhhhhhhhh");
+        $('#so_acc_finish').html('<tr><td><a  href="/accountant_finish/1/'+uuser_iid+'"><span class="badge badge-info">'+response[0].ticket+'</span></a></td></tr><tr><td><a  href="/accountant_finish/2/'+uuser_iid+'"><span class="badge badge-info">'+response[0].bus+'</span></a></td></tr><tr><td><a  href="/accountant_finish/3/'+uuser_iid+'"><span class="badge badge-info">'+response[0].car+'</span></a></td></tr><tr><td><a  href="/accountant_finish/5/'+uuser_iid+'"><span class="badge badge-info">'+response[0].hotel+'</span></a></td></tr><tr><td><a  href="/accountant_finish/6/'+uuser_iid+'"><span class="badge badge-info">'+response[0].visa+'</span></a></td></tr><tr><td><a  href="/accountant_finish/4/'+uuser_iid+'"><span class="badge badge-info">'+response[0].medical+'</span></a></td></tr><tr><td><a  href="/accountant_finish/7/'+uuser_iid+'"><span class="badge badge-info">'+response[0].g+'</span></a></td></tr>');               
    }
 }
 });

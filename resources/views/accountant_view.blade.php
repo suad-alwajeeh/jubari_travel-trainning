@@ -155,6 +155,7 @@
             <div class="card card-info shadow">
               <div class="card-header">
                 <h3 class="card-title">Services review with status</h3>
+                <a class="btn btn-outline-light" style="float:right" href="/accountant_review"><i class="fa fa-eye"></i></a>
                 <div class="card-tools">
                 </div>
               </div>
@@ -581,7 +582,9 @@
            <div class="col-md-2">
             <div class="card card-info shadow">
               <div class="card-header">
-                <h3 class="card-title">Finished</h3>
+                <h3 class="card-title">Finished </h3>
+                <a class="btn btn-outline-light" style="float:right" href="/accountant/accountant_finish_all/{{ Auth::user()->id }}"><i class="fa fa-eye"></i></a>
+
                 <div class="card-tools">
                 </div>
               </div>

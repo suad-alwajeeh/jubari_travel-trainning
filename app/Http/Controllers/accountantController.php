@@ -23,6 +23,10 @@ if(isset($_SESSION['remark'])){
 }else{
     $_SESSION['remark']=array();    
 }
+if(isset($_SESSION['filter'])){
+}else{
+    $_SESSION['filter']=array();    
+}
 class accountantController extends Controller
 {
     public function accountant_view()
@@ -137,10 +141,74 @@ class accountantController extends Controller
                                          'vis1'=>$affectedv,'vis2'=>$affectedv1,'vis3'=>$affectedtv2,'vis4'=>$affectedtv3,'vis5'=>$affectedtv4,'vis6'=>$affectedtv5,
                                          'latest'=>$onlyl ]);
     }
+    public function accountant_review_all(){
+         $affected1=['id'=>'all service status'];
+         $affected=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM ticket_services 
+         JOIN users on ticket_services.user_id=users.id
+          JOIN currency on ticket_services.cur_id=currency.cur_id
+          JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3 
+           UNION 
+               SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM general_services
+          JOIN users on general_services.user_id=users.id
+          JOIN currency on general_services.cur_id=currency.cur_id
+          JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
+           WHERE service_status = 3
+           UNION 
+         SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM bus_services
+           JOIN users on bus_services.user_id=users.id
+          JOIN currency on bus_services.cur_id=currency.cur_id
+          JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3 
+           UNION 
+         SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM hotel_services 
+          
+           JOIN users on hotel_services.user_id=users.id
+          JOIN currency on hotel_services.cur_id=currency.cur_id
+          JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3
+           UNION 
+         SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM visa_services
+           JOIN users on visa_services.user_id=users.id
+          JOIN currency on visa_services.cur_id=currency.cur_id
+          JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3 
+           UNION 
+         SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM medical_services 
+           JOIN users on medical_services.user_id=users.id
+          JOIN currency on medical_services.cur_id=currency.cur_id
+          JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3 
+           UNION 
+         SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+          ,service_status as s_st FROM car_services
+          JOIN users on car_services.user_id=users.id
+          JOIN currency on car_services.cur_id=currency.cur_id
+          JOIN suppliers on car_services.due_to_supp=suppliers.s_no
+           WHERE service_status = 3 ');
+                   $affected3 =DB::select('select * from services WHERE services.is_active=1 and services.deleted=0');
+                   $affected4 =DB::select('SELECT * FROM suppliers WHERE suppliers.is_active=1 and suppliers.is_deleted=0');
+                   $affected5=DB::select('select ru.user_id as u_id ,GROUP_CONCAT(r.name) as roless,u.name as u_name 
+                   FROM role_user as ru 
+                   INNER JOIN roles as r on ru.role_id=r.id 
+                   INNER JOIN users as u on ru.user_id=u.id
+                   where ru.role_id in (2,3) and u.is_delete=0 and u.is_active=1 
+                   GROUP BY ru.user_id');
+                   $affected6 =DB::select('select * from currency where currency.is_active=1 ');
+    
+        return view('accountant_review',['data'=>$affected,'data1'=>$affected1,'data3'=>$affected3,'data4'=>$affected4,'data5'=>$affected5,'data6'=>$affected6]);      
+    
+       
+    }
     
     public function accountant_review($id)
-    { 
-        if($id=='ticket'){
+    { if($id=='ticket'){
  //ticket
  $affected =TicketService::where('service_status',3)
  ->join('currency','ticket_services.cur_id','currency.cur_id')
@@ -155,7 +223,7 @@ class accountantController extends Controller
  'ticket_services.user_id as uuser_resiver' ,
  'ticket_services.passenger_name as t_pn',
  'ticket_services.refernce as t_ref',
- 'ticket_services.provider_cost as t_pc' ,
+ 'ticket_services.provider_cost as tp_c' ,
  'suppliers.supplier_name as s_name',
  'users.name as u_name',
  'currency.cur_name as cur_n',
@@ -163,7 +231,7 @@ class accountantController extends Controller
  'ticket_services.how_add_bookmark as bookmark_how',
  'ticket_services.cost as cost',
  'ticket_services.Issue_date as t_idate') 
- ->paginate(10);
+ ->paginate(25);
  $affected1=['id'=>'ticket'];
     }elseif($id=='bus'){
         //bus
@@ -177,7 +245,7 @@ class accountantController extends Controller
          'bus_services.service_id as st_id' ,
          'service_status as s_st',
         'bus_services.refernce as t_ref',
-        'bus_services.provider_cost as t_pc' ,
+        'bus_services.provider_cost as tp_c' ,
         'suppliers.supplier_name as s_name',
         'users.name as u_name',
         'bus_services.bus_number as s_num' ,
@@ -187,7 +255,7 @@ class accountantController extends Controller
         'bus_services.how_add_bookmark as bookmark_how',
         'bus_services.user_id as uuser_resiver' ,
         'bus_services.Issue_date as t_idate') 
-        ->paginate(10);
+        ->paginate(25);
         
            }elseif($id=='car'){
     //car
@@ -201,7 +269,7 @@ class accountantController extends Controller
     'service_status as s_st',
      'car_services.service_id as st_id' ,
     'car_services.refernce as t_ref',
-    'car_services.provider_cost as t_pc' ,
+    'car_services.provider_cost as tp_c' ,
     'suppliers.supplier_name as s_name',
     'users.name as u_name',
     'currency.cur_name as cur_n',
@@ -211,7 +279,7 @@ class accountantController extends Controller
     'car_services.how_add_bookmark as bookmark_how',
     'car_services.voucher_number as s_num' ,
     'car_services.Issue_date as t_idate') 
-    ->paginate(10);            
+    ->paginate(25);            
 }elseif($id=='general'){
                   $affected1=['id'=>'general'];
                   $affected =GeneralService::where('service_status',3)
@@ -222,7 +290,7 @@ class accountantController extends Controller
                   'general_services.passenger_name as t_pn',
                   'general_services.service_id as st_id' ,
                   'general_services.refernce as t_ref',
-                  'general_services.provider_cost as t_pc' ,
+                  'general_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'general_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -233,7 +301,7 @@ class accountantController extends Controller
                   'general_services.user_id as uuser_resiver' ,
                   'general_services.cost as cost',
                   'general_services.Issue_date as t_idate') 
-                  ->paginate(10);  
+                  ->paginate(25);  
                }elseif($id=='hotel'){
                   $affected1=['id'=>'hotel'];
                   $affected =HotelService::where('service_status',3)
@@ -244,7 +312,7 @@ class accountantController extends Controller
                   'hotel_services.passenger_name as t_pn',
                   'hotel_services.service_id as st_id' ,
                   'hotel_services.refernce as t_ref',
-                  'hotel_services.provider_cost as t_pc' ,
+                  'hotel_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'users.name as u_name',
                   'service_status as s_st',
@@ -255,7 +323,7 @@ class accountantController extends Controller
                   'hotel_services.how_add_bookmark as bookmark_how',
                   'hotel_services.user_id as uuser_resiver' ,
                   'hotel_services.Issue_date as t_idate') 
-                  ->paginate(10); 
+                  ->paginate(25); 
                }elseif($id=='visa'){
                   $affected1=['id'=>'visa'];
                   $affected =VisaService::where('service_status',3)
@@ -266,7 +334,7 @@ class accountantController extends Controller
                   'visa_services.passenger_name as t_pn',
                   'visa_services.service_id as st_id' ,
                   'visa_services.refernce as t_ref',
-                  'visa_services.provider_cost as t_pc' ,
+                  'visa_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'visa_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -277,7 +345,7 @@ class accountantController extends Controller
                   'visa_services.how_add_bookmark as bookmark_how',
                   'visa_services.user_id as uuser_resiver' ,
                   'visa_services.Issue_date as t_idate') 
-                  ->paginate(10); 
+                  ->paginate(25); 
                }elseif($id=='medical'){
                   $affected1=['namme'=>'medical'];
                   $affected =MedicalService::where('service_status',3)
@@ -290,7 +358,7 @@ class accountantController extends Controller
                   'service_status as s_st',
                   'medical_services.user_id as uuser_resiver' ,
                   'medical_services.refernce as t_ref',
-                  'medical_services.provider_cost as t_pc' ,
+                  'medical_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'users.name as u_name',
                   'currency.cur_name as cur_n',
@@ -299,9 +367,19 @@ class accountantController extends Controller
                   'medical_services.how_add_bookmark as bookmark_how',
                   'medical_services.document_number as s_num' ,
                   'medical_services.Issue_date as t_idate') 
-                  ->paginate(10);                 
+                  ->paginate(25);                 
                }
-    return view('accountant_review',['data'=>$affected,'data1'=>$affected1]);      
+               $affected3 =DB::select('select * from services WHERE services.is_active=1 and services.deleted=0');
+               $affected4 =DB::select('SELECT * FROM suppliers WHERE suppliers.is_active=1 and suppliers.is_deleted=0');
+               $affected5=DB::select('select ru.user_id as u_id ,GROUP_CONCAT(r.name) as roless,u.name as u_name 
+               FROM role_user as ru 
+               INNER JOIN roles as r on ru.role_id=r.id 
+               INNER JOIN users as u on ru.user_id=u.id
+               where ru.role_id in (2,3) and u.is_delete=0 and u.is_active=1 
+               GROUP BY ru.user_id');
+               $affected6 =DB::select('select * from currency where currency.is_active=1 ');
+
+    return view('accountant_review',['data'=>$affected,'data1'=>$affected1,'data3'=>$affected3,'data4'=>$affected4,'data5'=>$affected5,'data6'=>$affected6]);      
 
     }
 
@@ -323,7 +401,7 @@ class accountantController extends Controller
  'ticket_services.user_id as uuser_resiver' ,
  'ticket_services.passenger_name as t_pn',
  'ticket_services.refernce as t_ref',
- 'ticket_services.provider_cost as t_pc' ,
+ 'ticket_services.provider_cost as tp_c' ,
  'suppliers.supplier_name as s_name',
  'users.name as u_name',
  'currency.cur_name as cur_n',
@@ -331,7 +409,7 @@ class accountantController extends Controller
  'ticket_services.how_add_bookmark as bookmark_how',
  'ticket_services.cost as cost',
  'ticket_services.Issue_date as t_idate') 
- ->paginate(10);
+ ->paginate(25);
  $affected1=['id'=>'ticket'];
     }elseif($id=='bus'){
         //bus
@@ -345,7 +423,7 @@ class accountantController extends Controller
          'bus_services.service_id as st_id' ,
          'service_status as s_st',
         'bus_services.refernce as t_ref',
-        'bus_services.provider_cost as t_pc' ,
+        'bus_services.provider_cost as tp_c' ,
         'suppliers.supplier_name as s_name',
         'users.name as u_name',
         'bus_services.bus_number as s_num' ,
@@ -355,7 +433,7 @@ class accountantController extends Controller
         'bus_services.how_add_bookmark as bookmark_how',
         'bus_services.user_id as uuser_resiver' ,
         'bus_services.Issue_date as t_idate') 
-        ->paginate(10);
+        ->paginate(25);
         
            }elseif($id=='car'){
     //car
@@ -369,7 +447,7 @@ class accountantController extends Controller
     'service_status as s_st',
      'car_services.service_id as st_id' ,
     'car_services.refernce as t_ref',
-    'car_services.provider_cost as t_pc' ,
+    'car_services.provider_cost as tp_c' ,
     'suppliers.supplier_name as s_name',
     'users.name as u_name',
     'currency.cur_name as cur_n',
@@ -379,7 +457,7 @@ class accountantController extends Controller
     'car_services.how_add_bookmark as bookmark_how',
     'car_services.voucher_number as s_num' ,
     'car_services.Issue_date as t_idate') 
-    ->paginate(10);            
+    ->paginate(25);            
 }elseif($id=='general'){
                   $affected1=['id'=>'general'];
                   $affected =GeneralService::where([['service_status',3],['offered_status',$type]])
@@ -390,7 +468,7 @@ class accountantController extends Controller
                   'general_services.passenger_name as t_pn',
                   'general_services.service_id as st_id' ,
                   'general_services.refernce as t_ref',
-                  'general_services.provider_cost as t_pc' ,
+                  'general_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'general_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -401,7 +479,7 @@ class accountantController extends Controller
                   'general_services.user_id as uuser_resiver' ,
                   'general_services.cost as cost',
                   'general_services.Issue_date as t_idate') 
-                  ->paginate(10);  
+                  ->paginate(25);  
                }elseif($id=='hotel'){
                   $affected1=['id'=>'hotel'];
                   $affected =HotelService::where([['service_status',3],['hotel_status',$type]])
@@ -412,7 +490,7 @@ class accountantController extends Controller
                   'hotel_services.passenger_name as t_pn',
                   'hotel_services.service_id as st_id' ,
                   'hotel_services.refernce as t_ref',
-                  'hotel_services.provider_cost as t_pc' ,
+                  'hotel_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'users.name as u_name',
                   'service_status as s_st',
@@ -423,7 +501,7 @@ class accountantController extends Controller
                   'hotel_services.how_add_bookmark as bookmark_how',
                   'hotel_services.user_id as uuser_resiver' ,
                   'hotel_services.Issue_date as t_idate') 
-                  ->paginate(10); 
+                  ->paginate(25); 
                }elseif($id=='visa'){
                   $affected1=['id'=>'visa'];
                   $affected =VisaService::wherewhere([['service_status',3],['visa_status',$type]])
@@ -434,7 +512,7 @@ class accountantController extends Controller
                   'visa_services.passenger_name as t_pn',
                   'visa_services.service_id as st_id' ,
                   'visa_services.refernce as t_ref',
-                  'visa_services.provider_cost as t_pc' ,
+                  'visa_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'visa_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -445,7 +523,7 @@ class accountantController extends Controller
                   'visa_services.how_add_bookmark as bookmark_how',
                   'visa_services.user_id as uuser_resiver' ,
                   'visa_services.Issue_date as t_idate') 
-                  ->paginate(10); 
+                  ->paginate(25); 
                }elseif($id=='medical'){
                   $affected1=['namme'=>'medical'];
                   $affected =MedicalService::where([['service_status',3],['report_status',$type]])
@@ -458,7 +536,7 @@ class accountantController extends Controller
                   'service_status as s_st',
                   'medical_services.user_id as uuser_resiver' ,
                   'medical_services.refernce as t_ref',
-                  'medical_services.provider_cost as t_pc' ,
+                  'medical_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
                   'users.name as u_name',
                   'currency.cur_name as cur_n',
@@ -467,9 +545,18 @@ class accountantController extends Controller
                   'medical_services.how_add_bookmark as bookmark_how',
                   'medical_services.document_number as s_num' ,
                   'medical_services.Issue_date as t_idate') 
-                  ->paginate(10);                 
+                  ->paginate(25);                 
                }
-    return view('accountant_review',['data'=>$affected,'data1'=>$affected1]);      
+               $affected3 =DB::select('select * from services WHERE services.is_active=1 and services.deleted=0');
+               $affected4 =DB::select('SELECT * FROM suppliers WHERE suppliers.is_active=1 and suppliers.is_deleted=0');
+               $affected5=DB::select('select ru.user_id as u_id ,GROUP_CONCAT(r.name) as roless,u.name as u_name 
+               FROM role_user as ru 
+               INNER JOIN roles as r on ru.role_id=r.id 
+               INNER JOIN users as u on ru.user_id=u.id
+               where ru.role_id in (2,3) and u.is_delete=0 and u.is_active=1 
+               GROUP BY ru.user_id');
+               $affected6 =DB::select('select * from currency where currency.is_active=1 ');
+               return view('accountant_review',['data'=>$affected,'data1'=>$affected1,'data3'=>$affected3,'data4'=>$affected4,'data5'=>$affected5,'data6'=>$affected6]);      
 
     }
     
@@ -717,25 +804,73 @@ unset($_SESSION['remark']);
    /***************************service finished********************** */
    public function accountant_finish_by($id)
    {  
-      $affected = DB::select('SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM ticket_services WHERE service_status = 4 and how_add_bill=11 
-      UNION 
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM bus_services WHERE service_status = 4 and how_add_bill=11 
-      UNION 
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM car_services WHERE service_status = 4 and how_add_bill=11 
-      UNION 
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM hotel_services WHERE service_status = 4 and how_add_bill=11
-      UNION
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM visa_services WHERE service_status = 4 and how_add_bill=11 
-      UNION 
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM medical_services WHERE service_status = 4 and how_add_bill=11 
-      UNION 
-      SELECT COUNT(*) as finish,service_id as ser ,how_add_bill as hab FROM general_services WHERE service_status = 4 and how_add_bill=11 
-       
-      
-      ');
+      $affected = DB::select('
+      SELECT
+      (SELECT COUNT(*) FROM ticket_services WHERE how_add_bill='.$id.' and service_status=4) as ticket, 
+      (SELECT COUNT(*) FROM bus_services WHERE how_add_bill='.$id.' and service_status=4) as bus,
+      (SELECT COUNT(*) FROM car_services WHERE how_add_bill='.$id.' and service_status=4) as car,
+       (SELECT COUNT(*) FROM hotel_services WHERE how_add_bill='.$id.'11 and service_status=4) as hotel, 
+      (SELECT COUNT(*) FROM visa_services WHERE how_add_bill='.$id.' and service_status=4) as visa,
+      (SELECT COUNT(*) FROM medical_services WHERE how_add_bill='.$id.' and service_status=4) as medical,
+      (SELECT COUNT(*) FROM general_services WHERE how_add_bill='.$id.' and service_status=4) as g');
       echo json_encode($affected);
 
    }
+   public function accountant_finish_all($id){
+      $affected1=['id'=>'all service status'];
+      $affected=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
+      ,service_status as s_st,bill_num as bill FROM ticket_services 
+      JOIN users on ticket_services.user_id=users.id
+       JOIN currency on ticket_services.cur_id=currency.cur_id
+       JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.'
+        UNION 
+            SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+      ,service_status as s_st,bill_num as bill FROM general_services
+       JOIN users on general_services.user_id=users.id
+       JOIN currency on general_services.cur_id=currency.cur_id
+       JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
+        WHERE service_status = 4 and how_add_bill='.$id.'
+        UNION 
+      SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
+      ,service_status as s_st,bill_num as bill FROM bus_services
+        JOIN users on bus_services.user_id=users.id
+       JOIN currency on bus_services.cur_id=currency.cur_id
+       JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.'
+        UNION 
+      SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
+      ,service_status as s_st,bill_num as bill FROM hotel_services 
+        JOIN users on hotel_services.user_id=users.id
+       JOIN currency on hotel_services.cur_id=currency.cur_id
+       JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.'
+        UNION 
+      SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+      ,service_status as s_st,bill_num as bill FROM visa_services
+        JOIN users on visa_services.user_id=users.id
+       JOIN currency on visa_services.cur_id=currency.cur_id
+       JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.' 
+        UNION 
+      SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
+      ,service_status as s_st ,bill_num as bill FROM medical_services 
+        JOIN users on medical_services.user_id=users.id
+       JOIN currency on medical_services.cur_id=currency.cur_id
+       JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.'
+        UNION 
+      SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+       ,service_status as s_st,bill_num as bill FROM car_services
+       JOIN users on car_services.user_id=users.id
+       JOIN currency on car_services.cur_id=currency.cur_id
+       JOIN suppliers on car_services.due_to_supp=suppliers.s_no
+        WHERE service_status = 4 and how_add_bill='.$id.' ');
+             
+     return view('accountent_finish',['data'=>$affected]);      
+ 
+    
+ }
    public function accountant_finish($id,$user)
    { 
 if($id=='1'){
@@ -746,9 +881,10 @@ $affected =TicketService::where([['service_status',4],['how_add_bill',$user],['e
 ->join('users','ticket_services.user_id','users.id')
 ->select ('ticket_services.tecket_id as t_id' ,
 'ticket_services.service_id as st_id' ,
+'ticket_services.ticket_status as s_st ',
 'ticket_services.passenger_name as t_pn',
 'ticket_services.refernce as t_ref',
-'ticket_services.provider_cost as t_pc' ,
+'ticket_services.provider_cost as tp_c' ,
 'suppliers.supplier_name as s_name',
 'users.name as u_name',
 'currency.cur_name as cur_n',
@@ -756,7 +892,7 @@ $affected =TicketService::where([['service_status',4],['how_add_bill',$user],['e
 'ticket_services.bill_num as bill' ,
 'ticket_services.cost as cost',
 'ticket_services.Issue_date as t_idate') 
-->paginate(10);
+->paginate(25);
 $affected1=['id'=>'ticket'];
    }elseif($id=='2'){
        //bus
@@ -769,7 +905,8 @@ $affected1=['id'=>'ticket'];
        'bus_services.passenger_name as t_pn',
         'bus_services.service_id as st_id' ,
        'bus_services.refernce as t_ref',
-       'bus_services.provider_cost as t_pc' ,
+       'bus_services.bus_status as s_st ',
+       'bus_services.provider_cost as tp_c' ,
        'bus_services.bus_number as s_num' ,
        'bus_services.bill_num as bill' ,
        'suppliers.supplier_name as s_name',
@@ -777,7 +914,7 @@ $affected1=['id'=>'ticket'];
        'currency.cur_name as cur_n',
        'bus_services.cost as cost',
        'bus_services.Issue_date as t_idate') 
-       ->paginate(10);
+       ->paginate(25);
        
           }elseif($id=='3'){
             //bus
@@ -790,15 +927,16 @@ $affected1=['id'=>'ticket'];
             'car_services.passenger_name as t_pn',
              'car_services.service_id as st_id' ,
             'car_services.refernce as t_ref',
-            'car_services.provider_cost as t_pc' ,
+            'car_services.provider_cost as tp_c' ,
             'car_services.voucher_number as s_num' ,
             'car_services.bill_num as bill' ,
+            'car_services.car_status as s_st ',
             'suppliers.supplier_name as s_name',
             'users.name as u_name',
             'currency.cur_name as cur_n',
             'car_services.cost as cost',
             'car_services.Issue_date as t_idate') 
-            ->paginate(10);
+            ->paginate(25);
             
                }elseif($id=='7'){
                   $affected1=['id'=>'general'];
@@ -810,7 +948,8 @@ $affected1=['id'=>'ticket'];
                   'general_services.passenger_name as t_pn',
                   'general_services.service_id as st_id' ,
                   'general_services.refernce as t_ref',
-                  'general_services.provider_cost as t_pc' ,
+                  'general_services.provider_cost as tp_c' ,
+                  'general_services.general_status as s_st ',
                   'suppliers.supplier_name as s_name',
                   'general_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -819,7 +958,7 @@ $affected1=['id'=>'ticket'];
                   'general_services.user_id as uuser_resiver' ,
                   'general_services.cost as cost',
                   'general_services.Issue_date as t_idate') 
-                  ->paginate(10);  
+                  ->paginate(25);  
               }elseif($id=='5'){
                $affected1=['id'=>'hotel'];
                $affected =HotelService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
@@ -830,9 +969,10 @@ $affected1=['id'=>'ticket'];
                'hotel_services.passenger_name as t_pn',
                'hotel_services.service_id as st_id' ,
                'hotel_services.refernce as t_ref',
-               'hotel_services.provider_cost as t_pc' ,
+               'hotel_services.provider_cost as tp_c' ,
                'suppliers.supplier_name as s_name',
                'users.name as u_name',
+               'hotel_services.hotel_status as s_st ',
                'currency.cur_name as cur_n',
                'hotel_services.voucher_number as s_num' ,
                'hotel_services.voucher_number as s_num' ,
@@ -840,7 +980,7 @@ $affected1=['id'=>'ticket'];
                'hotel_services.bill_num as bill' ,
                'hotel_services.user_id as uuser_resiver' ,
                'hotel_services.Issue_date as t_idate') 
-               ->paginate(10); 
+               ->paginate(25); 
               }elseif($id=='6'){
                $affected1=['id'=>'visa'];
                   $affected =VisaService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
@@ -851,8 +991,9 @@ $affected1=['id'=>'ticket'];
                   'visa_services.passenger_name as t_pn',
                   'visa_services.service_id as st_id' ,
                   'visa_services.refernce as t_ref',
-                  'visa_services.provider_cost as t_pc' ,
+                  'visa_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
+                  'visa_services.visa_status as s_st ',
                   'visa_services.voucher_number as s_num' ,
                   'users.name as u_name',
                   'currency.cur_name as cur_n',
@@ -860,7 +1001,7 @@ $affected1=['id'=>'ticket'];
                   'visa_services.user_id as uuser_resiver' ,
                   'visa_services.bill_num as bill' ,
                   'visa_services.Issue_date as t_idate') 
-                  ->paginate(10); 
+                  ->paginate(25); 
               }elseif($id=='4'){
                $affected1=['namme'=>'medical'];
                $affected =MedicalService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
@@ -872,15 +1013,16 @@ $affected1=['id'=>'ticket'];
                'medical_services.service_id as st_id' ,
                'medical_services.user_id as uuser_resiver' ,
                'medical_services.refernce as t_ref',
-               'medical_services.provider_cost as t_pc' ,
+               'medical_services.provider_cost as tp_c' ,
                'suppliers.supplier_name as s_name',
                'users.name as u_name',
                'currency.cur_name as cur_n',
                'medical_services.cost as cost',
+               'medical_services.report_status as s_st ',
                'medical_services.document_number as s_num' ,
                'medical_services.bill_num as bill' ,
                'medical_services.Issue_date as t_idate') 
-               ->paginate(10);                 
+               ->paginate(25);                 
             }
    return view('accountent_finish',['data'=>$affected,'data1'=>$affected1]);      
 
@@ -928,5 +1070,179 @@ function remove_bookmark($main,$service,$h){
    
 
 }
-
+/************************************do filter******************************** */
+public function DISPLAY_FILTER1(){
+  print_r($_SESSION['filter']);
+ $ss="";
+  IF(ARRAY_SEARCH('service_status',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+   foreach($_SESSION['filter'] as $index=>$column){
+    foreach($column as $key=>$value){
+        if($key=='col_name' && $value=="service_status"){
+         $ss =" in ". $_SESSION['filter'][$index]['v'].' and';
+        }
+   }
+   }
+   foreach($_SESSION['filter'] as $index=>$column){
+      foreach($column as $key=>$value){
+          if($key=='col_name' && $value=="service_status"){
+                $sp=array();
+              $sp=$_SESSION['filter'];
+              unset($sp[$index]);
+              $_SESSION['filter']=$sp;
+          }
+     }
+     }
 }
+echo $ss;
+$a=implode(" and ",array_map(function($a) {
+   return implode(" ",$a);},$_SESSION['filter']));
+   echo $a;
+   if($ss==""){
+      $bus= 'where service_status=3 and '.$a;
+      $ticket= 'where service_status=3 and '.$a;
+      $hotel= 'where service_status=3 and '.$a;
+      $car= 'where service_status=3 and '.$a;
+      $visa= 'where service_status=3 and '.$a;
+      $medical= 'where service_status=3 and '.$a;
+      $general= 'where service_status=3 and '.$a;
+   }else if($ss != ""){
+      $bus= 'where bus_status=3 and bus_status '.$ss .' '.$a;
+      $ticket= 'where  ticket_status=3 and bus_status '.$ss .' '.$a;
+      $hotel= 'where service_status=3 and hotel_status  '.$ss .' '.$a;
+      $car= 'where service_status=3 and car_status   '.$ss .' '.$a;
+      $visa= 'where service_status=3 and visa_status  '.$ss .' '.$a;
+      $medical= 'where service_status=3 and report_status  '.$ss .' '.$a;
+      $general= 'where service_status=3 and offered_status  '.$ss .' '.$a;
+   }
+}
+public function add_filer($col,$op,$v1){
+   $v=$v1;
+   if($col=='service_status'){
+    $v='('.$v1.')';
+    $item=array('col_name'=>$col,'op'=>$op,'v'=>$v);
+      IF(ARRAY_SEARCH($col,ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+         foreach($_SESSION['filter'] as $index=>$column){
+          foreach($column as $key=>$value){
+              if($key=='col_name' && $value==$col){
+         $_SESSION['filter'][$index]['v']=$v;
+              }
+         }
+         }
+      }ELSE{
+           array_push($_SESSION['filter'],$item);  	
+      }
+   }else{
+      $item=array('col_name'=>$col,'op'=>$op,'v'=>$v);
+      IF(ARRAY_SEARCH($col,ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+         foreach($_SESSION['filter'] as $index=>$column){
+          foreach($column as $key=>$value){
+              if($key=='col_name' && $value==$col){
+         $_SESSION['filter'][$index]['v']=$v;
+              }
+         }
+         }
+      }ELSE{
+           array_push($_SESSION['filter'],$item);  	
+      }
+      }
+    return $_SESSION['filter'];
+   }
+   
+public function display_filter(){
+   $ss="";
+   IF(ARRAY_SEARCH('service_status',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+    foreach($_SESSION['filter'] as $index=>$column){
+     foreach($column as $key=>$value){
+         if($key=='col_name' && $value=="service_status"){
+          $ss =" in ". $_SESSION['filter'][$index]['v'].' and';
+         }
+    }
+    }
+    foreach($_SESSION['filter'] as $index=>$column){
+       foreach($column as $key=>$value){
+           if($key=='col_name' && $value=="service_status"){
+                 $sp=array();
+               $sp=$_SESSION['filter'];
+               unset($sp[$index]);
+               $_SESSION['filter']=$sp;
+           }
+      }
+      }
+ }
+ $a=implode(" and ",array_map(function($a) {
+    return implode(" ",$a);},$_SESSION['filter']));
+    if($ss==""){
+       $bus= 'where service_status=3 and '.$a;
+       $ticket= 'where service_status=3 and '.$a;
+       $hotel= 'where service_status=3 and '.$a;
+       $car= 'where service_status=3 and '.$a;
+       $visa= 'where service_status=3 and '.$a;
+       $medical= 'where service_status=3 and '.$a;
+       $general= 'where service_status=3 and '.$a;
+    }else if($ss != ""){
+       $bus= 'where service_status=3 and bus_status '.$ss .' '.$a;
+       $ticket= 'where  service_status=3 and bus_status '.$ss .' '.$a;
+       $hotel= 'where service_status=3 and hotel_status  '.$ss .' '.$a;
+       $car= 'where service_status=3 and car_status   '.$ss .' '.$a;
+       $visa= 'where service_status=3 and visa_status  '.$ss .' '.$a;
+       $medical= 'where service_status=3 and report_status  '.$ss .' '.$a;
+       $general= 'where service_status=3 and offered_status  '.$ss .' '.$a;
+    }
+$onlyl=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM ticket_services 
+         JOIN users on ticket_services.user_id=users.id
+          JOIN currency on ticket_services.cur_id=currency.cur_id
+          JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
+          '.$ticket.'
+           UNION 
+               SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM general_services
+          JOIN users on general_services.user_id=users.id
+          JOIN currency on general_services.cur_id=currency.cur_id
+          JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
+           '.$general.'
+           UNION 
+         SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM bus_services
+           JOIN users on bus_services.user_id=users.id
+          JOIN currency on bus_services.cur_id=currency.cur_id
+          JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
+           '.$bus.'
+           UNION 
+         SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM hotel_services 
+           JOIN users on hotel_services.user_id=users.id
+          JOIN currency on hotel_services.cur_id=currency.cur_id
+          JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
+           '.$hotel.'
+           UNION 
+         SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM visa_services
+           JOIN users on visa_services.user_id=users.id
+          JOIN currency on visa_services.cur_id=currency.cur_id
+          JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
+           '.$visa.'
+           UNION 
+         SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM medical_services 
+           JOIN users on medical_services.user_id=users.id
+          JOIN currency on medical_services.cur_id=currency.cur_id
+          JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
+           '.$medical.'
+           UNION 
+         SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+          ,service_status as s_st FROM car_services
+          JOIN users on car_services.user_id=users.id
+          JOIN currency on car_services.cur_id=currency.cur_id
+          JOIN suppliers on car_services.due_to_supp=suppliers.s_no
+           '.$car.'');
+           echo json_encode($onlyl);
+          /* $opps=[];
+           $_SESSION['filter']=$opps;
+           return  $_SESSION['filter'];*/
+  }   
+public function clear_session(){
+   $opps=[];
+   $_SESSION['filter']=$opps;
+   return  $_SESSION['filter'];
+}}

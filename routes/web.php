@@ -209,6 +209,8 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
  Route::group(['middleware' => ['auth','role:accountant']], function() {
   Route::get('/accountant','accountantController@accountant_view');
   Route::get('/accountant/accountant_finish_by/{id}','accountantController@accountant_finish_by');
+  Route::get('/accountant/accountant_finish_all/{id}','accountantController@accountant_finish_all');
+  Route::get('/accountant_review','accountantController@accountant_review_all');
   Route::get('/accountant_review/{id}','accountantController@accountant_review');
   Route::get('/accountant_review/{id}/{status}','accountantController@accountant_review_with_status');
   Route::get('/accountant_finish/{id}/{user}','accountantController@accountant_finish');
@@ -225,6 +227,10 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
   Route::get('/accountant/add_bookmark/{m}/{s}/{c}/{h}','accountantController@add_bookmark');
   Route::get('/accountant/remove_bookmark/{m}/{s}/{h}','accountantController@remove_bookmark');
   Route::get('/accountant/display_remark_body/{m}/{s}','accountantController@display_remark_body');
+ Route::get('/accountant/filter_item/{c}/{op}/{v}','accountantController@add_filer');
+ Route::get('/accountant/filter_do','accountantController@display_filter');
+ Route::get('/accountant/DISPLAY_FILTER1','accountantController@DISPLAY_FILTER1');
+  Route::get('/accountant/clear_session','accountantController@clear_session');
 
 });
 Route::group(['middleware' => ['auth','role:sale_manager']], function() {

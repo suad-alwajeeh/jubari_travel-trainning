@@ -15,8 +15,7 @@
     <section class="content">
 
       <div class="container-fluid">
-        <div class="row" >
-            <div class="info-box">
+      <div class="info-box">
           <div class='col-1'>
                 <button onclick="add_color('007bff38')" class="btn bookmarkb"></button>
                 <button onclick="add_color('ff696978')" class="btn  bookmarkr"></button>
@@ -25,40 +24,65 @@
                 <button onclick="add_color('ff38ef4f')" class="btn bookmarkp"></button>
                 <button onclick="add_color('fff')" class="btn bookmarkw"></button>
           </div>
-          <div class='col-2'>
-                <div class="form-group">
-                  <label>Multiple111111111111111111</label>
-                  <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-                    <option>Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
+                   <div class="form-group col-1" style="display:none">
+                  <label>service</label>
+                  <select onchange="filter_item('service_id','=')" id="service_id" class="form-control select2" style="width: 100%;">
+                    <option selected="selected">all</option>
+                    @foreach($data3 as $d3)
+                    <option value="{{$d3->ser_id}}">{{$d3->ser_name}}</option>
+                    @endforeach
                   </select>
                 </div>
-                   <div class="form-group">
-                  <label>Minimal</label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
+                <div class="form-group col-3">
+                  <label>status</label>
+                  <select onchange="filter_item('service_status','in')" id="service_status" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                  <option value="1,2,3,4">all</option>
+                  <option value="1">ok</option>
+                  <option value="2">issue</option>
+                  <option value="3">void</option>
+                  <option value="4">refund</option>
                   </select>
                 </div>
+                   <div class="form-group col-2">
+                  <label>issue date</label>
+                  <select onchange="filter_item('issue_date','=')" id="issue_date" class="form-control select2" style="width: 100%;">
+                  <option value="CURRENT_DATE()">today</option>
+                  <option value="CURRENT_DATE()-1">yestrday</option>
+                  </select>
+                </div>
+                   <div class="form-group col-2">
+                  <label>issue by</label>
+                  <select onchange="filter_item('user_id','=')" id="user_id" class="form-control select2" style="width: 100%;">
+                  <option value="0">select employee</option>
+                  @foreach($data5 as $d5)
+                    <option value="{{$d5->u_id}}">{{$d5->u_name}}</option>
+                  @endforeach
+                </select>
+                </div>
+                   <div class="form-group col-2">
+                  <label>provider name</label>
+                  <select onchange="filter_item('due_to_supp','=')" id="due_to_supp" class="form-control select2" style="width: 100%;">
+                  <option value="0">select provider</option>
+                   @foreach($data4 as $d4)
+                    <option value="{{$d4->s_no}}">{{$d4->supplier_name}}</option>
+                  @endforeach
+                  </select>
+                </div>
+                   <div class="form-group col-1">
+                  <label> currency</label>
+                  <select onchange="filter_item('cur_id','=')" id="cur_id" class="form-control select2" style="width: 100%;">
+                  <option value="0">select currency</option>
+                  @foreach($data6 as $d6)
+                  <option value="{{$d6->cur_id}}">{{$d6->cur_name}}</option>
+                  @endforeach             
+                     </select>
+                </div>
+                <div class=" form-group col-1 mt-4 pt-2">
+                  <button class="btn btn-info" onclick="get_filter()">go</button>
                 </div>
               </div>
-                </div>
-
-            
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
+  </div>
+        <div class="row" >
           <div class="col-12">
 
             <!-- TABLE: LATEST ORDERS -->
@@ -82,6 +106,7 @@
       <input id="selectall" onclick="return selectall()" type="checkbox">
       </th>
       <th>id</th>
+      <th>type</th>
       <th>issuedDate</th>
       <th>issuedBy</th>
         <th>passenger</th>
@@ -109,11 +134,28 @@
 <input type="hidden" id="main_serv" value="{{$lat->st_id}}">
     </td>
     <td><?php echo $i; ?></td>
+    <td>
+                      @if($lat->st_id==1)
+                      Ticket
+                      @elseif($lat->st_id==2)
+                      Bus
+                      @elseif($lat->st_id==3)
+                      Car	
+                      @elseif($lat->st_id==4)
+                      Medical
+                      @elseif($lat->st_id==5)
+                      Hotel	
+                      @elseif($lat->st_id==6)
+                      Visa	
+                      @elseif($lat->st_id==7)
+                      General	
+                      @endif
+                      </td>
     <td>{{$lat->t_idate}}</td>
     <td>{{$lat->u_name}}</td>
       <td>{{$lat->t_pn}}</td>
       <td>{{$lat->s_name}}</td>
-      <td>{{$lat->t_pc}}</td>
+      <td>{{$lat->tp_c}}</td>
       <td>{{$lat->cur_n}}</td>
       <td>{{$lat->cost}}</td>
       <td>
@@ -211,6 +253,31 @@
 </div>
 
 <script>
+  function get_filter(){
+    alert('hi');
+    $.ajax({
+     url:'/accountant/filter_do',
+       type:'get',
+       dataType:'json',
+  success:function(response){
+  if(response.length==0){
+   alert("not found thing");
+  }else{
+    alert("found thing");
+
+  }
+  } 
+    });
+  }
+  function filter_item(col,op){
+    var val=$('#'+col).val();    
+    $.ajax({
+     url:'/accountant/filter_item/'+col+'/'+op+'/'+val,
+       type:'get',
+  success:function(response){
+  }
+  });
+  }
   function selectall() {
     var checkBox = document.getElementById("selectall");
     if (checkBox.checked == true){
