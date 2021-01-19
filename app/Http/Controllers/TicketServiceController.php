@@ -141,6 +141,7 @@ public function hide_ticket($id){
           
 public function add_ticket( Request $req)
 { 
+  print_r($req->cur_id);
   $message5="";
   $date1=date("Y/m/d") ;
   $date=now();
@@ -277,7 +278,7 @@ if( $loged_id==$req->due_to_customer )
            'body'=>$message ,
            'status'=>0 ,
            'main_service'=>1,
-           'servic_id'=>$bus_id,
+           'servic_id'=>$tick_id,
            'created_at'=>$date,
            'updated_at'=>$date1,
            ]

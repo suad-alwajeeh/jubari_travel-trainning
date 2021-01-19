@@ -68,7 +68,7 @@
                                     <input required class="form-control " style="width: 100%;" name="bus_number"
                                         id="number" />
                                     <small id="helpId2" class="text-muted"></small>
-                                    <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
+                                    <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
 
 
                                 </div>

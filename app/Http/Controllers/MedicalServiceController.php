@@ -225,7 +225,7 @@ DB::table('notifications')->insert(
 'body'=>$message ,
 'status'=>0 ,
 'main_service'=>4,
-'servic_id'=>$bus_id,
+'servic_id'=>$med_id,
 'created_at'=>$date,
 'updated_at'=>$date1,
 ]

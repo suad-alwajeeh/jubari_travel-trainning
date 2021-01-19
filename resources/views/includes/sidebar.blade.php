@@ -451,13 +451,13 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/service/show_gen/1" class="nav-link">
+                    <a href="/service/show_genenral/1" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Saved General Service </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/service/show_gen/2" class="nav-link">
+                    <a href="/service/sent_general/2" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Sent General Service </p>
                     </a>
@@ -486,13 +486,13 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="/service/show_med/1" class="nav-link">
+                    <a href="/service/show_medical/1" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Saved Medical Service </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/service/show_med/2" class="nav-link">
+                    <a href="/service/sent_medical/2" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p> Sent Medical Service </p>
                     </a>
@@ -721,13 +721,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="/service/show_gen/1" class="nav-link">
+                        <a href="/service/show_genenral/1" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p> Saved General Service </p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/service/show_gen/2" class="nav-link">
+                        <a href="/service/sent_general/2" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p> Sent General Service </p>
                         </a>
@@ -756,13 +756,13 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="/service/show_med/1" class="nav-link">
+                        <a href="/service/show_medical/1" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p> Saved Medical Service </p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="/service/show_med/2" class="nav-link">
+                        <a href="/service/sent_medical/2" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p> Sent Medical Service </p>
                         </a>
