@@ -65,7 +65,7 @@
     var ssnNumber = "^\d{0-9}$";
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    form1[0].addEventListener("keyup", function confirmName() {
+  /*  form1[0].addEventListener("keyup", function confirmName() {
 
         if (form1[0].value.match(nameFormat)) {
             form1[0].style.borderColor = "green";
@@ -88,7 +88,7 @@
             form1[1].style.borderColor = "red";
             return false;
         }
-    });
+    });*/
     function send_data(){
       var adds_text = $("#adds_text").val();
       var adds_name = $("#adds_name").val();

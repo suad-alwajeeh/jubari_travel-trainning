@@ -21,7 +21,7 @@
 @foreach($data as $item)
 <div class="form-group mb-3 col-md-6 col-sm-12">
       <label for="pwd">role name</label>
-      <input type="text" class="form-control" value="{{$item->display_name}}" placeholder="role_name" name="role_name">
+      <input type="text" class="form-control" value="{{$item->display_name}}" name="role_name">
       <small id="helpId1" class="text-muted"></small>
  </div>
     <div class="form-group mb-3 col-md-6 col-sm-12">
@@ -79,8 +79,8 @@
              type:'post',
              url:'/editrole',
              data:$('#so_form').serialize(),
-             success:function(response){console.log(response);
-              window.location.href = "/role_display1/2";
+             success:function(response){console.log('role edite');
+             window.location.href = "/role_display1/2";
                  },
              error:function(error){console.log(error);
              alert("data dont saved");

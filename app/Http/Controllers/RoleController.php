@@ -155,10 +155,10 @@ echo 'ppppp';    }
       
         $role=new Role;
         $role::where('id',$req->id)
-        ->update(['name'=>$req->role_name,'description'=>$req->role_descripe,
+        ->update(['display_name'=>$req->role_name,'description'=>$req->role_descripe,
         'is_active'=>$req->is_active,
         ]);       
-    }
+     }
     public function hide_row($id){
         $affected1= Role::where('id',$id)
         ->update(['is_delete'=>'1']);

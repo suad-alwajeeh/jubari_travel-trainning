@@ -71,8 +71,8 @@ function delete1(tt,oo){
     <input hidden="hidden" value="{{$item3->name}}" id="name{{$item3->id}}">
 @endforeach
                   <select class="form-control select2" id="empii" name="emp_id" onchange="dep_select2()"  style="width: 100%;">
-                  @foreach($data2 as $item3) 
                   <option  class=" " id="" value="" disable>select user</option>
+                  @foreach($data2 as $item3) 
                   <option  class="so_emp1 " id="dep{{$item3->id}}" value="{{$item3->id}}">{{$item3->name}}</option>
                   <script>
      function dep_select2(){

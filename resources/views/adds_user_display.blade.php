@@ -133,11 +133,11 @@
         <tr>
         <td>name</td>
         <td id="au_status{{$item->au_id}}">
-        @if($item->au_status=1)
+        @if($item->au_status==1)
         <span class="badge badge-success">send</span>
-      @elseif($item->au_status=2)
+      @elseif($item->au_status==2)
         <span class="badge badge-secondary">read</span>
-      @elseif($item->au_status=3)
+      @elseif($item->au_status==3)
         <span class="badge badge-warning">cansel</span>
       @endif
         </td>
@@ -173,9 +173,9 @@ success:function(response){
     $('#a_name'+id).text(response[0].a_name);
     $('#a_text'+id).text(response[0].a_text);
     $('#u_name'+id).text(response[0].u_name);
-      if(response[0].au_status=1){$('#au_status'+id).html('<span class="badge badge-success">send</span>');}
-      if(response[0].au_status=2){$('#au_status'+id).html('<span class="badge badge-secondary">read</span>');}
-      if(response[0].au_status=3){$('#au_status'+id).html('<span class="badge badge-warning">cansele</span>');}
+      if(response[0].au_status==1){$('#au_status'+id).html('<span class="badge badge-success">send</span>');}
+      if(response[0].au_status==2){$('#au_status'+id).html('<span class="badge badge-secondary">read</span>');}
+      if(response[0].au_status==3){$('#au_status'+id).html('<span class="badge badge-warning">cansel</span>');}
   }
 }
 });

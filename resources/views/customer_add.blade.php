@@ -139,7 +139,7 @@
     var account = "^[0-9]";
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    form1[3].addEventListener("keyup", function confirmName() {
+    /*form1[3].addEventListener("keyup", function confirmName() {
 
         if (form1[3].value.match(account)) {
             form1[3].style.borderColor = "green";
@@ -162,7 +162,7 @@ else {
     form1[0].style.borderColor = "red";
     return false;
 }
-});
+});*/
 form1[10].addEventListener("keyup", function confirmName() {
 
 if (form1[10].value.match(nameFormat)) {
@@ -199,7 +199,7 @@ else {
     return false;
 }
 });
-    form1[1].addEventListener("keyup", function confirmName() {
+   /* form1[1].addEventListener("keyup", function confirmName() {
 
         if (form1[1].value.match(nameFormat)) {
             form1[1].style.borderColor = "green";
@@ -210,7 +210,7 @@ else {
             form1[1].style.borderColor = "red";
             return false;
         }
-    });
+    });*/
    
 form1[2].addEventListener("keyup", function confirmName() {
 

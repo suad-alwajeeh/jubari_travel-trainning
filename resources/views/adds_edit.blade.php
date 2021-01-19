@@ -33,7 +33,7 @@
      </select>
     </div>
     <div class="form-group col-md-6 mb-3" style="display:none">
-      <input type="text" hidden="hidden" value="$item->id}}" class="form-control" id="id" placeholder="id" name="id">
+      <input type="text" hidden="hidden" value="{{$item->id}}" class="form-control" id="id" placeholder="id" name="id">
     </div>
     <div class="form-group col-md-12 ">
       <label for="adds_text">advertisements_content</label>
@@ -71,14 +71,14 @@
     var ssnNumber = "^\d{0-9}$";
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    form1[0].addEventListener("keyup", function confirmName() {
+   /* form1[0].addEventListener("keyup", function confirmName() {
 
         if (form1[0].value.match(nameFormat)) {
             form1[0].style.borderColor = "green";
             return true;
         }
         else {
-            mass2.innerHTML = "*Enter field Name ";
+            mass1.innerHTML = "*Enter field Name ";
             form1[0].style.borderColor = "red";
             return false;
         }
@@ -94,7 +94,7 @@
             form1[1].style.borderColor = "red";
             return false;
         }
-    });
+    });*/
     function send_data(){
       var adds_text = $("#adds_text").val();
       var adds_name = $("#adds_name").val();

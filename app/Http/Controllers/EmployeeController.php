@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Employee;
 use App\Department;
 use App\User;
+use App\users;
 class EmployeeController extends Controller
 {
     /**
@@ -213,7 +214,9 @@ public function edit_row(Request $req){
     public function hide_row($id){
         $affected1= Employee::where('emp_id',$id)
         ->update(['deleted'=>'1']);
-        $data['dept'] = Employee::where('deleted',0)->paginate(7);
+        $affected= users::where('id',$id)
+        ->delete();
+        //$data['dept'] = Employee::where('deleted',0)->paginate(7);
         return redirect('employees')->with('seccess','Seccess Data Delete');
 
         }
