@@ -54,6 +54,7 @@ array_push($mv,$ss);
            $passenger_name=false;
            $ticket_status=false;
            $airline_name=false;
+           $ticket=false;
            $ticket_number=false;
            $Dep_city=false;
            $arr_city=false;
@@ -117,6 +118,15 @@ array_push($mv,$ss);
     }}
     for( $i=0;$i<sizeof($mv);$i++){
 
+      if ($mv[$i][$x]==='ticket') {
+       $ticket=true;
+       break;
+      }
+      else{
+       $ticket=false;
+     }}
+    for( $i=0;$i<sizeof($mv);$i++){
+
   if ($mv[$i][$x]==='ticket_number') {
     $ticket_number=true;
     break;
@@ -126,22 +136,43 @@ array_push($mv,$ss);
   }}
   for( $i=0;$i<sizeof($mv);$i++){
  
- if ($mv[$i][$x]==='Dep_city') {
+ if ($mv[$i][$x]==='Dep_city1') {
   $Dep_city=true;
   break;
  }}
  for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='arr_city') {
+if ($mv[$i][$x]==='arr_city1') {
 $arr_city=true;
 break;
 }}
 for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='dep_date') {
+if ($mv[$i][$x]==='dep_date1') {
 $dep_date=true;
 break;
 }}
+
+for( $i=0;$i<sizeof($mv);$i++){
+ 
+    if ($mv[$i][$x]==='Dep_city2') {
+     $Dep_city2=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+   
+   if ($mv[$i][$x]==='arr_city2') {
+   $arr_city2=true;
+   break;
+   }}
+   for( $i=0;$i<sizeof($mv);$i++){
+   
+   if ($mv[$i][$x]==='dep_date') {
+   $dep_date2=true;
+   break;
+   }}
+
+
 for( $i=0;$i<sizeof($mv);$i++){
 
 if ($mv[$i][$x]==='due_to_supp') {
@@ -187,7 +218,7 @@ break;
               <div class="form-group ">
                  ';
                 ?>
-<input type="hidden" value="{{$bus->bus_id}}" name="id">
+<input type="hidden" value="{{$bus->tecket_id}}" name="id">
 <input required type="date" class="form-control " name="Issue_date"
   value="{{\Carbon\Carbon::createFromDate($bus->Issue_date)->format('Y-m-d')}}" />
 <?php  echo' </div>
@@ -199,7 +230,7 @@ break;
                 <label class="col-md-12 col-sm-12 col-xm-12">Issued Date: </label>
                 <div class="form-group ">';
                   ?>
-<input type="hidden" value="{{$bus->bus_id}}" name="id">
+<input type="hidden" value="{{$bus->tecket_id}}" name="id">
 <input required type="date" class="form-control " disabled
   value="{{ \Carbon\Carbon::createFromDate($bus->Issue_date)->format('Y-m-d')}}" />
 
@@ -236,9 +267,11 @@ break;
 
 
          if ($passenger_name) {
-          echo '  <div class="form-group clo-12">
-          <label class="col-12">Passenger Name : </label>
-          <div class="form-group">';?>
+          echo ' <div class="form-row col-md-12 col-sm-12 col-xm-12">
+
+          <div class="form-group col-md-6 col-sm-12 col-xm-12">
+              <label class="col-12">Passenger Name : </label>
+              <div class="form-group" data-select2-id="44">';?>
 
 <input required type="text" class="form-control select2 select2-hidden-accessible" name="passenger_name"
   value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
@@ -248,9 +281,11 @@ break;
          }
        else
        {
-         echo '  <div class="form-group clo-12">
-         <label class="col-12">Passenger Name : </label>
-         <div class="form-group">';
+         echo '  <div class="form-row col-md-12 col-sm-12 col-xm-12">
+
+         <div class="form-group col-md-6 col-sm-12 col-xm-12">
+             <label class="col-12">Passenger Name : </label>
+             <div class="form-group" data-select2-id="44">';
 ?>
 <input required disabled type="text" class="form-control select2 select2-hidden-accessible"
   value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
@@ -292,7 +327,7 @@ break;
             <label class="col-md-12 col-sm-12 col-xm-12">Airline :</label>
 
             <div class="form-group" data-select2-id="44">
-                <select id="airline" name="airline"
+                <select id="airline"   name="airline"
                     class="form-control select2 select2-hidden-accessible" style="width: 100%;"
                     data-select2-id="1" tabindex="0" aria-hidden="true">
 ';
@@ -320,13 +355,13 @@ break;
            <label class="col-md-12 col-sm-12 col-xm-12">Airline :</label>
 
            <div class="form-group" data-select2-id="44">
-               <select id="airline" name=""
+               <select id="airline"  name=""
                    class="form-control select2 select2-hidden-accessible" style="width: 100%;"
                    data-select2-id="1" tabindex="0" aria-hidden="true">
 ';
 
              ?>   
-             <option value="{{$bus->id}}" selected>{{$bus->airline_name}}</option>
+             <option value="{{$bus->airlin_idid}}" selected>{{$bus->airline_name}}</option>
             
 <input required type="hidden" class="form-control " style="width:100%;" name="airline"
   value="{{$bus->airline_name}}" />
@@ -336,6 +371,54 @@ break;
    </div>';
 
      } 
+
+     if ($ticket) {
+      echo ' <div class="form-group col-md-3 col-sm-12 col-xm-12">
+      <label class="col-md-12 col-sm-12 col-xm-12">code </label>
+      <div class="form-group" data-select2-id="44">
+          <select class="form-control select2 select2-hidden-accessible" name="ticket"
+              id="code" style="width: 100%;" data-select2-id="2" tabindex="0"
+              aria-hidden="true">
+';
+
+             ?>  
+            
+            @foreach($airline as $airs)
+                                            @if($airs->id==$bus->ticket)
+
+                                            <option value="{{$airs->id}}" selected>{{$airs->airline_code}}</option>
+                                            @else
+                                            <option value="{{$airs->id}}">{{$airs->airline_code}}</option>
+
+                                            @endif
+                                            @endforeach
+
+       
+<?php echo '  </select>
+     </div>
+ </div>';
+     }
+   else
+   {
+     echo ' <div class="form-group col-md-3 col-sm-12 col-xm-12">
+     <label class="col-md-12 col-sm-12 col-xm-12">code </label>
+     <div class="form-group" data-select2-id="44">
+         <select class="form-control select2 select2-hidden-accessible" name="ticket"
+             id="code" style="width: 100%;" data-select2-id="2" tabindex="0"
+             aria-hidden="true">
+';
+
+           ?>   
+           <option value="{{$bus->ticket}}" selected>{{$bus->airline_code}}</option>
+          
+<input required type="hidden" class="form-control " style="width:100%;" name="ticket"
+value="{{$bus->ticket}}" />
+
+<?php echo'  </select>
+     </div>
+ </div>';
+
+   } 
       
      if ($ticket_number) {
       echo ' <div class="form-group col-md-3 col-sm-12 col-xm-12">
@@ -346,7 +429,6 @@ break;
         ?> 
           <input required type="text" class="form-control " style="width:100%;"
                                             name="ticket_number" value="{{$bus->ticket_number}}" id="number" />
-                                        <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
 
 <?php echo ' <small id="helpId2" class="text-muted "></small>
           <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
@@ -362,7 +444,6 @@ break;
 ';
 ?>   <input required type="text" class="form-control " style="width:100%;"
 name="" value="{{$bus->ticket_number}}" id="number" />
-<button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
 
 <input required type="hidden" class="form-control " style="width:100%;" name="ticket_number"
   value="{{$bus->ticket_number}}" id="number" />
@@ -785,6 +866,7 @@ data-select2-id="10" tabindex="0" aria-hidden="true">';
         </div>
     </div>
 
+   
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -795,320 +877,320 @@ data-select2-id="10" tabindex="0" aria-hidden="true">';
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script>
-
+console.log('hhhhhhhhhhh');
         // ************************ Drag and drop ***************** //
         let dropArea = document.getElementById("drop-area")
 
-            // Prevent default drag behaviors
-            ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, preventDefaults, false)
-                document.body.addEventListener(eventName, preventDefaults, false)
-            })
+// Prevent default drag behaviors
+;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, preventDefaults, false)
+    document.body.addEventListener(eventName, preventDefaults, false)
+})
 
-            // Highlight drop area when item is dragged over it
-            ;['dragenter', 'dragover'].forEach(eventName => {
-                dropArea.addEventListener(eventName, highlight, false)
-            })
+// Highlight drop area when item is dragged over it
+;['dragenter', 'dragover'].forEach(eventName => {
+    dropArea.addEventListener(eventName, highlight, false)
+})
 
-            ;['dragleave', 'drop'].forEach(eventName => {
-                dropArea.addEventListener(eventName, unhighlight, false)
-            })
+;['dragleave', 'drop'].forEach(eventName => {
+    dropArea.addEventListener(eventName, unhighlight, false)
+})
 
-        // Handle dropped files
-        dropArea.addEventListener('drop', handleDrop, false)
+// Handle dropped files
+dropArea.addEventListener('drop', handleDrop, false)
 
-        function preventDefaults(e) {
-            e.preventDefault()
-            e.stopPropagation()
+function preventDefaults(e) {
+e.preventDefault()
+e.stopPropagation()
+}
+
+function highlight(e) {
+dropArea.classList.add('highlight')
+}
+
+function unhighlight(e) {
+dropArea.classList.remove('active')
+}
+
+function handleDrop(e) {
+var dt = e.dataTransfer
+var files = dt.files
+
+handleFiles(files)
+}
+
+let uploadProgress = []
+let progressBar = document.getElementById('progress-bar')
+
+function initializeProgress(numFiles) {
+progressBar.value = 0
+uploadProgress = []
+
+for (let i = numFiles; i > 0; i--) {
+    uploadProgress.push(0)
+}
+}
+
+function updateProgress(fileNumber, percent) {
+uploadProgress[fileNumber] = percent
+let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
+console.debug('update', fileNumber, percent, total)
+progressBar.value = total
+}
+
+function handleFiles(files) {
+files = [...files]
+initializeProgress(files.length)
+files.forEach(uploadFile)
+files.forEach(previewFile)
+$(".images").hide();
+}
+
+function previewFile(file) {
+let reader = new FileReader()
+reader.readAsDataURL(file)
+reader.onloadend = function () {
+    let img = document.createElement('img')
+    img.src = reader.result
+    document.getElementById('gallery').appendChild(img)
+}
+}
+
+function uploadFile(file, i) {
+var url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
+var xhr = new XMLHttpRequest()
+var formData = new FormData()
+xhr.open('POST', url, true)
+xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
+
+// Update progress (can be used to show progress indicator)
+xhr.upload.addEventListener("progress", function (e) {
+    updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
+})
+
+xhr.addEventListener('readystatechange', function (e) {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        updateProgress(i, 100) // <- Add this
+    }
+    else if (xhr.readyState == 4 && xhr.status != 200) {
+        // Error. Inform the user
+    }
+})
+
+formData.append('upload_preset', 'ujpu6gyk')
+formData.append('file', file)
+xhr.send(formData)
+}
+
+
+// Get the element with id="defaultOpen" and click on it
+$(document).ready(function () {
+let td = '';
+let rm = '';
+$('#generate').click(function (e) {
+    console.log('bggehegw');
+    $.ajax({
+        url: "{{url('/service/generate_ticket')}}",
+        success: function (data) {
+            console.log('sec');
+            console.log(data);
+            var x = data;
+            x = x++;
+            console.log(x);
+            $('#number').val(x)
         }
+    });
 
-        function highlight(e) {
-            dropArea.classList.add('highlight')
-        }
+});
+var now = new Date();
 
-        function unhighlight(e) {
-            dropArea.classList.remove('active')
-        }
+var day = ("0" + now.getDate()).slice(-2);
+var month = ("0" + (now.getMonth() + 1)).slice(-2);
 
-        function handleDrop(e) {
-            var dt = e.dataTransfer
-            var files = dt.files
+var today = now.getFullYear() + "-" + (month) + "-" + (day);
 
-            handleFiles(files)
-        }
+$('#date').val(today);
+$('#date2').val(today);
+$('#date3').val(today);
+$('#date4').val(today);
+$('#date8').val(today);
+console.log($('#date').val(today));
+$("input[type='radio']").change(function () {
+    if ($(this).val() == "other") {
+        $(".otherAnswer").show();
+    } else {
+        $(".otherAnswer").hide();
+    }
+});
 
-        let uploadProgress = []
-        let progressBar = document.getElementById('progress-bar')
+$('#airline').change(function () {
+    var id = $('#airline').val();
+    console.log('insede airline');
+    console.log(id);
+    $.ajax({
+        url: "{{url('/airline/airline_row')}}",
+        data: { id: id },
+        success: function (data) {
+            console.log('sec');
+            console.log(data);
+            if (JSON.parse(data) === null)
+                $('#code').html('null');
 
-        function initializeProgress(numFiles) {
-            progressBar.value = 0
-            uploadProgress = []
-
-            for (let i = numFiles; i > 0; i--) {
-                uploadProgress.push(0)
-            }
-        }
-
-        function updateProgress(fileNumber, percent) {
-            uploadProgress[fileNumber] = percent
-            let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length
-            console.debug('update', fileNumber, percent, total)
-            progressBar.value = total
-        }
-
-        function handleFiles(files) {
-            files = [...files]
-            initializeProgress(files.length)
-            files.forEach(uploadFile)
-            files.forEach(previewFile)
-            $(".images").hide();
-        }
-
-        function previewFile(file) {
-            let reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onloadend = function () {
-                let img = document.createElement('img')
-                img.src = reader.result
-                document.getElementById('gallery').appendChild(img)
-            }
-        }
-
-        function uploadFile(file, i) {
-            var url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
-            var xhr = new XMLHttpRequest()
-            var formData = new FormData()
-            xhr.open('POST', url, true)
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
-
-            // Update progress (can be used to show progress indicator)
-            xhr.upload.addEventListener("progress", function (e) {
-                updateProgress(i, (e.loaded * 100.0 / e.total) || 100)
-            })
-
-            xhr.addEventListener('readystatechange', function (e) {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    updateProgress(i, 100) // <- Add this
-                }
-                else if (xhr.readyState == 4 && xhr.status != 200) {
-                    // Error. Inform the user
-                }
-            })
-
-            formData.append('upload_preset', 'ujpu6gyk')
-            formData.append('file', file)
-            xhr.send(formData)
-        }
-
-
-        // Get the element with id="defaultOpen" and click on it
-        $(document).ready(function () {
-            let td = '';
-            let rm = '';
-            $('#generate').click(function (e) {
-                console.log('bggehegw');
-                $.ajax({
-                    url: "{{url('/service/generate_ticket')}}",
-                    success: function (data) {
-                        console.log('sec');
-                        console.log(data);
-                        var x = data;
-                        x = x++;
-                        console.log(x);
-                        $('#number').val(x)
-                    }
-                });
-
-            });
-            var now = new Date();
-
-            var day = ("0" + now.getDate()).slice(-2);
-            var month = ("0" + (now.getMonth() + 1)).slice(-2);
-
-            var today = now.getFullYear() + "-" + (month) + "-" + (day);
-
-            $('#date').val(today);
-            $('#date2').val(today);
-            $('#date3').val(today);
-            $('#date4').val(today);
-            $('#date8').val(today);
-            console.log($('#date').val(today));
-            $("input[type='radio']").change(function () {
-                if ($(this).val() == "other") {
-                    $(".otherAnswer").show();
-                } else {
-                    $(".otherAnswer").hide();
-                }
-            });
-
-            $('#airline').change(function () {
-                var id = $('#airline').val();
-                console.log('insede airline');
-                console.log(id);
-                $.ajax({
-                    url: "{{url('/airline/airline_row')}}",
-                    data: { id: id },
-                    success: function (data) {
-                        console.log('sec');
-                        console.log(data);
-                        if (JSON.parse(data) === null)
-                            $('#code').html('null');
-
-                        else {
-                            $.each(JSON.parse(data), function (key, value) {
-                                for (var i = 0; i < value.length; i++) {
-                                    console.log('value[i]');
-                                    console.log(value[i]);
-                                    myJSON = JSON.parse(data);
-
-                                    $('#code').append($('<option >', {
-                                        value: value[i].id,
-                                        text: value[i].airline_code,
-                                        selected: true
-                                    }));
-                                }
-                                td = '';
-
-
-                            });
-                        }
-                    },
-                    error: function () {
-                        console.log('err');
-                    }
-                });
-
-            });
-
-
-            $('#code').change(function () {
-                var id = $('#code').val();
-                console.log('insede airline');
-                console.log(id);
-                $.ajax({
-                    url: "{{url('/airline/airline_row')}}",
-                    data: { id: id },
-                    success: function (data) {
-                        console.log('sec');
-                        console.log(data);
-                        if (JSON.parse(data) === null)
-                            $('#code').html('null');
-
-                        else {
-                            $.each(JSON.parse(data), function (key, value) {
-                                for (var i = 0; i < value.length; i++) {
-                                    console.log('value[i]');
-                                    console.log(value[i]);
-                                    myJSON = JSON.parse(data);
-
-                                    $('#airline').append($('<option >', {
-                                        value: value[i].id,
-                                        text: value[i].airline_name,
-                                        selected: true
-                                    }));
-                                }
-                                td = '';
-
-
-                            });
-                        }
-                    },
-                });
-
-            });
-            $('.provider').change(function () {
-                var id = $('.provider').val();
-                console.log('insede airline');
-                console.log(id);
-                $.ajax({
-                    url: "{{url('/suplier/suplier_row')}}",
-                    data: { id: id },
-                    success: function (data) {
-                        console.log('sec');
-                        console.log(data);
-                        if (JSON.parse(data) === null)
-                            $('.curency').html('null');
-
-                        else {
-                            $.each(JSON.parse(data), function (key, value) {
-                                for (var i = 0; i < value.length; i++) {
-                                    console.log('value[i]');
-                                    console.log(value[i]);
-                                    myJSON = JSON.parse(data);
-                                    td += '<option value="' + value[i].cur_id + '">' + value[i].cur_name + '</option>';
-                                    rm = value[i].supplier_remark;
-
-                                }
-                                $('.curency').html(td);
-                                $('#remark').html(rm);
-                                td = '';
-                            });
-                        }
-                    },
-                    error: function () {
-                        console.log('err');
-                    }
-                });
-
-            });
-
-
-        });
-        function myFunction() {
-            // Get the checkbox
-            var checkBox = document.getElementById("myCheck");
-            // Get the output text
-            var text = document.getElementById("date3");
-
-            // If the checkbox is checked, display the output text
-            if (checkBox.checked == true) {
-                text.style.display = "block";
-            } else {
-                text.style.display = "none";
-            }
-        }
-
-        function myFunctions() {
-            // Get the checkbox
-            var checkBox = document.getElementById("myChecks");
-            // Get the output text
-            var text = document.getElementById("date4");
-
-            // If the checkbox is checked, display the output text
-            if (checkBox.checked == true) {
-                text.style.display = "block";
-            } else {
-                text.style.display = "none";
-            }
-        }
-
-        function addHyphen(element) {
-            let ele = document.getElementById(element.id);
-            ele = ele.value.split('/').join('');    // Remove dash (-) if mistakenly entered.
-
-            let finalVal = ele.match(/.{1,3}/g).join('/');
-            document.getElementById(element.id).value = finalVal;
-        }
-        var form1 = document.getElementById("number");
-        var sub = document.getElementById("sub");
-
-
-        var mass2 = document.getElementById("helpId2");
-
-        var phoneNumber = "^[0-9]{10}$";
-        var ssnNumber = "^\d{0-9}$";
-        form1.addEventListener("keyup", function confirmName() {
-
-            if (form1.value.match(phoneNumber)) {
-                form1.style.borderColor = "green";
-                return true;
-            }
             else {
-                mass2.innerHTML = "*Enter 10 number  ";
-                form1.style.borderColor = "red";
-                return false;
-            }
-        });
-    </script>
+                $.each(JSON.parse(data), function (key, value) {
+                    for (var i = 0; i < value.length; i++) {
+                        console.log('value[i]');
+                        console.log(value[i]);
+                        myJSON = JSON.parse(data);
 
-    @endsection
+                        $('#code').append($('<option >', {
+                            value: value[i].id,
+                            text: value[i].airline_code,
+                            selected: true
+                        }));
+                    }
+                    td = '';
+
+
+                });
+            }
+        },
+        error: function () {
+            console.log('err');
+        }
+    });
+
+});
+
+
+$('#code').change(function () {
+    var id = $('#code').val();
+    console.log('insede airline');
+    console.log(id);
+    $.ajax({
+        url: "{{url('/airline/airline_row')}}",
+        data: { id: id },
+        success: function (data) {
+            console.log('sec');
+            console.log(data);
+            if (JSON.parse(data) === null)
+                $('#code').html('null');
+
+            else {
+                $.each(JSON.parse(data), function (key, value) {
+                    for (var i = 0; i < value.length; i++) {
+                        console.log('value[i]');
+                        console.log(value[i]);
+                        myJSON = JSON.parse(data);
+
+                        $('#airline').append($('<option >', {
+                            value: value[i].id,
+                            text: value[i].airline_name,
+                            selected: true
+                        }));
+                    }
+                    td = '';
+
+
+                });
+            }
+        },
+    });
+
+});
+$('.provider').change(function () {
+    var id = $('.provider').val();
+    console.log('insede airline');
+    console.log(id);
+    $.ajax({
+        url: "{{url('/suplier/suplier_row')}}",
+        data: { id: id },
+        success: function (data) {
+            console.log('sec');
+            console.log(data);
+            if (JSON.parse(data) === null)
+                $('.curency').html('null');
+
+            else {
+                $.each(JSON.parse(data), function (key, value) {
+                    for (var i = 0; i < value.length; i++) {
+                        console.log('value[i]');
+                        console.log(value[i]);
+                        myJSON = JSON.parse(data);
+                        td += '<option value="' + value[i].cur_id + '">' + value[i].cur_name + '</option>';
+                        rm = value[i].supplier_remark;
+
+                    }
+                    $('.curency').html(td);
+                    $('#remark').html(rm);
+                    td = '';
+                });
+            }
+        },
+        error: function () {
+            console.log('err');
+        }
+    });
+
+});
+
+
+});
+function myFunction() {
+// Get the checkbox
+var checkBox = document.getElementById("myCheck");
+// Get the output text
+var text = document.getElementById("date3");
+
+// If the checkbox is checked, display the output text
+if (checkBox.checked == true) {
+    text.style.display = "block";
+} else {
+    text.style.display = "none";
+}
+}
+
+function myFunctions() {
+// Get the checkbox
+var checkBox = document.getElementById("myChecks");
+// Get the output text
+var text = document.getElementById("date4");
+
+// If the checkbox is checked, display the output text
+if (checkBox.checked == true) {
+    text.style.display = "block";
+} else {
+    text.style.display = "none";
+}
+}
+
+function addHyphen(element) {
+let ele = document.getElementById(element.id);
+ele = ele.value.split('/').join('');    // Remove dash (-) if mistakenly entered.
+
+let finalVal = ele.match(/.{1,3}/g).join('/');
+document.getElementById(element.id).value = finalVal;
+}
+var form1 = document.getElementById("number");
+var sub = document.getElementById("sub");
+
+
+var mass2 = document.getElementById("helpId2");
+
+var phoneNumber = "^[0-9]{10}$";
+var ssnNumber = "^\d{0-9}$";
+form1.addEventListener("keyup", function confirmName() {
+
+if (form1.value.match(phoneNumber)) {
+    form1.style.borderColor = "green";
+    return true;
+}
+else {
+    mass2.innerHTML = "*Enter 10 number  ";
+    form1.style.borderColor = "red";
+    return false;
+}
+});
+</script>
+
+@endsection

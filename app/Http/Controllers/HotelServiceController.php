@@ -237,7 +237,7 @@ public function add_hotel( Request $req)
            'body'=>$message ,
            'status'=>0 ,
            'main_service'=>5,
-           'servic_id'=>$bus_id,
+           'servic_id'=>$hotel_id,
            'created_at'=>$date,
            'updated_at'=>$date1,
            ]

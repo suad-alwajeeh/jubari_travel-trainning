@@ -251,7 +251,7 @@
                                 <div class="form-group" data-select2-id="44">
 
                                     <input type="number" style="width:100%;" required name="provider_cost"
-                                        class="form-control  curency" />
+                                        class="form-control  " />
                                 </div>
                             </div>
                             <div class="form-group col-md-12 col-sm-12 col-xm-12">

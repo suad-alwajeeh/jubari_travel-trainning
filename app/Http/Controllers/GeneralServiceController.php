@@ -204,7 +204,7 @@ if( $loged_id==$req->due_to_customer )
            'body'=>$message ,
            'status'=>0 ,
            'main_service'=>7,
-           'servic_id'=>$bus_id,
+           'servic_id'=>$gen_id,
            'created_at'=>$date,
            'updated_at'=>$date1,
            ]

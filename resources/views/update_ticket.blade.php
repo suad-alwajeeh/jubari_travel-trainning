@@ -37,7 +37,7 @@
                                 <div class="form-group col-md-6 col-sm-12 col-xm-12">
                                     <label class="col-md-12 col-sm-12 col-xm-12">Issued Date: </label>
                                     <div class="form-group " data-select2-id="44">
-                                        <input type="hidden" value="{{$ticket->id}}" name="id">
+                                        <input type="hidden" value="{{$ticket->tecket_id}}" name="id">
                                         <input required type="date" class="form-control " name="Issue_date"
                                             value="{{ \Carbon\Carbon::createFromDate($ticket->Issue_date)->format('Y-m-d')}}" />
                                     </div>
@@ -65,23 +65,15 @@
                                     </div>
                                 </div>
 
-                                @if ($ticket->dep_date2==null)
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideB(this)" name="aorb" class=" m-2" checked>one Way
-                                </div>
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideA(this)" name="aorb" class=" m-2"
-                                        value="other">RoundTrip
-                                </div>
-                                @else
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideB(this)" name="aorb" class=" m-2">one Way
-                                </div>
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideA(this)" name="aorb" class=" m-2" checked
-                                        value="other">RoundTrip
-                                </div>
-                                @endif
+                              
+                                <div class="form-group col-2">
+                                <input type="radio" onchange="hideB(this)" name="aorb" class=" m-2" checked>one Way
+                            </div>
+                            <div class="form-group col-2">
+                                <input type="radio" onchange="hideA(this)" name="aorb" class=" m-2"
+                                    value="other">RoundTrip
+                            </div>
+                               
 
                             </div>
 
@@ -139,7 +131,7 @@
 
                                         <input required type="text" class="form-control " style="width:100%;"
                                             name="ticket_number" value="{{$ticket->ticket_number}}" id="number" />
-                                        <button id="generate" class="btn btncolor p-2 m-2"> Generate</button>
+                                            <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
 
                                     </div>
                                 </div>

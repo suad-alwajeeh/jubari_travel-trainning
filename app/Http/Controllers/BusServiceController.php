@@ -185,7 +185,7 @@ public function add_bus( Request $req)
            'body'=>$message ,
            'status'=>0 ,
            'main_service'=>2,
-           'servic_id'=>$bus_id,
+           'servic_id'=>$bus_id2,
            'created_at'=>$date,
            'updated_at'=>$date1,
            ]
