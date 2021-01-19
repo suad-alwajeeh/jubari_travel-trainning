@@ -398,7 +398,7 @@ $busher='';
 
       ]); 
     }
-return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Insert');
+return redirect('/service/show_ticket/1')->with('seccess','Seccess Data Update');
 }
 
 

@@ -136,22 +136,43 @@ array_push($mv,$ss);
   }}
   for( $i=0;$i<sizeof($mv);$i++){
  
- if ($mv[$i][$x]==='Dep_city') {
+ if ($mv[$i][$x]==='Dep_city1') {
   $Dep_city=true;
   break;
  }}
  for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='arr_city') {
+if ($mv[$i][$x]==='arr_city1') {
 $arr_city=true;
 break;
 }}
 for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='dep_date') {
+if ($mv[$i][$x]==='dep_date1') {
 $dep_date=true;
 break;
 }}
+
+for( $i=0;$i<sizeof($mv);$i++){
+ 
+    if ($mv[$i][$x]==='Dep_city2') {
+     $Dep_city2=true;
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
+   
+   if ($mv[$i][$x]==='arr_city2') {
+   $arr_city2=true;
+   break;
+   }}
+   for( $i=0;$i<sizeof($mv);$i++){
+   
+   if ($mv[$i][$x]==='dep_date') {
+   $dep_date2=true;
+   break;
+   }}
+
+
 for( $i=0;$i<sizeof($mv);$i++){
 
 if ($mv[$i][$x]==='due_to_supp') {

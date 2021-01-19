@@ -329,27 +329,27 @@ public function add_remark($col,$old,$new,$status){
 
   if($main==2){
    $update= BusService::where('bus_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about bus servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesBusLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about bus servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==3){
    $update= CarService::where('car_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about CAR servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesCarLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about CAR servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==1){
    $update= TicketService::where('tecket_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about TICKET servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesTicketLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about TICKET servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==7){
    $update= GeneralService::where('gen_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about GENERAL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesGenLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about GENERAL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==4){
    $update= MedicalService::where('med_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about MEDICAL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesMedLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send error about MEDICAL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==5){
    $update= HotelService::where('hotel_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
-   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/show_remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send Error about HOTEL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+   $message5='<div class=dropdown-divider></div><a onclick=status_notify("'.$service.'",'.$from.','.$to.') href=/salesHotelLog  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>the Sales Manager send Error about HOTEL servic number : '.$number.' <span class=float-right text-muted text-sm>'.$date.'</span></a>';
    unset($_SESSION['remark']);
 }else  if($main==6){
    $update= VisaService::where('visa_id',$service)->update(['service_status'=>1,'errorlog'=>1]);
