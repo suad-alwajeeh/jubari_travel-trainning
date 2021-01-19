@@ -345,7 +345,7 @@ echo"<td>  $item->passnger_currency</td>";
                         <td>
                         
                               <a 
-                            href="{{ url('/sales/update_med/'.$item->med_id) }}"><i class="fa fa-pencil-alt text-primary"
+                            href="{{ url('/sales/up_err_med/'.$item->med_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>

@@ -56,8 +56,9 @@
                         <th>Passenger Name</th>
                         <th>General Status </th>
                         <th>Voucher Number </th>
-                        <th>Offered Status </th>
                         <th>Info</th>
+                        <th>Offered Status </th>
+
                         <th>Supplier</th>
                         <th>Supplier Cost</th>
                         <th>Supplier Cuurency</th>
@@ -359,7 +360,7 @@ echo"<td>  $item->passnger_currency</td>";
                         <td>
                         
                               <a 
-                            href="{{ url('/sales/update_gen/'.$item->gen_id) }}"><i class="fa fa-pencil-alt text-primary"
+                            href="{{ url('/sales/up_err_gen/'.$item->gen_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>
@@ -385,6 +386,7 @@ echo"<td>  $item->passnger_currency</td>";
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

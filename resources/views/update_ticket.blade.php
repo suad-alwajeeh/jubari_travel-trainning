@@ -32,7 +32,6 @@
                         @csrf
 
                         <div class="around">
-                            <h2 class="form-title">Ticket Info</h2>
                             @foreach($tickets as $ticket)
                             <div class="form-row col-md-12 col-sm-12 col-xm-12">
                                 <div class="form-group col-md-6 col-sm-12 col-xm-12">

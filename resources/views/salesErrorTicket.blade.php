@@ -469,7 +469,7 @@ else
                         <td>
                          
                               <a class="" 
-                            href="{{ url('/sales/update_bus/'.$item->bus_id) }}"><i class="fa fa-pencil-alt text-primary"
+                            href="{{ url('/sales/up_err_ticket/'.$item->tecket_id) }}"><i class="fa fa-pencil-alt text-primary"
                               aria-hidden="true"></i></a>                        </td>
                       </tr>
                       <?php $i++ ?>

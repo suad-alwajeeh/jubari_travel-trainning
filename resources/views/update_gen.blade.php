@@ -42,6 +42,7 @@
                                         value="{{ \Carbon\Carbon::createFromDate($gen->Issue_date)->format('Y-m-d')}}" />
                                 </div>
                             </div>
+
                             <div class="form-group col-md-6 col-sm-12 col-xm-12">
                                 <label class="col-md-12 col-xm-12">Reference </label>
                                 <div class="form-group">
@@ -85,23 +86,23 @@
                                         id="code" style="width: 100%;" data-select2-id="1" tabindex="0"
                                         aria-hidden="true">
 
-                                        @if($gen->service_status==1)
+                                        @if($gen->general_status==1)
                                         <option value="1" selected>OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->service_status==2)
+                                        @elseif($gen->general_status==2)
                                         <option value="1">OK</option>
                                         <option value="2" selected>Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->service_status==3)
+                                        @elseif($gen->general_status==3)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3" selected>Void</option>
                                         <option value="4">Refund</option>
 
-                                        @elseif($gen->service_status==4)
+                                        @elseif($gen->general_status==4)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
@@ -163,7 +164,8 @@
                                         name="gen_info" value="{{$gen->gen_info}}" />
                                 </div>
                             </div>
-                            </div< @endforeach <div class="around col-md-12 col-sm-12 col-xm-12 m-3">
+                            </div> @endforeach 
+                            <div class="around col-md-12 col-sm-12 col-xm-12 m-3">
                             <div class="col-md-5 col-sm-12 col-xm-12 d-inline-block">
                                 <h2 class="form-title">Provider Info </h2>
                                 <div class="form-group col-md-12 col-sm-12 col-xm-12">
