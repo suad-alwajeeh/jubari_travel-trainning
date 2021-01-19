@@ -88,13 +88,15 @@ class uuserController extends Controller
            public function employee_dept($id)
            {  
 
-            $affected = DB::select('select * from employees where dept_id=? and emp_id not in(select id from users where is_delete=0 )',[$id]);
+            $affected = DB::select('select * from employees where deleted=0 and dept_id=? and emp_id not in(select id from users )',[$id]);
             echo json_encode($affected);
           }
           public function employee_data($id)
            {  $affected = DB::table('employees')->where('emp_id',$id)->get();            
             echo json_encode($affected);
           }
+                  //display page fun**********************************
+
     public function display()
     {
         $affected = users::where('users.is_delete',0)
@@ -123,6 +125,7 @@ class uuserController extends Controller
         ->select('users.id as u_id');
         return view('user_display',['data'=>$affected,'data1'=>$ststus]);
         }
+        //*******************************************add page fun
     public function add()
     {
         $affected1 = Department::where([['is_active',1],['deleted',0]])->get();
@@ -145,7 +148,7 @@ class uuserController extends Controller
       $user->id=$req->u_id;
       $user->name=$req->name;
       $user->email=$req->email;
-      $user->how_add_it=$req->how_add_it;
+      $user->how_add_it=$req->how_create_it;
       $user->is_active=$req->is_active;
       $user->password=Hash::make($PASSWORD);
       $user->pass=$PASSWORD;

@@ -98,7 +98,7 @@
             return false;
         }
     });
-    form1[1].addEventListener("keyup", function confirmName() {
+   /* form1[1].addEventListener("keyup", function confirmName() {
 
         if (form1[1].value.match(nameFormat)) {
             form1[1].style.borderColor = "green";
@@ -109,7 +109,7 @@
             form1[1].style.borderColor = "red";
             return false;
         }
-    });
+    });*/
    
 form1[3].addEventListener("keyup", function confirmName() {
 

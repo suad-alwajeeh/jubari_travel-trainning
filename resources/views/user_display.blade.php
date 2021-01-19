@@ -83,12 +83,6 @@
       <div class="modal fade" id="myModalair{{$item->u_id}}">
   <div class="modal-dialog">
     <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <button type="button"  class="close" data-dismiss="modal">&times;</button>
-      </div>
-
       <!-- Modal body -->
       <div class="modal-body">
       <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete role ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger so_form_btn" style="float:none" onclick="delete{{$item->u_id}}()" style="width:15%;">ok</button></div></div>

@@ -38,7 +38,7 @@
      <small id="helpId2" class="text-muted">*must select employee</small>
 
     </div>
-    <input hidden="hidden" type="text" class="form-control" value="{{ Auth::user()->id }}"  name="how_add_it">
+    <input hidden="hidden" type="text" class="form-control" value="{{ Auth::user()->id }}"  name="how_create_it">
 
     <div class="form-group mb-3 col-md-4 col-sm-12">
       <label for="is_active">is_active</label>
