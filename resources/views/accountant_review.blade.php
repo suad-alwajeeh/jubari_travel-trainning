@@ -24,28 +24,32 @@
                 <button onclick="add_color('ff38ef4f')" class="btn bookmarkp"></button>
                 <button onclick="add_color('fff')" class="btn bookmarkw"></button>
           </div>
-                   <div class="form-group col-1" style="display:none">
+                   <div class="form-group col-1" style="display:">
                   <label>service</label>
-                  <select onchange="filter_item('service_id','=')" id="service_id" class="form-control select2" style="width: 100%;">
-                    <option selected="selected">all</option>
+                  <select onchange="filter_item('filter_m_ser','=')" id="filter_m_ser" class="form-control select2" style="width: 100%;">
+                  
+                  <option value="no"></option>
+                  <option value="0">all</option>
                     @foreach($data3 as $d3)
                     <option value="{{$d3->ser_id}}">{{$d3->ser_name}}</option>
                     @endforeach
                   </select>
                 </div>
-                <div class="form-group col-3">
+                <div class="form-group col-1">
                   <label>status</label>
-                  <select onchange="filter_item('service_status','in')" id="service_status" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-                  <option value="(1,2,3,4)">all</option>
-                  <option value="(1)">ok</option>
-                  <option value="(2)">issue</option>
-                  <option value="(3)">void</option>
-                  <option value="(4)">refund</option>
+                  <select onchange="filter_item('ses_status','in')" id="ses_status" class="form-control select2" data-placeholder="Select a State" style="width: 100%;">
+                  <option value="no"></option>
+                  <option value="1,2,3,4">all</option>
+                  <option value="1">ok</option>
+                  <option value="2">issue</option>
+                  <option value="3">void</option>
+                  <option value="4">refund</option>
                   </select>
                 </div>
                    <div class="form-group col-2">
                   <label>issue date</label>
                   <select onchange="filter_item('issue_date','=')" id="issue_date" class="form-control select2" style="width: 100%;">
+                  <option value="no"></option>
                   <option value="CURRENT_DATE()">today</option>
                   <option value="CURRENT_DATE()-1">yestrday</option>
                   </select>
@@ -53,7 +57,7 @@
                    <div class="form-group col-2">
                   <label>issue by</label>
                   <select onchange="filter_item('user_id','=')" id="user_id" class="form-control select2" style="width: 100%;">
-                  <option value="0">select employee</option>
+                  <option value="no"></option>
                   @foreach($data5 as $d5)
                     <option value="{{$d5->u_id}}">{{$d5->u_name}}</option>
                   @endforeach
@@ -62,7 +66,7 @@
                    <div class="form-group col-2">
                   <label>provider name</label>
                   <select onchange="filter_item('due_to_supp','=')" id="due_to_supp" class="form-control select2" style="width: 100%;">
-                  <option value="0">select provider</option>
+                  <option value="no"></option>
                    @foreach($data4 as $d4)
                     <option value="{{$d4->s_no}}">{{$d4->supplier_name}}</option>
                   @endforeach
@@ -70,8 +74,8 @@
                 </div>
                    <div class="form-group col-1">
                   <label> currency</label>
-                  <select onchange="filter_item('cur_id','=')" id="cur_id" class="form-control select2" style="width: 100%;">
-                  <option value="0">select currency</option>
+                  <select onchange="filter_item('ses_cur_id','=')" id="ses_cur_id" class="form-control select2" style="width: 100%;">
+                 <option value="no"></option>
                   @foreach($data6 as $d6)
                   <option value="{{$d6->cur_id}}">{{$d6->cur_name}}</option>
                   @endforeach             
@@ -98,7 +102,7 @@
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <div class="table-responsive">
-                <table class="table table-striped">
+                <table id="su_table_filter"  class="table table-striped">
                 
     <thead>
       <tr>
@@ -109,16 +113,16 @@
       <th>type</th>
       <th>issuedDate</th>
       <th>issuedBy</th>
-        <th>passenger</th>
-        <th>provider</th>
-        <th>cost</th>
-        <th>c</th>
-        <th>cost</th>
+      <th>passenger</th>
+      <th>provider</th>
+      <th>cost</th>
+      <th>c</th>
+      <th>cost</th>
         <th>status</th>
         <th>opration</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="filter_data_come_here">
 
     <?php $i=1;?>
 @forelse($data as $lat)
@@ -254,23 +258,38 @@
 
 <script>
   function get_filter(){
-    alert('hi');
+
     $.ajax({
      url:'/accountant/filter_do',
        type:'get',
        dataType:'json',
   success:function(response){
   if(response.length==0){
-   alert("not found thing");
+    $('#filter_data_come_here').html('<tr><td class=text-center colspan="10">There is No data in table...<td></tr>');
   }else{
     alert("found thing");
+    $('#filter_data_come_here').html('');
+    $('#filter_data_come_here').append('');
+               $.map(response ,function(k,v){
+                  console.log(k.t_id);
+                  for(var i in k){
+                    console.log(k[i].t_id);
+                  }
+                  
+                  $('#filter_data_come_here').append('<option value="'+k.t_id+'">'+k.t_id+'</option>');
+
+               });
 
   }
   } 
     });
+  
   }
   function filter_item(col,op){
-    var val=$('#'+col).val();    
+    var val=$('#'+col).val();
+    if(col=="ses_status"){
+val='('+$('#'+col).val()+')';
+    }
     $.ajax({
      url:'/accountant/filter_item/'+col+'/'+op+'/'+val,
        type:'get',
@@ -373,12 +392,12 @@ function display_data(id,type){
      tic+='<tr><td>airline_name</td><td>'+response[0].airline_name+'</td><td class="su_t_h"><input id="airline_name" oninput=send("airline_name","'+response[0].airline_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("airline_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("airline_name")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>ticket_number</td><td>'+response[0].ticket_number+'</td><td class="su_t_h"><input id="ticket_number" oninput=send("ticket_number","'+response[0].ticket_number+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("ticket_number")> <i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("ticket_number")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>ticket</td><td>'+response[0].ticket+'</td><td class="su_t_h"><input id="ticket" oninput=send("ticket","'+response[0].ticket+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("ticket")> <i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("ticket")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>Dep_city1</td><td>'+response[0].Dep_city1+'</td><td class="su_t_h"><input id="Dep_city1" oninput=send("Dep_city1","'+response[0].Dep_city1+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>Dep_city1</td><td>'+response[0].Dep_city1+'</td><td class="su_t_h"><input id="Dep_city1" oninput=send("Dep_city1","'+response[0].Dep_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>Dep_city2</td><td>'+response[0].Dep_city2+'</td><td class="su_t_h"><input id="Dep_city2" oninput=send("Dep_city2","'+response[0].Dep_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='</tbody></table></div><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
-     tic+='<tr><td>arr_city1</td><td>'+response[0].arr_city1+'</td><td class="su_t_h"><input id="arr_city1" oninput=send("arr_city1","'+response[0].arr_city1+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>arr_city1</td><td>'+response[0].arr_city1+'</td><td class="su_t_h"><input id="arr_city1" oninput=send("arr_city1","'+response[0].arr_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>arr_city2</td><td>'+response[0].arr_city2+'</td><td class="su_t_h"><input id="arr_city2" oninput=send("arr_city2","'+response[0].arr_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>dep_date1</td><td>'+response[0].dep_date1+'</td><td class="su_t_h"><input id="dep_date1" oninput=send("dep_date1","'+response[0].dep_date1+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>dep_date1</td><td>'+response[0].dep_date1+'</td><td class="su_t_h"><input id="dep_date1" oninput=send("dep_date1","'+response[0].dep_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date1")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>dep_date2</td><td>'+response[0].dep_date2+'</td><td class="su_t_h"><input id="dep_date2" oninput=send("dep_date2","'+response[0].dep_date2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date2")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>provider</td><td>'+response[0].supplier_name+'</td><td class="su_t_h"><input id="due_to_supp" oninput=send("due_to_supp","'+response[0].due_to_supp+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("due_to_supp")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("due_to_supp")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>provider_cost</td><td>'+response[0].provider_cost+'</td><td class="su_t_h"><input id="provider_cost" oninput=send("provider_cost","'+response[0].provider_cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("provider_cost")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("provider_cost")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -644,7 +663,7 @@ function sendremark(){
   var s=$('#service_id').val();
   var n=$('#num').val();
   var to=$('#to').val();
-  
+  alert(s);
   var from={{ Auth::user()->id }};
   $.ajax({
              type:'get',

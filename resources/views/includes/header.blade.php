@@ -160,7 +160,7 @@
   <script>
   function status_notify(s,f,t){
     $.ajax({
-url:'/status_notify/'+s+'/'+f+'/'+t+'/'+1,
+url:'/status_notify/'+s+'/'+f+'/'+t+'/1',
 type:'get',
 dataType:'json',
 success:function(response){

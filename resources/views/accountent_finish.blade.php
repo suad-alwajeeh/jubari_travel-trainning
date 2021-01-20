@@ -36,7 +36,7 @@
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <div class="table-responsive">
-                <table class="table table-striped">
+                <table id="su_table_filter" class="table table-striped" >
                 
     <thead>
       <tr>

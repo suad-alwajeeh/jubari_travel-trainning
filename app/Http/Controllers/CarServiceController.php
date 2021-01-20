@@ -31,7 +31,7 @@ public function show_car($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['car']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id')
+->join('currency','currency.ses_cur_id','=','car_services.ses_cur_id')
 ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->orderBy('car_services.created_at','DESC')->paginate(10);
 return view('show_car',$data);
 }  
@@ -42,7 +42,7 @@ public function sent_car($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['car']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id')
+->join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->where(['car_services.service_status'=>$id,'car_services.deleted'=>0,'car_services.errorlog'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>0])->orderBy('car_services.created_at','DESC')->paginate(10);
 return view('sent_car',$data);
 } 
@@ -72,7 +72,7 @@ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
 
-$data['cars']=CarService::join('currency','currency.cur_id','=','car_services.cur_id')
+$data['cars']=CarService::join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','car_services.due_to_supp')->where('car_id',$id)->get();
 
 return view('update_car',$data);
@@ -88,7 +88,7 @@ $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppli
 $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-$data['data']=CarService::join('currency','currency.cur_id','=','car_services.cur_id')
+$data['data']=CarService::join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
 ->join('employees','employees.emp_id','=','car_services.due_to_customer')
 ->join('logs','logs.service_id','=','car_services.car_id')
@@ -181,13 +181,13 @@ $car->refernce=$req->refernce;
 $car->passenger_name=$req->passenger_name;
 $car->voucher_number =$req->voucher_number;
 $car->car_info =$req->car_info;
-$car->car_status =$req->car_status;
+$car->ses_status =$req->car_status;
 $car->Dep_city =$req->Dep_city;
 $car->arr_city =$req->arr_city;
 $car->dep_date =$req->dep_date;
 $car->due_to_supp =$req->due_to_supp;
 $car->provider_cost=$req->provider_cost;
-$car->cur_id=$req->cur_id;
+$car->ses_cur_id=$req->cur_id;
 $car->due_to_customer =$req->due_to_customer ;
 $car->cost =$req->cost ;
 $car->service_id=3;
@@ -297,9 +297,9 @@ $img.=$attchmentName.',';
 $car::where('car_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'car_status'=>$req->car_status,'car_info'=>$req->car_info,
+'ses_status'=>$req->car_status,'car_info'=>$req->car_info,
 'voucher_number'=>$req->voucher_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
 'attachment'=>$img ,'errorlog'=>0
 
@@ -310,9 +310,9 @@ else{
 $car::where('car_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'car_status'=>$req->car_status,'car_info'=>$req->car_info,
+'ses_status'=>$req->car_status,'car_info'=>$req->car_info,
 'voucher_number'=>$req->voucher_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -330,9 +330,9 @@ $car=new CarService;
 $car::where('car_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'car_status'=>$req->car_status,'car_info'=>$req->car_info,
+'ses_status'=>$req->car_status,'car_info'=>$req->car_info,
 'voucher_number'=>$req->voucher_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>3,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -374,7 +374,7 @@ public function show_add_emp()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id')
+->join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','car_services.due_to_customer')
 ->where(['car_services.service_status'=>1,'car_services.deleted'=>0,'car_services.user_id'=> $loged_Id,'car_services.user_status'=>1])
 ->orderBy('car_services.created_at','DESC')->paginate(10);
@@ -385,7 +385,7 @@ return view('carError',$data);
 public function errorCar(){
 $loged_Id=  Auth::user()->id ;
 $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id') 
+->join('currency','currency.cur_id','=','car_services.ses_cur_id') 
 ->join('employees','employees.emp_id','=','car_services.due_to_customer')
 ->join('logs','logs.service_id','=','car_services.car_id')
 ->where(['car_services.errorlog'=>1,'car_services.user_status'=>0,'logs.status'=>0,'car_services.user_id'=>$loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
@@ -401,7 +401,7 @@ public function reject_car()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id')
+->join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->where(['car_services.deleted'=>0,'car_services.errorlog'=>2,'car_services.user_status'=>1,'car_services.user_id'=> $loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
 return view('reject_car',$data);
 } 
@@ -412,7 +412,7 @@ public function emp_car(){
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-->join('currency','currency.cur_id','=','car_services.cur_id')
+->join('currency','currency.cur_id','=','car_services.ses_cur_id')
 ->where(['car_services.deleted'=>0,'car_services.user_status'=>1,'car_services.errorlog'=>0,'car_services.due_to_customer'=>$loged_Id])->orderBy('car_services.created_at','DESC')->paginate(10);
 //json_decode
 return view('emp_car',$data);

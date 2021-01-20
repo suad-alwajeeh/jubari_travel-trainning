@@ -228,11 +228,6 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
   Route::get('/accountant/add_bookmark/{m}/{s}/{c}/{h}','accountantController@add_bookmark');
   Route::get('/accountant/remove_bookmark/{m}/{s}/{h}','accountantController@remove_bookmark');
   Route::get('/accountant/display_remark_body/{m}/{s}','accountantController@display_remark_body');
-  Route::get('/accountant/filter_item/{col}/{op}/{val}','accountantController@add_filer');
-  Route::get('/accountant/DISPLAY_FILTER1','accountantController@DISPLAY_FILTER1');
-  Route::get('/accountant/filter_do','accountantController@display_filter');
-  Route::get('/accountant/clear_session','accountantController@clear_session');
-  Route::get('/accountant/report/{id}','accountantController@report_desplay');
 
 });
 Route::group(['middleware' => ['auth','role:sale_manager']], function() {
@@ -374,6 +369,7 @@ Route::get('/service/generate_ticket','TicketServiceController@generate');
 Route::get('/service/generate_visa','VisaServiceController@generate');
 Route::get('/service/generate_gen','GeneralServiceController@generate');
 Route::get('/service/generate_med','MedicalServiceController@generate');
+  Route::get('/suplier/suplier_row','SupplierController@show_row');
 
 });
 Route::group(['middleware' => ['auth','role:sale_executive|sale_manager']], function() {
@@ -556,12 +552,15 @@ Route::get('/service/generate_gen','GeneralServiceController@generate');
 Route::get('/service/generate_med','MedicalServiceController@generate');
   Route::get('/suplier/suplier_row','SupplierController@show_row');
 });
+Route::get('/suplier/suplier_row','SupplierController@show_row');
 
 Route::get('/clear-cache',function(){
   Artisan::call('cache:clear');
   return 'cache cleean';
 });
+  Route::get('/airline/airline_row','AirlineController@show_row');
 
+  Route::get('/suplier/suplier_row','SuplierController@show_row');
 Route::get('/index', function () {
   return view('index');
 });

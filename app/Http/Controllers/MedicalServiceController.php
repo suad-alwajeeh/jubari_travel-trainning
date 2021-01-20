@@ -40,7 +40,7 @@ public function show_med($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['med']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_ses_cur_id')
 ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
 return view('show_med',$data);
 } 
@@ -50,7 +50,7 @@ public function sent_med($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['med']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->where(['medical_services.service_status'=>$id,'medical_services.deleted'=>0,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
 return view('sent_med',$data);
 } 
@@ -63,7 +63,7 @@ $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppli
 $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-$data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
+$data['meds']=MedicalService::join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')->where('med_id',$id)->get();
 
 return view('update_med',$data);
@@ -81,7 +81,7 @@ $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppli
 $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-$data['data']=MedicalService::join('currency','currency.cur_id','=','medical_services.cur_id')
+$data['data']=MedicalService::join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
 ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
 ->join('logs','logs.service_id','=','medical_services.med_id')
@@ -172,11 +172,11 @@ $medical->refernce=$req->refernce;
 $medical->passenger_name=$req->passenger_name;
 $medical->document_number=$req->document_number;
 $medical->med_info=$req->med_info;
-$medical->report_status=$req->report_status;
+$medical->ses_status=$req->report_status;
 $medical->from_city=$req->from_city;
 $medical->due_to_supp =$req->due_to_supp;
 $medical->provider_cost=$req->provider_cost;
-$medical->cur_id=$req->cur_id;
+$medical->ses_cur_id=$req->cur_id;
 $medical->due_to_customer =$req->due_to_customer ;
 $medical->cost =$req->cost ;
 $medical->service_id=4;
@@ -273,9 +273,9 @@ $img='';
 $medical::where('med_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'report_status'=>$req->report_status,'med_info'=>$req->med_info,
+'ses_status'=>$req->report_status,'med_info'=>$req->med_info,
 'document_number'=>$req->document_number,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>4,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -291,9 +291,9 @@ $img='';
 $medical::where('med_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'report_status'=>$req->report_status,'med_info'=>$req->med_info,
+'ses_status'=>$req->report_status,'med_info'=>$req->med_info,
 'document_number'=>$req->document_number,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>4,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -331,7 +331,7 @@ public function errorMed(){
 $loged_Id=  Auth::user()->id ;
 $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
 ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->join('logs','logs.service_id','=','medical_services.med_id')
 ->where(['medical_services.errorlog'=>1,'medical_services.user_status'=>0,'medical_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('medical_services.created_at','DESC')->paginate(10);
 //json_decode
@@ -342,7 +342,7 @@ public function emp_med(){
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->where(['medical_services.deleted'=>0,'medical_services.user_status'=>1,'medical_services.errorlog'=>0,'medical_services.due_to_customer'=>$loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
 //json_decode
 return view('emp_med',$data);
@@ -352,7 +352,7 @@ public function show_add_emp()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
 ->where(['medical_services.service_status'=>1,'medical_services.deleted'=>0,'medical_services.user_id'=> $loged_Id,'medical_services.user_status'=>1])
 ->orderBy('medical_services.created_at','DESC')->paginate(10);
@@ -449,7 +449,7 @@ public function reject_med()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-->join('currency','currency.cur_id','=','medical_services.cur_id')
+->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
 ->where(['medical_services.deleted'=>0,'medical_services.errorlog'=>2,'medical_services.user_status'=>1,'medical_services.user_id'=> $loged_Id])->orderBy('medical_services.created_at','DESC')->paginate(10);
 return view('reject_med',$data);
 } 

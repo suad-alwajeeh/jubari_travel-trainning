@@ -97,7 +97,7 @@ $affected1=['id'=>'ticket'];
        //bus
        $affected1=['id'=>'bus'];
        $affected =BusService::where(['service_status'=>2,'errorlog'=>0])
-       ->join('currency','bus_services.cur_id','currency.cur_id')
+       ->join('currency','bus_services.ses_cur_id','currency.cur_id')
        ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
        ->join('users','bus_services.user_id','users.id')
        ->select ('bus_services.bus_id as t_id' ,
@@ -224,32 +224,32 @@ $affected1=['id'=>'ticket'];
      
          public function bus($id){
            //bus
-           $affected =DB::select('SELECT * FROM `bus_services` join users on bus_services.user_id=users.id join suppliers on bus_services.due_to_supp=suppliers.s_no JOIN currency on bus_services.cur_id=currency.cur_id where bus_services.bus_id="'.$id.'"');
+           $affected =DB::select('SELECT * FROM `bus_services` join users on bus_services.user_id=users.id join suppliers on bus_services.due_to_supp=suppliers.s_no JOIN currency on bus_services.ses_cur_id=currency.cur_id where bus_services.bus_id="'.$id.'"');
               echo json_encode($affected);
               }
               public function car($id){
                  //car
-                 $affected =DB::select('SELECT * FROM `car_services` join users on car_services.user_id=users.id join suppliers on car_services.due_to_supp=suppliers.s_no JOIN currency on car_services.cur_id=currency.cur_id where car_services.car_id="'.$id.'"');
+                 $affected =DB::select('SELECT * FROM `car_services` join users on car_services.user_id=users.id join suppliers on car_services.due_to_supp=suppliers.s_no JOIN currency on car_services.ses_cur_id=currency.cur_id where car_services.car_id="'.$id.'"');
                     echo json_encode($affected);
                     }
          public function general($id){
                        //general
-              $affected =DB::select('SELECT * FROM `general_services` join users on general_services.user_id=users.id join suppliers on general_services.due_to_supp=suppliers.s_no JOIN currency on general_services.cur_id=currency.cur_id where general_services.gen_id="'.$id.'"');
+              $affected =DB::select('SELECT * FROM `general_services` join users on general_services.user_id=users.id join suppliers on general_services.due_to_supp=suppliers.s_no JOIN currency on general_services.ses_cur_id=currency.cur_id where general_services.gen_id="'.$id.'"');
                           echo json_encode($affected);
                      } 
             public function medical($id){
                        //medical
-              $affected =DB::select('SELECT * FROM `medical_services` join users on medical_services.user_id=users.id join suppliers on medical_services.due_to_supp=suppliers.s_no JOIN currency on medical_services.cur_id=currency.cur_id where medical_services.med_id="'.$id.'"');
+              $affected =DB::select('SELECT * FROM `medical_services` join users on medical_services.user_id=users.id join suppliers on medical_services.due_to_supp=suppliers.s_no JOIN currency on medical_services.ses_cur_id=currency.cur_id where medical_services.med_id="'.$id.'"');
                           echo json_encode($affected);
                      }  
             public function hotel($id){
                        //hotel
-              $affected =DB::select('SELECT * FROM `hotel_services` join users on hotel_services.user_id=users.id join suppliers on hotel_services.due_to_supp=suppliers.s_no JOIN currency on hotel_services.cur_id=currency.cur_id where hotel_services.hotel_id="'.$id.'"');
+              $affected =DB::select('SELECT * FROM `hotel_services` join users on hotel_services.user_id=users.id join suppliers on hotel_services.due_to_supp=suppliers.s_no JOIN currency on hotel_services.ses_cur_id=currency.cur_id where hotel_services.hotel_id="'.$id.'"');
                           echo json_encode($affected);
                      }  
             public function visa($id){
                        //hotel
-              $affected =DB::select('SELECT * FROM `visa_services` join users on visa_services.user_id=users.id join suppliers on visa_services.due_to_supp=suppliers.s_no JOIN currency on visa_services.cur_id=currency.cur_id where visa_services.visa_id="'.$id.'"');
+              $affected =DB::select('SELECT * FROM `visa_services` join users on visa_services.user_id=users.id join suppliers on visa_services.due_to_supp=suppliers.s_no JOIN currency on visa_services.ses_cur_id=currency.cur_id where visa_services.visa_id="'.$id.'"');
                           echo json_encode($affected);
                      }   
 /****************************display remark body *********************/  
@@ -382,7 +382,7 @@ unset($_SESSION['remark']);
      if($id=='ticket'){
      //ticket
      $affected =TicketService::where([['service_status',4],['manager_id',$user]])
-     ->join('currency','ticket_services.cur_id','currency.cur_id')
+     ->join('currency','ticket_services.ses_cur_id','currency.cur_id')
      ->join('suppliers','ticket_services.due_to_supp','suppliers.s_no')
      ->join('users','ticket_services.user_id','users.id')
      ->select ('ticket_services.tecket_id as t_id' ,
@@ -403,7 +403,7 @@ unset($_SESSION['remark']);
             //bus
             $affected1=['id'=>'bus'];
             $affected =BusService::where([['service_status',4],['manager_id',$user]])
-            ->join('currency','bus_services.cur_id','currency.cur_id')
+            ->join('currency','bus_services.ses_cur_id','currency.cur_id')
             ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
             ->join('users','bus_services.user_id','users.id')
             ->select ('bus_services.bus_id as t_id' ,
@@ -424,7 +424,7 @@ unset($_SESSION['remark']);
                  //bus
                  $affected1=['id'=>'car'];
                  $affected =CarService::where([['service_status',4],['manager_id',$user]])
-                 ->join('currency','car_services.cur_id','currency.cur_id')
+                 ->join('currency','car_services.ses_cur_id','currency.cur_id')
                  ->join('suppliers','car_services.due_to_supp','suppliers.s_no')
                  ->join('users','car_services.user_id','users.id')
                  ->select ('car_services.car_id as t_id' ,
@@ -444,7 +444,7 @@ unset($_SESSION['remark']);
                     }elseif($id=='general'){
                        $affected1=['id'=>'general'];
                        $affected =GeneralService::where([['service_status',4],['manager_id',$user]])
-                       ->join('currency','general_services.cur_id','currency.cur_id')
+                       ->join('currency','general_services.ses_cur_id','currency.cur_id')
                        ->join('suppliers','general_services.due_to_supp','suppliers.s_no')
                        ->join('users','general_services.user_id','users.id')
                        ->select ('general_services.gen_id as t_id' ,
@@ -464,7 +464,7 @@ unset($_SESSION['remark']);
                    }elseif($id=='hotel'){
                     $affected1=['id'=>'hotel'];
                     $affected =HotelService::where([['service_status',4],['manager_id',$user]])
-                    ->join('currency','hotel_services.cur_id','currency.cur_id')
+                    ->join('currency','hotel_services.ses_cur_id','currency.cur_id')
                     ->join('suppliers','hotel_services.due_to_supp','suppliers.s_no')
                     ->join('users','hotel_services.user_id','users.id')
                     ->select ('hotel_services.hotel_id as t_id' ,
@@ -485,7 +485,7 @@ unset($_SESSION['remark']);
                    }elseif($id=='visa'){
                     $affected1=['id'=>'visa'];
                        $affected =VisaService::where([['service_status',4],['manager_id',$user]])
-                       ->join('currency','visa_services.cur_id','currency.cur_id')
+                       ->join('currency','visa_services.ses_cur_id','currency.cur_id')
                        ->join('suppliers','visa_services.due_to_supp','suppliers.s_no')
                        ->join('users','visa_services.user_id','users.id')
                        ->select ('visa_services.visa_id as t_id' ,
@@ -505,7 +505,7 @@ unset($_SESSION['remark']);
                    }elseif($id=='medical'){
                     $affected1=['namme'=>'medical'];
                     $affected =MedicalService::where([['service_status',4],['manager_id',$user]])
-                    ->join('currency','medical_services.cur_id','currency.cur_id')
+                    ->join('currency','medical_services.ses_cur_id','currency.cur_id')
                     ->join('suppliers','medical_services.due_to_supp','suppliers.s_no')
                     ->join('users','medical_services.user_id','users.id')
                     ->select ('medical_services.med_id as t_id' ,
@@ -532,7 +532,7 @@ public function excutive_finish($id,$user)
 if($id=='ticket'){
 //ticket
 $affected =TicketService::where([['service_status',4],['user_id',$user]])
-->join('currency','ticket_services.cur_id','currency.cur_id')
+->join('currency','ticket_services.ses_cur_id','currency.cur_id')
 ->join('suppliers','ticket_services.due_to_supp','suppliers.s_no')
 ->join('users','ticket_services.user_id','users.id')
 ->select ('ticket_services.tecket_id as t_id' ,
@@ -553,7 +553,7 @@ $affected1=['id'=>'ticket'];
     //bus
     $affected1=['id'=>'bus'];
     $affected =BusService::where([['service_status',4],['user_id',$user]])
-    ->join('currency','bus_services.cur_id','currency.cur_id')
+    ->join('currency','bus_services.ses_cur_id','currency.cur_id')
     ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
     ->join('users','bus_services.user_id','users.id')
     ->select ('bus_services.bus_id as t_id' ,
@@ -574,7 +574,7 @@ $affected1=['id'=>'ticket'];
          //bus
          $affected1=['id'=>'car'];
          $affected =CarService::where([['service_status',4],['user_id',$user]])
-         ->join('currency','car_services.cur_id','currency.cur_id')
+         ->join('currency','car_services.ses_cur_id','currency.cur_id')
          ->join('suppliers','car_services.due_to_supp','suppliers.s_no')
          ->join('users','car_services.user_id','users.id')
          ->select ('car_services.car_id as t_id' ,
@@ -594,7 +594,7 @@ $affected1=['id'=>'ticket'];
             }elseif($id=='general'){
                $affected1=['id'=>'general'];
                $affected =GeneralService::where([['service_status',4],['user_id',$user]])
-               ->join('currency','general_services.cur_id','currency.cur_id')
+               ->join('currency','general_services.ses_cur_id','currency.cur_id')
                ->join('suppliers','general_services.due_to_supp','suppliers.s_no')
                ->join('users','general_services.user_id','users.id')
                ->select ('general_services.gen_id as t_id' ,
@@ -614,7 +614,7 @@ $affected1=['id'=>'ticket'];
            }elseif($id=='hotel'){
             $affected1=['id'=>'hotel'];
             $affected =HotelService::where([['service_status',4],['user_id',$user]])
-            ->join('currency','hotel_services.cur_id','currency.cur_id')
+            ->join('currency','hotel_services.ses_cur_id','currency.cur_id')
             ->join('suppliers','hotel_services.due_to_supp','suppliers.s_no')
             ->join('users','hotel_services.user_id','users.id')
             ->select ('hotel_services.hotel_id as t_id' ,
@@ -635,7 +635,7 @@ $affected1=['id'=>'ticket'];
            }elseif($id=='visa'){
             $affected1=['id'=>'visa'];
                $affected =VisaService::where([['service_status',4],['user_id',$user]])
-               ->join('currency','visa_services.cur_id','currency.cur_id')
+               ->join('currency','visa_services.ses_cur_id','currency.cur_id')
                ->join('suppliers','visa_services.due_to_supp','suppliers.s_no')
                ->join('users','visa_services.user_id','users.id')
                ->select ('visa_services.visa_id as t_id' ,
@@ -655,7 +655,7 @@ $affected1=['id'=>'ticket'];
            }elseif($id=='medical'){
             $affected1=['namme'=>'medical'];
             $affected =MedicalService::where([['service_status',4],['user_id',$user]])
-            ->join('currency','medical_services.cur_id','currency.cur_id')
+            ->join('currency','medical_services.ses_cur_id','currency.cur_id')
             ->join('suppliers','medical_services.due_to_supp','suppliers.s_no')
             ->join('users','medical_services.user_id','users.id')
             ->select ('medical_services.med_id as t_id' ,

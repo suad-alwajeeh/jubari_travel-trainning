@@ -68,7 +68,7 @@ public function show_visa($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['visa']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_ses_cur_id')
 ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 return view('show_visa',$data);
 } 
@@ -80,7 +80,7 @@ public function sent_visa($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['visa']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->where(['visa_services.service_status'=>$id,'visa_services.deleted'=>0,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 return view('sent_visa',$data);
 } 
@@ -95,7 +95,7 @@ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
 
-$data['visas']=VisaService::join('currency','currency.cur_id','=','visa_services.cur_id')
+$data['visas']=VisaService::join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','visa_services.due_to_supp') ->where('visa_id',$id)->get();
 
 return view('update_visa',$data);
@@ -139,7 +139,7 @@ $visa::where('visa_id',$req->id)
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
 'visa_status'=>$req->visa_status,'visa_type'=>$req->visa_type,'country'=>$req->country,'visa_info'=>$req->visa_info,
 'voucher_number'=>$req->voucher_number,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
 'attachment'=>$img ,'errorlog'=>0
 
@@ -152,7 +152,7 @@ $visa::where('visa_id',$req->id)
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
 'visa_status'=>$req->visa_status,'visa_type'=>$req->visa_type,'country'=>$req->country,'visa_info'=>$req->visa_info,
 'voucher_number'=>$req->voucher_number,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -170,7 +170,7 @@ $visa::where('visa_id',$req->id)
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
 'visa_status'=>$req->visa_status,'visa_type'=>$req->visa_type,'country'=>$req->country,'visa_info'=>$req->visa_info,
 'voucher_number'=>$req->voucher_number,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>6,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -227,7 +227,7 @@ $visa->visa_info =$req->visa_info;
 $visa->country  =$req->country ;
 $visa->due_to_supp =$req->due_to_supp;
 $visa->provider_cost=$req->provider_cost;
-$visa->cur_id=$req->cur_id;
+$visa->ses_cur_id=$req->cur_id;
 $visa->due_to_customer =$req->due_to_customer ;
 $visa->cost =$req->cost ;
 $visa->service_id=6;
@@ -345,7 +345,7 @@ return back()->with('seccess','Seccess Data Send');
 public function errorVisa(){
 $loged_Id=  Auth::user()->id ;
 $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
 ->join('logs','logs.service_id','=','visa_services.visa_id')
 ->where(['visa_services.errorlog'=>1,'visa_services.user_status'=>0,'visa_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('visa_services.created_at','DESC')->paginate(10);
@@ -357,7 +357,7 @@ public function emp_visa(){
 $loged_Id= Auth::user()->id ;
 
 $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->where(['visa_services.deleted'=>0,'visa_services.user_status'=>1,'visa_services.errorlog'=>0,'visa_services.due_to_customer'=>$loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 //json_decode
 return view('emp_visa',$data);
@@ -369,7 +369,7 @@ public function show_add_emp()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
 ->where(['visa_services.service_status'=>1,'visa_services.deleted'=>0,'visa_services.user_id'=> $loged_Id,'visa_services.user_status'=>1])
 ->orderBy('visa_services.created_at','DESC')->paginate(10);
@@ -430,7 +430,7 @@ $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppli
 $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-$data['data']=VisaService::join('currency','currency.cur_id','=','visa_services.cur_id')
+$data['data']=VisaService::join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
 ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
 ->join('logs','logs.service_id','=','visa_services.visa_id')
@@ -497,7 +497,7 @@ public function reject_visa()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-->join('currency','currency.cur_id','=','visa_services.cur_id')
+->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
 ->where(['visa_services.deleted'=>0,'visa_services.errorlog'=>2,'visa_services.user_status'=>1,'visa_services.user_id'=> $loged_Id])->orderBy('visa_services.created_at','DESC')->paginate(10);
 return view('reject_visa',$data);
 } 

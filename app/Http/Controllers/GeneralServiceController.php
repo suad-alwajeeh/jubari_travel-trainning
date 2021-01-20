@@ -37,7 +37,7 @@ public function show_gen($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['gen']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('show_gen',$data);
 }  
@@ -47,7 +47,7 @@ public function sent_gen($id)
 $loged_Id=  Auth::user()->id ;
 
 $data['gen']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->where(['general_services.service_status'=>$id,'general_services.deleted'=>0,'general_services.errorlog'=>0,'general_services.due_to_customer'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('sent_gen',$data);
 } 
@@ -85,7 +85,7 @@ $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
 
-$data['gens']=GeneralService::join('currency','currency.cur_id','=','general_services.cur_id')
+$data['gens']=GeneralService::join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','general_services.due_to_supp')->where('gen_id',$id)->get();
 
 return view('update_gen',$data);
@@ -150,10 +150,10 @@ $general->passenger_name=$req->passenger_name;
 $general->voucher_number=$req->voucher_number;
 $general->gen_info =$req->med_info;
 $general->general_status =$req->general_status;
-$general->offered_status =$req->offered_status;
+$general->ses_status =$req->offered_status;
 $general->due_to_supp =$req->due_to_supp;
 $general->provider_cost=$req->provider_cost;
-$general->cur_id=$req->cur_id;
+$general->ses_cur_id=$req->cur_id;
 $general->due_to_customer =$req->due_to_customer ;
 $general->cost =$req->cost ;
 $general->service_id=7;
@@ -264,9 +264,9 @@ $img.=$attchmentName.',';
 $general::where('gen_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'offered_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
+'ses_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
 'voucher_number'=>$req->voucher_number,'general_status'=>$req->general_status ,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
 'attachment'=>$img ,'errorlog'=>0
 
@@ -277,9 +277,9 @@ else{
 $general::where('gen_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'offered_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
+'ses_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
 'voucher_number'=>$req->voucher_number,'general_status'=>$req->general_status ,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -297,9 +297,9 @@ $img='';
 $general::where('gen_id',$req->id)
 ->update(['Issue_date'=>$req->Issue_date,
 'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-'offered_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
+'ses_status'=>$req->offered_status,'gen_info'=>$req->gen_info,
 'voucher_number'=>$req->voucher_number,'general_status'=>$req->general_status ,
-'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
 'cost'=>$req->cost,'service_id'=>7,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,'errorlog'=>0
 
 ]); 
@@ -336,7 +336,7 @@ public function show_add_emp()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=CarService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','general_services.due_to_customer')
 ->where(['general_services.service_status'=>1,'general_services.deleted'=>0,'general_services.user_id'=> $loged_Id,'general_services.user_status'=>1])
 ->orderBy('general_services.created_at','DESC')->paginate(10);
@@ -345,7 +345,7 @@ return view('genError',$data);
 public function errorGen(){
 $loged_Id=  Auth::user()->id ;
 $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->join('employees','employees.emp_id','=','general_services.due_to_customer')
 ->join('logs','logs.service_id','=','general_services.gen_id')
 ->where(['general_services.errorlog'=>1,'general_services.user_status'=>0,'general_services.user_id'=>$loged_Id,'logs.status'=>0])->orderBy('general_services.created_at','DESC')->paginate(10);
@@ -356,7 +356,7 @@ public function emp_gen(){
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->where(['general_services.deleted'=>0,'general_services.user_status'=>1,'general_services.errorlog'=>0,'general_services.due_to_customer'=>$loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('emp_gen',$data);
 }
@@ -454,7 +454,7 @@ $data['suplier']=Supplier::join('sup_services','sup_services.sup_id','=','suppli
 $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
 ->where('users.is_active',1)->where('users.is_delete',0)
 ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-$data['data']=GeneralService::join('currency','currency.cur_id','=','general_services.cur_id')
+$data['data']=GeneralService::join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
 ->join('employees','employees.emp_id','=','general_services.due_to_customer')
 ->join('logs','logs.service_id','=','general_services.gen_id')
@@ -473,7 +473,7 @@ public function reject_gen()
 $loged_Id=  Auth::user()->id ;
 
 $data['data']=GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-->join('currency','currency.cur_id','=','general_services.cur_id')
+->join('currency','currency.cur_id','=','general_services.ses_cur_id')
 ->where(['general_services.deleted'=>0,'general_services.errorlog'=>2,'general_services.user_status'=>1,'general_services.user_id'=> $loged_Id])->orderBy('general_services.created_at','DESC')->paginate(10);
 return view('reject_gen',$data);
 } 

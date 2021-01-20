@@ -791,17 +791,12 @@
                 </p>
             </a>
         <li class="nav-item">
-            <a href="/service_test" class="nav-link">
+            <a href="/accountant/report/{{ Auth::user()->id }}" class="nav-link">
                 <i class="fas fa-user-cog nav-icon"></i>
-                <p>reports</p>
+                <p>Accountant reports</p>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="/services" class="nav-link">
-                <i class="fas fa-user-cog nav-icon"></i>
-                <p>profile</p>
-            </a>
-        </li>';
+       ';
         @endphp
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -828,6 +823,12 @@
                 echo $_GLOBALS['Sales_Executive'];
                 @endphp
                 @endif
+                <li class="nav-item">
+            <a href="/profile/{{ Auth::user()->id }}" class="nav-link">
+                <i class="fas fa-user-cog nav-icon"></i>
+                <p>profile</p>
+            </a>
+        </li>
                 <!--li class="nav-item">
             <a href="pages/calendar.html" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>

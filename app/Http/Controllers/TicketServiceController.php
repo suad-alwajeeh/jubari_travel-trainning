@@ -30,7 +30,7 @@ class TicketServiceController extends Controller
     $loged_Id=  Auth::user()->id ;
 
  $data['ticket']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
- ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+ ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
  ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 return view('show_ticket',$data);
 
@@ -43,7 +43,7 @@ return view('show_ticket',$data);
     $loged_Id=  Auth::user()->id ;
 
  $data['ticket']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
- ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+ ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
  ->where(['ticket_services.service_status'=>$id,'ticket_services.deleted'=>0,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 return view('sent_ticket',$data);
 
@@ -105,7 +105,7 @@ public function hide_ticket($id){
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
                
            
-            $data['tickets']=TicketService::join('currency','currency.cur_id','=','ticket_services.cur_id')
+            $data['tickets']=TicketService::join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
             ->join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
             ->where('tecket_id',$id)->get();
            
@@ -124,7 +124,7 @@ public function hide_ticket($id){
         $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
         ->where('users.is_active',1)->where('users.is_delete',0)
         ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-         $data['data']=TicketService::join('currency','currency.cur_id','=','ticket_services.cur_id')
+         $data['data']=TicketService::join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
         ->join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
         ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
           ->join('logs','logs.service_id','=','ticket_services.tecket_id')
@@ -223,13 +223,13 @@ public function add_ticket( Request $req)
     $ticket->airline_id =$req->airline;
     $ticket->ticket=$req->ticket;
     $ticket->ticket_number =$req->ticket_number;
-    $ticket->ticket_status =$req->ticket_status;
+    $ticket->ses_status =$req->ticket_status;
     $ticket->Dep_city =$req->Dep_city1;
     $ticket->arr_city =$req->arr_city;
     $ticket->dep_date =$req->dep_date;
     $ticket->due_to_supp =$req->due_to_supp;
     $ticket->provider_cost=$req->provider_cost;
-    $ticket->cur_id=$req->cur_id;
+    $ticket->ses_cur_id=$req->cur_id;
     $ticket->due_to_customer =$req->due_to_customer ;
     $ticket->cost =$req->cost ;
     $ticket->service_id=1;
@@ -377,9 +377,9 @@ $busher='';
        $ticket::where('tecket_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,'airline_id'=>$req->airline,
-       'ticket'=>$req->ticket,'ticket_status'=>$req->ticket_status,
+       'ticket'=>$req->ticket,'ses_status'=>$req->ticket_status,
        'ticket_number'=>$req->ticket_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>1,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
       'attachment'=>$img ,'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher,'errorlog'=>0
 
@@ -390,9 +390,9 @@ $busher='';
       $ticket::where('tecket_id',$req->id)
       ->update(['Issue_date'=>$req->Issue_date,
       'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,'airline_id'=>$req->airline,
-      'ticket'=>$req->ticket,'ticket_status'=>$req->ticket_status,
+      'ticket'=>$req->ticket,'ses_status'=>$req->ticket_status,
       'ticket_number'=>$req->ticket_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-     'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+     'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
      'cost'=>$req->cost,'service_id'=>1,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
      'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher,'errorlog'=>0
 
@@ -450,9 +450,9 @@ $busher='';
       $ticket::where('tecket_id',$req->id)
       ->update(['Issue_date'=>$req->Issue_date,
       'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,'airline_id'=>$req->airline,
-      'ticket'=>$req->ticket,'ticket_status'=>$req->ticket_status,
+      'ticket'=>$req->ticket,'ses_status'=>$req->ticket_status,
       'ticket_number'=>$req->ticket_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-     'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+     'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
      'cost'=>$req->cost,'service_id'=>1,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
      'Dep_city2'=>$dep_city2,'arr_city2'=>$arr_city2,'dep_date2'=>$dp_date,'bursher_time'=>$busher,'errorlog'=>0
 
@@ -491,7 +491,7 @@ public function sendAllticket(Request $request){
 public function errorTicket(){
   $loged_Id=  Auth::user()->id ;
             $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
-            ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+            ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
   ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
   ->join('logs','logs.service_id','=','ticket_services.tecket_id')
             ->join('airlines','airlines.id','=','ticket_services.airline_id')
@@ -504,7 +504,7 @@ public function emp_ticket(){
     $loged_Id=  Auth::user()->id ;
 
     $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
-    ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+    ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
     ->join('airlines','airlines.id','=','ticket_services.airline_id')
     ->where(['ticket_services.deleted'=>0,'ticket_services.user_status'=>1,'ticket_services.errorlog'=>0,'ticket_services.due_to_customer'=>$loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
 //json_decode
@@ -515,7 +515,7 @@ public function emp_ticket(){
     $loged_Id=  Auth::user()->id ;
 
    $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
-   ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+   ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
    ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
    ->where(['ticket_services.service_status'=>1,'ticket_services.deleted'=>0,'ticket_services.user_id'=> $loged_Id,'ticket_services.user_status'=>1])
    ->orderBy('ticket_services.created_at','DESC')->paginate(10);
@@ -609,7 +609,7 @@ $date=now();
     $loged_Id=  Auth::user()->id ;
 
    $data['data']=TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
-   ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+   ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
    ->where(['ticket_services.deleted'=>0,'ticket_services.errorlog'=>2,'ticket_services.user_status'=>1,'ticket_services.user_id'=> $loged_Id])->orderBy('ticket_services.created_at','DESC')->paginate(10);
   return view('reject_ticket',$data);
   } 

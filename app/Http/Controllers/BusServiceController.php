@@ -33,7 +33,7 @@ class BusServiceController extends Controller
       $loged_Id=  Auth::user()->id ;
 
      $data['bus']=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-     ->join('currency','currency.cur_id','=','bus_services.cur_id')
+     ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
      ->where(['bus_services.service_status'=>$id,'bus_services.deleted'=>0,'bus_services.errorlog'=>0,'bus_services.due_to_customer'=> $loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
     return view('show_bus',$data);
     } 
@@ -44,7 +44,7 @@ class BusServiceController extends Controller
       $loged_Id=  Auth::user()->id ;
 
      $data['bus']=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-     ->join('currency','currency.cur_id','=','bus_services.cur_id')
+     ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
      ->where(['bus_services.service_status'=>$id,'bus_services.deleted'=>0,'bus_services.errorlog'=>0,'bus_services.due_to_customer'=> $loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
     return view('sent_bus',$data);
     } 
@@ -63,7 +63,7 @@ public function generate( Request $req)
       $loged_Id=  Auth::user()->id ;
 
      $data['data']=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-     ->join('currency','currency.cur_id','=','bus_services.cur_id')
+     ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
      ->join('employees','employees.emp_id','=','bus_services.due_to_customer')
      ->where(['bus_services.service_status'=>1,'bus_services.deleted'=>0,'bus_services.user_id'=> $loged_Id,'bus_services.user_status'=>1])
      ->orderBy('bus_services.created_at','DESC')->paginate(10);
@@ -128,13 +128,13 @@ public function add_bus( Request $req)
     $bus->passenger_name=$req->passenger_name;
     $bus->bus_name =$req->bus_name;
     $bus->bus_number =$req->bus_number;
-    $bus->bus_status =$req->bus_status;
+    $bus->ses_status =$req->bus_status;
     $bus->Dep_city =$req->Dep_city;
     $bus->arr_city =$req->arr_city;
     $bus->dep_date =$req->dep_date;
     $bus->due_to_supp =$req->due_to_supp;
     $bus->provider_cost=$req->provider_cost;
-    $bus->cur_id=$req->cur_id;
+    $bus->ses_cur_id=$req->cur_id;
     $bus->due_to_customer =$req->due_to_customer ;
     $bus->cost =$req->cost ;
     $bus->service_id=2;
@@ -154,7 +154,9 @@ public function add_bus( Request $req)
   $manager=User::join('role_user','role_user.user_id','=','users.id')
   ->join('roles','roles.id','=','role_user.role_id')
   ->where('roles.id',2)->get();
-
+  $ADMIN=User::join('role_user','role_user.user_id','=','users.id')
+  ->join('roles','roles.id','=','role_user.role_id')
+  ->where('roles.id',5)->get();
 
 
   
@@ -162,6 +164,7 @@ public function add_bus( Request $req)
       $customer_id=$aff->user_id; 
       $customer=$aff->user_name; 
 } 
+
   
   $message5="";
   $date1=date("Y/m/d") ;
@@ -176,7 +179,7 @@ public function add_bus( Request $req)
         }
       }
        
-        $message5='<div class=dropdown-divider></div><a onclick=status_notify("Add Visa Service",'.$loged_id.','.$customer_id.') href=/remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add New Services Visa  <span class=float-right text-muted text-sm>'.$date.'</span></a>';
+        $message5='<div class=dropdown-divider></div><a onclick=status_notify("Add BUS Service BY ",'.$loged_id.','.$customer_id.') href=/remark  class=dropdown-item><i class=text-danger fas fa-times mr-2></i>The employee'.$name.' Add New Services BUS  <span class=float-right text-muted text-sm>'.$date.'</span></a>';
         $datav=['to'=>$customer_id,'from'=>$loged_id,'message'=> $message5,'date'=>$date];
         $message=$datav['message'];
         DB::table('notifications')->insert(
@@ -246,9 +249,9 @@ public function updateBus( Request $req)
        $bus::where('bus_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-       'bus_name'=>$req->bus_name,'bus_status'=>$req->bus_status,
+       'bus_name'=>$req->bus_name,'ses_status'=>$req->bus_status,
        'bus_number'=>$req->bus_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>2,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
       'attachment'=>$img ,'errorlog'=>0
 
@@ -259,9 +262,9 @@ public function updateBus( Request $req)
       $bus::where('bus_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-       'bus_name'=>$req->bus_name,'bus_status'=>$req->bus_status,
+       'bus_name'=>$req->bus_name,'ses_status'=>$req->bus_status,
        'bus_number'=>$req->bus_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>2,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
        ]); 
@@ -277,9 +280,9 @@ public function updateBus( Request $req)
         $bus::where('bus_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-       'bus_name'=>$req->bus_name,'bus_status'=>$req->bus_status,
+       'bus_name'=>$req->bus_name,'ses_status'=>$req->bus_status,
        'bus_number'=>$req->bus_number,'Dep_city'=>$req->Dep_city1,'arr_city'=>$req->arr_city,'dep_date'=>$req->dep_date,
-      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>2,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,
      'errorlog'=>0
 
@@ -297,7 +300,7 @@ public function updateBus( Request $req)
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
                
-          $data['buss']=BusService::join('currency','currency.cur_id','=','bus_services.cur_id')
+          $data['buss']=BusService::join('currency','currency.cur_id','=','bus_services.ses_cur_id')
           ->join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')->where('bus_id',$id)->get();
        
           return view('update_bus',$data);
@@ -367,7 +370,7 @@ public function updateBus( Request $req)
     public function errorBus(){
       $loged_Id=  Auth::user()->id ;
                 $data=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-                ->join('currency','currency.cur_id','=','bus_services.cur_id')
+                ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
                 ->join('employees','employees.emp_id','=','bus_services.due_to_customer')
                 ->join('logs','logs.service_id','=','bus_services.bus_id')
                 ->where(['bus_services.errorlog'=>1,'bus_services.user_status'=>0,'logs.status'=>0,'bus_services.user_id'=>$loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
@@ -395,7 +398,7 @@ public function updateBus( Request $req)
             $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-             $data['data']=BusService::join('currency','currency.cur_id','=','bus_services.cur_id')
+             $data['data']=BusService::join('currency','currency.cur_id','=','bus_services.ses_cur_id')
             ->join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
             ->join('employees','employees.emp_id','=','bus_services.due_to_customer')
               ->join('logs','logs.service_id','=','bus_services.bus_id')
@@ -414,7 +417,7 @@ public function updateBus( Request $req)
           $loged_Id=  Auth::user()->id ;
   
           $data['data']=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-          ->join('currency','currency.cur_id','=','bus_services.cur_id')
+          ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
           ->where(['bus_services.deleted'=>0,'bus_services.user_status'=>1,'bus_services.errorlog'=>0,'due_to_customer'=>$loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
   //json_decode
           return view('emp_bus',$data);
@@ -506,7 +509,7 @@ public function updateBus( Request $req)
           $loged_Id=  Auth::user()->id ;
     
          $data['data']=BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-         ->join('currency','currency.cur_id','=','bus_services.cur_id')
+         ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
          ->where(['bus_services.deleted'=>0,'bus_services.errorlog'=>2,'bus_services.user_status'=>1,'bus_services.user_id'=> $loged_Id])->orderBy('bus_services.created_at','DESC')->paginate(10);
         return view('reject_bus',$data);
         } 

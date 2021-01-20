@@ -68,7 +68,7 @@ class EmployeeController extends Controller
         $where=['is_active'=>1];
         $where +=['deleted'=>0];
         $data['emps']=Department::where($where)->get();
-        return view('add-employee',$data);
+        return view('Add-employee',$data);
 
     }
 /*********************end display all  new Employees Info ****************************************/

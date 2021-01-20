@@ -95,10 +95,10 @@ public function generate( Request $req)
        $hotel::where('hotel_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-       'hotel_status'=>$req->hotel_status,
+       'ses_status'=>$req->hotel_status,
        'voucher_number'=>$req->voucher_number,'country'=>$req->country,'city'=>$req->city,'hotel_name'=>$req->hotel_name,
        'check_in'=>$req->check_in,'check_out'=>$req->check_out,
-      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+      'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,
       'attachment'=>$img ,'errorlog'=>0
 
@@ -109,9 +109,9 @@ public function generate( Request $req)
       $hotel::where('hotel_id',$req->id)
        ->update(['Issue_date'=>$req->Issue_date,
        'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-       'hotel_status'=>$req->hotel_status,
+       'ses_status'=>$req->hotel_status,
        'voucher_number'=>$req->voucher_number,'country'=>$req->country,'city'=>$req->city,'hotel_name'=>$req->hotel_name,
-       'check_in'=>$req->check_in,'check_out'=>$req->check_out,'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+       'check_in'=>$req->check_in,'check_out'=>$req->check_out,'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
       'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'remark'=>$req->remark,'service_status'=>1,'errorlog'=>0
 
        ]); 
@@ -127,9 +127,9 @@ public function generate( Request $req)
         $hotel::where('hotel_id',$req->id)
          ->update(['Issue_date'=>$req->Issue_date,
          'refernce'=>$req->refernce,'passenger_name'=>$req->passenger_name,
-         'hotel_status'=>$req->hotel_status,
+         'ses_status'=>$req->hotel_status,
          'voucher_number'=>$req->voucher_number,'country'=>$req->country,'city'=>$req->city,'hotel_name'=>$req->hotel_name,
-         'check_in'=>$req->check_in,'check_out'=>$req->check_out,'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
+         'check_in'=>$req->check_in,'check_out'=>$req->check_out,'due_to_supp'=>$req->due_to_supp,'provider_cost'=>$req->provider_cost,'ses_cur_id'=>$req->cur_id,'due_to_customer'=>$req->due_to_customer,
         'cost'=>$req->cost,'service_id'=>5,'passnger_currency'=>$req->passnger_currency,'service_status'=>1,'errorlog'=>0
   
          ]); 
@@ -180,7 +180,7 @@ public function add_hotel( Request $req)
     $hotel->refernce=$req->refernce;
     $hotel->passenger_name=$req->passenger_name;
     $hotel->voucher_number=$req->voucher_number;
-    $hotel->hotel_status =$req->hotel_status;
+    $hotel->ses_status =$req->hotel_status;
     $hotel->country =$req->country;
     $hotel->city =$req->city;
     $hotel->hotel_name =$req->hotel_name;
@@ -188,7 +188,7 @@ public function add_hotel( Request $req)
     $hotel->check_out =$req->check_out;
     $hotel->due_to_supp =$req->due_to_supp;
     $hotel->provider_cost=$req->provider_cost;
-    $hotel->cur_id=$req->cur_id;
+    $hotel->ses_cur_id=$req->cur_id;
     $hotel->due_to_customer =$req->due_to_customer ;
     $hotel->cost =$req->cost ;
     $hotel->service_id=5;
@@ -282,7 +282,7 @@ public function update_Hotel($id){
   $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
             ->where('users.is_active',1)->where('users.is_delete',0)
             ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-           $data['hotels']=HotelService::join('currency','currency.cur_id','=','hotel_services.cur_id')
+           $data['hotels']=HotelService::join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
 ->join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')->where('hotel_id',$id)->get();
    
       return view('update_hotel',$data);
@@ -298,7 +298,7 @@ public function update_Hotel($id){
     $data['emp']=Employee::join('users','users.id','=','employees.emp_id')
     ->where('users.is_active',1)->where('users.is_delete',0)
     ->where('employees.is_active',1)->where('employees.deleted',0)->get();      
-     $data['data']=HotelService::join('currency','currency.cur_id','=','hotel_services.cur_id')
+     $data['data']=HotelService::join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
     ->join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
     ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
       ->join('logs','logs.service_id','=','hotel_services.hotel_id')
@@ -317,7 +317,7 @@ public function update_Hotel($id){
   $loged_Id=  Auth::user()->id ;
 
  $data['hotel']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
- ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+ ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
  ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 return view('show_hotel',$data);
 }
@@ -327,7 +327,7 @@ return view('show_hotel',$data);
   $loged_Id=  Auth::user()->id ;
 
  $data['hotel']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
- ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+ ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
  ->where(['hotel_services.service_status'=>$id,'hotel_services.deleted'=>0,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 return view('sent_hotel',$data);
 }
@@ -363,7 +363,7 @@ public function emp_hotel(){
     $loged_Id=  Auth::user()->id ;
 
     $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-    ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+    ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
     ->where(['hotel_services.deleted'=>0,'hotel_services.user_status'=>1,'hotel_services.errorlog'=>0,'hotel_services.due_to_customer'=>$loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
 //json_decode
     return view('emp_hotel',$data);
@@ -373,7 +373,7 @@ public function emp_hotel(){
     $loged_Id=  Auth::user()->id ;
 
    $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-   ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+   ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
    ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
    ->where(['hotel_services.service_status'=>1,'hotel_services.deleted'=>0,'hotel_services.user_id'=> $loged_Id,'hotel_services.user_status'=>1])
    ->orderBy('hotel_services.created_at','DESC')->paginate(10);
@@ -382,7 +382,7 @@ public function emp_hotel(){
   public function errorHotel(){
     $loged_Id=  Auth::user()->id ;
     $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-    ->join('currency','currency.cur_id','=','hotel_services.cur_id') 
+    ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id') 
     ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
     ->join('logs','logs.service_id','=','hotel_services.hotel_id')
     ->where(['hotel_services.errorlog'=>1,'hotel_services.user_status'=>0,'logs.status'=>0,'hotel_services.user_id'=>$loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
@@ -477,7 +477,7 @@ public function emp_hotel(){
     $loged_Id=  Auth::user()->id ;
 
    $data['data']=HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-   ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+   ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
    ->where(['hotel_services.deleted'=>0,'hotel_services.errorlog'=>2,'hotel_services.user_status'=>1,'hotel_services.user_id'=> $loged_Id])->orderBy('hotel_services.created_at','DESC')->paginate(10);
   return view('reject_hotel',$data);
   } 

@@ -34,72 +34,72 @@ class accountantController extends Controller
         //ticket
         $affectedt = DB::select('SELECT COUNT(*) as accountant FROM ticket_services WHERE service_status = 3');
         $affectedt1 = DB::select('SELECT COUNT(*) as finish FROM ticket_services WHERE service_status = 4');
-        $affectedt2 = DB::select('SELECT COUNT(*) as ok FROM ticket_services WHERE service_status = 3 and  ticket_status=1');
-        $affectedt3 = DB::select('SELECT COUNT(*) as issue FROM ticket_services WHERE  service_status = 3 and ticket_status=2');
-        $affectedt4 = DB::select('SELECT COUNT(*) as void FROM ticket_services WHERE service_status = 3 and ticket_status=3');
-        $affectedt5 = DB::select('SELECT COUNT(*) as refund FROM ticket_services WHERE service_status = 3 and ticket_status=4');
+        $affectedt2 = DB::select('SELECT COUNT(*) as ok FROM ticket_services WHERE service_status = 3 and  ses_status=1');
+        $affectedt3 = DB::select('SELECT COUNT(*) as issue FROM ticket_services WHERE  service_status = 3 and ses_status=2');
+        $affectedt4 = DB::select('SELECT COUNT(*) as void FROM ticket_services WHERE service_status = 3 and ses_status=3');
+        $affectedt5 = DB::select('SELECT COUNT(*) as refund FROM ticket_services WHERE service_status = 3 and ses_status=4');
 
         //hotel
         $affectedh = DB::select('SELECT COUNT(*) as accountant FROM hotel_services WHERE service_status = 3');
         $affectedh1 = DB::select('SELECT COUNT(*) as finish FROM hotel_services WHERE service_status = 4');
-        $affectedth2 = DB::select('SELECT COUNT(*) as ok FROM hotel_services WHERE service_status = 3 and  hotel_status=1');
-        $affectedth3 = DB::select('SELECT COUNT(*) as issue FROM hotel_services WHERE service_status = 3 and  hotel_status=2');
-        $affectedth4 = DB::select('SELECT COUNT(*) as void FROM hotel_services WHERE service_status = 3 and hotel_status=3');
-        $affectedth5 = DB::select('SELECT COUNT(*) as refund FROM hotel_services WHERE service_status = 3 and hotel_status=4');
+        $affectedth2 = DB::select('SELECT COUNT(*) as ok FROM hotel_services WHERE service_status = 3 and  ses_status=1');
+        $affectedth3 = DB::select('SELECT COUNT(*) as issue FROM hotel_services WHERE service_status = 3 and  ses_status=2');
+        $affectedth4 = DB::select('SELECT COUNT(*) as void FROM hotel_services WHERE service_status = 3 and ses_status=3');
+        $affectedth5 = DB::select('SELECT COUNT(*) as refund FROM hotel_services WHERE service_status = 3 and ses_status=4');
          //bus
          $affectedb = DB::select('SELECT COUNT(*) as accountant FROM bus_services WHERE service_status = 3');
          $affectedb1 = DB::select('SELECT COUNT(*) as finish FROM bus_services WHERE service_status = 4');
-         $affectedtb2 = DB::select('SELECT COUNT(*) as ok FROM bus_services WHERE  service_status = 3 and bus_status=1');
-         $affectedtb3 = DB::select('SELECT COUNT(*) as issue FROM bus_services WHERE service_status = 3 and  bus_status=2');
-         $affectedtb4 = DB::select('SELECT COUNT(*) as void FROM bus_services WHERE service_status = 3 and bus_status=3');
-         $affectedtb5 = DB::select('SELECT COUNT(*) as refund FROM bus_services WHERE service_status = 3 and bus_status=4');
+         $affectedtb2 = DB::select('SELECT COUNT(*) as ok FROM bus_services WHERE  service_status = 3 and ses_status=1');
+         $affectedtb3 = DB::select('SELECT COUNT(*) as issue FROM bus_services WHERE service_status = 3 and  ses_status=2');
+         $affectedtb4 = DB::select('SELECT COUNT(*) as void FROM bus_services WHERE service_status = 3 and ses_status=3');
+         $affectedtb5 = DB::select('SELECT COUNT(*) as refund FROM bus_services WHERE service_status = 3 and ses_status=4');
          //car
          $affectedc = DB::select('SELECT COUNT(*) as accountant FROM car_services WHERE service_status = 3');
           $affectedc1 = DB::select('SELECT COUNT(*) as finish FROM car_services WHERE service_status = 4');
-          $affectedtc2 = DB::select('SELECT COUNT(*) as ok FROM car_services WHERE  service_status = 3 and car_status=1');
-          $affectedtc3 = DB::select('SELECT COUNT(*) as issue FROM car_services WHERE service_status = 3 and  car_status=2');
-          $affectedtc4 = DB::select('SELECT COUNT(*) as void FROM car_services WHERE service_status = 3 and car_status=3');
-          $affectedtc5 = DB::select('SELECT COUNT(*) as refund FROM car_services WHERE service_status = 3 and car_status=4');
+          $affectedtc2 = DB::select('SELECT COUNT(*) as ok FROM car_services WHERE  service_status = 3 and ses_status=1');
+          $affectedtc3 = DB::select('SELECT COUNT(*) as issue FROM car_services WHERE service_status = 3 and  ses_status=2');
+          $affectedtc4 = DB::select('SELECT COUNT(*) as void FROM car_services WHERE service_status = 3 and ses_status=3');
+          $affectedtc5 = DB::select('SELECT COUNT(*) as refund FROM car_services WHERE service_status = 3 and ses_status=4');
                     //medical
         $affectedm = DB::select('SELECT COUNT(*) as accountant FROM medical_services WHERE service_status = 3');
         $affectedm1 = DB::select('SELECT COUNT(*) as finish FROM medical_services WHERE service_status = 4');
-        $affectedtm2 = DB::select('SELECT COUNT(*) as ok FROM medical_services WHERE service_status = 3 and  report_status=1');
-        $affectedtm3 = DB::select('SELECT COUNT(*) as issue FROM medical_services WHERE service_status = 3 and  report_status=2');
-        $affectedtm4 = DB::select('SELECT COUNT(*) as void FROM medical_services WHERE service_status = 3 and report_status=3');
-        $affectedtm5 = DB::select('SELECT COUNT(*) as refund FROM medical_services WHERE service_status = 3 and  report_status=4');
+        $affectedtm2 = DB::select('SELECT COUNT(*) as ok FROM medical_services WHERE service_status = 3 and  ses_status=1');
+        $affectedtm3 = DB::select('SELECT COUNT(*) as issue FROM medical_services WHERE service_status = 3 and  ses_status=2');
+        $affectedtm4 = DB::select('SELECT COUNT(*) as void FROM medical_services WHERE service_status = 3 and ses_status=3');
+        $affectedtm5 = DB::select('SELECT COUNT(*) as refund FROM medical_services WHERE service_status = 3 and  ses_status=4');
       
          //general
          $affectedg = DB::select('SELECT COUNT(*) as accountant FROM general_services WHERE service_status = 3');
          $affectedg1 = DB::select('SELECT COUNT(*) as finish FROM general_services WHERE  service_status = 4');
-         $affectedtg2 = DB::select('SELECT COUNT(*) as ok FROM general_services WHERE service_status = 3 and  general_status=1');
-         $affectedtg3 = DB::select('SELECT COUNT(*) as issue FROM general_services WHERE  service_status = 3 and general_status=2');
-         $affectedtg4 = DB::select('SELECT COUNT(*) as void FROM general_services WHERE service_status = 3 and  general_status=3');
-         $affectedtg5 = DB::select('SELECT COUNT(*) as refund FROM general_services WHERE  service_status = 3 and  general_status=4');
+         $affectedtg2 = DB::select('SELECT COUNT(*) as ok FROM general_services WHERE service_status = 3 and  ses_status=1');
+         $affectedtg3 = DB::select('SELECT COUNT(*) as issue FROM general_services WHERE  service_status = 3 and ses_status=2');
+         $affectedtg4 = DB::select('SELECT COUNT(*) as void FROM general_services WHERE service_status = 3 and  ses_status=3');
+         $affectedtg5 = DB::select('SELECT COUNT(*) as refund FROM general_services WHERE  service_status = 3 and  ses_status=4');
          //visa
          $affectedv = DB::select('SELECT COUNT(*) as accountant FROM visa_services WHERE service_status = 3');
          $affectedv1 = DB::select('SELECT COUNT(*) as finish FROM visa_services WHERE service_status = 4');
-         $affectedtv2 = DB::select('SELECT COUNT(*) as ok FROM visa_services WHERE  service_status = 3 and visa_status=1');
-         $affectedtv3 = DB::select('SELECT COUNT(*) as issue FROM visa_services WHERE service_status = 3 and  visa_status=2');
-         $affectedtv4 = DB::select('SELECT COUNT(*) as void FROM visa_services WHERE service_status = 3 and visa_status=3');
-         $affectedtv5 = DB::select('SELECT COUNT(*) as refund FROM visa_services WHERE service_status = 3 and  visa_status=4');
+         $affectedtv2 = DB::select('SELECT COUNT(*) as ok FROM visa_services WHERE  service_status = 3 and ses_status=1');
+         $affectedtv3 = DB::select('SELECT COUNT(*) as issue FROM visa_services WHERE service_status = 3 and  ses_status=2');
+         $affectedtv4 = DB::select('SELECT COUNT(*) as void FROM visa_services WHERE service_status = 3 and ses_status=3');
+         $affectedtv5 = DB::select('SELECT COUNT(*) as refund FROM visa_services WHERE service_status = 3 and  ses_status=4');
          $onlyl=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM ticket_services 
          JOIN users on ticket_services.user_id=users.id
-          JOIN currency on ticket_services.cur_id=currency.cur_id
+          JOIN currency on ticket_services.ses_cur_id=currency.cur_id
           JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
                SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM general_services
           JOIN users on general_services.user_id=users.id
-          JOIN currency on general_services.cur_id=currency.cur_id
+          JOIN currency on general_services.ses_cur_id=currency.cur_id
           JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
          SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM bus_services
            JOIN users on bus_services.user_id=users.id
-          JOIN currency on bus_services.cur_id=currency.cur_id
+          JOIN currency on bus_services.ses_cur_id=currency.cur_id
           JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
@@ -107,28 +107,28 @@ class accountantController extends Controller
          ,service_status as s_st FROM hotel_services 
           
            JOIN users on hotel_services.user_id=users.id
-          JOIN currency on hotel_services.cur_id=currency.cur_id
+          JOIN currency on hotel_services.ses_cur_id=currency.cur_id
           JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
          SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM visa_services
            JOIN users on visa_services.user_id=users.id
-          JOIN currency on visa_services.cur_id=currency.cur_id
+          JOIN currency on visa_services.ses_cur_id=currency.cur_id
           JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
          SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM medical_services 
            JOIN users on medical_services.user_id=users.id
-          JOIN currency on medical_services.cur_id=currency.cur_id
+          JOIN currency on medical_services.ses_cur_id=currency.cur_id
           JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE()
            UNION 
          SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
           ,service_status as s_st FROM car_services
           JOIN users on car_services.user_id=users.id
-          JOIN currency on car_services.cur_id=currency.cur_id
+          JOIN currency on car_services.ses_cur_id=currency.cur_id
           JOIN suppliers on car_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 and DATE(Issue_date)=CURRENT_DATE() LIMIT 10');
        
@@ -146,21 +146,21 @@ class accountantController extends Controller
          $affected=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM ticket_services 
          JOIN users on ticket_services.user_id=users.id
-          JOIN currency on ticket_services.cur_id=currency.cur_id
+          JOIN currency on ticket_services.ses_cur_id=currency.cur_id
           JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 
            UNION 
                SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM general_services
           JOIN users on general_services.user_id=users.id
-          JOIN currency on general_services.cur_id=currency.cur_id
+          JOIN currency on general_services.ses_cur_id=currency.cur_id
           JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
            WHERE service_status = 3
            UNION 
          SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM bus_services
            JOIN users on bus_services.user_id=users.id
-          JOIN currency on bus_services.cur_id=currency.cur_id
+          JOIN currency on bus_services.ses_cur_id=currency.cur_id
           JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 
            UNION 
@@ -168,28 +168,28 @@ class accountantController extends Controller
          ,service_status as s_st FROM hotel_services 
           
            JOIN users on hotel_services.user_id=users.id
-          JOIN currency on hotel_services.cur_id=currency.cur_id
+          JOIN currency on hotel_services.ses_cur_id=currency.cur_id
           JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3
            UNION 
          SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM visa_services
            JOIN users on visa_services.user_id=users.id
-          JOIN currency on visa_services.cur_id=currency.cur_id
+          JOIN currency on visa_services.ses_cur_id=currency.cur_id
           JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 
            UNION 
          SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM medical_services 
            JOIN users on medical_services.user_id=users.id
-          JOIN currency on medical_services.cur_id=currency.cur_id
+          JOIN currency on medical_services.ses_cur_id=currency.cur_id
           JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 
            UNION 
          SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
           ,service_status as s_st FROM car_services
           JOIN users on car_services.user_id=users.id
-          JOIN currency on car_services.cur_id=currency.cur_id
+          JOIN currency on car_services.ses_cur_id=currency.cur_id
           JOIN suppliers on car_services.due_to_supp=suppliers.s_no
            WHERE service_status = 3 ');
                    $affected3 =DB::select('select * from services WHERE services.is_active=1 and services.deleted=0');
@@ -211,7 +211,7 @@ class accountantController extends Controller
     { if($id=='ticket'){
  //ticket
  $affected =TicketService::where('service_status',3)
- ->join('currency','ticket_services.cur_id','currency.cur_id')
+ ->join('currency','ticket_services.ses_cur_id','currency.cur_id')
  ->join('suppliers','ticket_services.due_to_supp','suppliers.s_no')
  ->join('users','ticket_services.user_id','users.id')
  ->join('airlines','ticket_services.airline_id','airlines.id')
@@ -237,7 +237,7 @@ class accountantController extends Controller
         //bus
         $affected1=['id'=>'bus'];
         $affected =BusService::where('service_status',3)
-        ->join('currency','bus_services.cur_id','currency.cur_id')
+        ->join('currency','bus_services.ses_cur_id','currency.cur_id')
         ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
         ->join('users','bus_services.user_id','users.id')
         ->select ('bus_services.bus_id as t_id' ,
@@ -261,7 +261,7 @@ class accountantController extends Controller
     //car
     $affected1=['id'=>'car'];
     $affected =CarService::where('service_status',3)
-    ->join('currency','car_services.cur_id','currency.cur_id')
+    ->join('currency','car_services.ses_cur_id','currency.cur_id')
     ->join('suppliers','car_services.due_to_supp','suppliers.s_no')
     ->join('users','car_services.user_id','users.id')
     ->select ('car_services.car_id as t_id' ,
@@ -283,7 +283,7 @@ class accountantController extends Controller
 }elseif($id=='general'){
                   $affected1=['id'=>'general'];
                   $affected =GeneralService::where('service_status',3)
-                  ->join('currency','general_services.cur_id','currency.cur_id')
+                  ->join('currency','general_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','general_services.due_to_supp','suppliers.s_no')
                   ->join('users','general_services.user_id','users.id')
                   ->select ('general_services.gen_id as t_id' ,
@@ -305,7 +305,7 @@ class accountantController extends Controller
                }elseif($id=='hotel'){
                   $affected1=['id'=>'hotel'];
                   $affected =HotelService::where('service_status',3)
-                  ->join('currency','hotel_services.cur_id','currency.cur_id')
+                  ->join('currency','hotel_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','hotel_services.due_to_supp','suppliers.s_no')
                   ->join('users','hotel_services.user_id','users.id')
                   ->select ('hotel_services.hotel_id as t_id' ,
@@ -327,7 +327,7 @@ class accountantController extends Controller
                }elseif($id=='visa'){
                   $affected1=['id'=>'visa'];
                   $affected =VisaService::where('service_status',3)
-                  ->join('currency','visa_services.cur_id','currency.cur_id')
+                  ->join('currency','visa_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','visa_services.due_to_supp','suppliers.s_no')
                   ->join('users','visa_services.user_id','users.id')
                   ->select ('visa_services.visa_id as t_id' ,
@@ -349,7 +349,7 @@ class accountantController extends Controller
                }elseif($id=='medical'){
                   $affected1=['namme'=>'medical'];
                   $affected =MedicalService::where('service_status',3)
-                  ->join('currency','medical_services.cur_id','currency.cur_id')
+                  ->join('currency','medical_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','medical_services.due_to_supp','suppliers.s_no')
                   ->join('users','medical_services.user_id','users.id')
                   ->select ('medical_services.med_id as t_id' ,
@@ -388,8 +388,8 @@ class accountantController extends Controller
     { 
         if($id=='ticket'){
  //ticket
- $affected =TicketService::where([['service_status',3],['ticket_status',$type]])
- ->join('currency','ticket_services.cur_id','currency.cur_id')
+ $affected =TicketService::where([['service_status',3],['ses_status',$type]])
+ ->join('currency','ticket_services.ses_cur_id','currency.cur_id')
  ->join('suppliers','ticket_services.due_to_supp','suppliers.s_no')
  ->join('users','ticket_services.user_id','users.id')
  ->join('airlines','ticket_services.airline_id','airlines.id')
@@ -414,8 +414,8 @@ class accountantController extends Controller
     }elseif($id=='bus'){
         //bus
         $affected1=['id'=>'bus'];
-        $affected =BusService::where([['service_status',3],['bus_status',$type]])
-        ->join('currency','bus_services.cur_id','currency.cur_id')
+        $affected =BusService::where([['service_status',3],['ses_status',$type]])
+        ->join('currency','bus_services.ses_cur_id','currency.cur_id')
         ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
         ->join('users','bus_services.user_id','users.id')
         ->select ('bus_services.bus_id as t_id' ,
@@ -438,8 +438,8 @@ class accountantController extends Controller
            }elseif($id=='car'){
     //car
     $affected1=['id'=>'car'];
-    $affected =CarService::where([['service_status',3],['car_status',$type]])
-    ->join('currency','car_services.cur_id','currency.cur_id')
+    $affected =CarService::where([['service_status',3],['ses_status',$type]])
+    ->join('currency','car_services.ses_cur_id','currency.cur_id')
     ->join('suppliers','car_services.due_to_supp','suppliers.s_no')
     ->join('users','car_services.user_id','users.id')
     ->select ('car_services.car_id as t_id' ,
@@ -460,8 +460,8 @@ class accountantController extends Controller
     ->paginate(25);            
 }elseif($id=='general'){
                   $affected1=['id'=>'general'];
-                  $affected =GeneralService::where([['service_status',3],['offered_status',$type]])
-                  ->join('currency','general_services.cur_id','currency.cur_id')
+                  $affected =GeneralService::where([['service_status',3],['ses_status',$type]])
+                  ->join('currency','general_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','general_services.due_to_supp','suppliers.s_no')
                   ->join('users','general_services.user_id','users.id')
                   ->select ('general_services.gen_id as t_id' ,
@@ -482,8 +482,8 @@ class accountantController extends Controller
                   ->paginate(25);  
                }elseif($id=='hotel'){
                   $affected1=['id'=>'hotel'];
-                  $affected =HotelService::where([['service_status',3],['hotel_status',$type]])
-                  ->join('currency','hotel_services.cur_id','currency.cur_id')
+                  $affected =HotelService::where([['service_status',3],['ses_status',$type]])
+                  ->join('currency','hotel_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','hotel_services.due_to_supp','suppliers.s_no')
                   ->join('users','hotel_services.user_id','users.id')
                   ->select ('hotel_services.hotel_id as t_id' ,
@@ -504,8 +504,8 @@ class accountantController extends Controller
                   ->paginate(25); 
                }elseif($id=='visa'){
                   $affected1=['id'=>'visa'];
-                  $affected =VisaService::wherewhere([['service_status',3],['visa_status',$type]])
-                  ->join('currency','visa_services.cur_id','currency.cur_id')
+                  $affected =VisaService::wherewhere([['service_status',3],['ses_status',$type]])
+                  ->join('currency','visa_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','visa_services.due_to_supp','suppliers.s_no')
                   ->join('users','visa_services.user_id','users.id')
                   ->select ('visa_services.visa_id as t_id' ,
@@ -526,8 +526,8 @@ class accountantController extends Controller
                   ->paginate(25); 
                }elseif($id=='medical'){
                   $affected1=['namme'=>'medical'];
-                  $affected =MedicalService::where([['service_status',3],['report_status',$type]])
-                  ->join('currency','medical_services.cur_id','currency.cur_id')
+                  $affected =MedicalService::where([['service_status',3],['ses_status',$type]])
+                  ->join('currency','medical_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','medical_services.due_to_supp','suppliers.s_no')
                   ->join('users','medical_services.user_id','users.id')
                   ->select ('medical_services.med_id as t_id' ,
@@ -563,39 +563,39 @@ class accountantController extends Controller
     /******************************get one item******************************* */
     public function ticket($id){      
  //ticket
- $affected =DB::select('SELECT * FROM `ticket_services` join users on ticket_services.user_id=users.id join airlines on ticket_services.airline_id=airlines.id join suppliers on ticket_services.due_to_supp=suppliers.s_no JOIN currency on ticket_services.cur_id=currency.cur_id where tecket_id=:id',array($id));
+ $affected =DB::select('SELECT * FROM `ticket_services` join users on ticket_services.user_id=users.id join airlines on ticket_services.airline_id=airlines.id join suppliers on ticket_services.due_to_supp=suppliers.s_no JOIN currency on ticket_services.ses_cur_id=currency.cur_id where tecket_id=:id',array($id));
 
     echo json_encode($affected);
     }
 
     public function bus($id){
       //bus
-      $affected =DB::select('SELECT * FROM `bus_services` join users on bus_services.user_id=users.id join suppliers on bus_services.due_to_supp=suppliers.s_no JOIN currency on bus_services.cur_id=currency.cur_id where bus_id=:id',array($id));
+      $affected =DB::select('SELECT * FROM `bus_services` join users on bus_services.user_id=users.id join suppliers on bus_services.due_to_supp=suppliers.s_no JOIN currency on bus_services.ses_cur_id=currency.cur_id where bus_id=:id',array($id));
          echo json_encode($affected);
          }
          public function car($id){
             //car
-            $affected =DB::select('SELECT * FROM `car_services` join users on car_services.user_id=users.id join suppliers on car_services.due_to_supp=suppliers.s_no JOIN currency on car_services.cur_id=currency.cur_id where car_id=:id',array($id));
+            $affected =DB::select('SELECT * FROM `car_services` join users on car_services.user_id=users.id join suppliers on car_services.due_to_supp=suppliers.s_no JOIN currency on car_services.ses_cur_id=currency.cur_id where car_id=:id',array($id));
                echo json_encode($affected);
                }
     public function general($id){
                   //general
-         $affected =DB::select('SELECT * FROM `general_services` join users on general_services.user_id=users.id join suppliers on general_services.due_to_supp=suppliers.s_no JOIN currency on general_services.cur_id=currency.cur_id where gen_id=:id',array($id));
+         $affected =DB::select('SELECT * FROM `general_services` join users on general_services.user_id=users.id join suppliers on general_services.due_to_supp=suppliers.s_no JOIN currency on general_services.ses_cur_id=currency.cur_id where gen_id=:id',array($id));
                      echo json_encode($affected);
                 } 
        public function medical($id){
                   //medical
-         $affected =DB::select('SELECT * FROM `medical_services` join users on medical_services.user_id=users.id join suppliers on medical_services.due_to_supp=suppliers.s_no JOIN currency on medical_services.cur_id=currency.cur_id where med_id=:id',array($id));
+         $affected =DB::select('SELECT * FROM `medical_services` join users on medical_services.user_id=users.id join suppliers on medical_services.due_to_supp=suppliers.s_no JOIN currency on medical_services.ses_cur_id=currency.cur_id where med_id=:id',array($id));
                      echo json_encode($affected);
                 }  
        public function hotel($id){
                   //hotel
-         $affected =DB::select('SELECT * FROM `hotel_services` join users on hotel_services.user_id=users.id join suppliers on hotel_services.due_to_supp=suppliers.s_no JOIN currency on hotel_services.cur_id=currency.cur_id where hotel_id=:id',array($id));
+         $affected =DB::select('SELECT * FROM `hotel_services` join users on hotel_services.user_id=users.id join suppliers on hotel_services.due_to_supp=suppliers.s_no JOIN currency on hotel_services.ses_cur_id=currency.cur_id where hotel_id=:id',array($id));
                      echo json_encode($affected);
                 }  
        public function visa($id){
                   //hotel
-         $affected =DB::select('SELECT * FROM `visa_services` join users on visa_services.user_id=users.id join suppliers on visa_services.due_to_supp=suppliers.s_no JOIN currency on visa_services.cur_id=currency.cur_id where visa_id=:id',array($id));
+         $affected =DB::select('SELECT * FROM `visa_services` join users on visa_services.user_id=users.id join suppliers on visa_services.due_to_supp=suppliers.s_no JOIN currency on visa_services.ses_cur_id=currency.cur_id where visa_id=:id',array($id));
                      echo json_encode($affected);
                 }        
                 
@@ -809,7 +809,7 @@ unset($_SESSION['remark']);
       (SELECT COUNT(*) FROM ticket_services WHERE how_add_bill='.$id.' and service_status=4) as ticket, 
       (SELECT COUNT(*) FROM bus_services WHERE how_add_bill='.$id.' and service_status=4) as bus,
       (SELECT COUNT(*) FROM car_services WHERE how_add_bill='.$id.' and service_status=4) as car,
-       (SELECT COUNT(*) FROM hotel_services WHERE how_add_bill='.$id.'11 and service_status=4) as hotel, 
+       (SELECT COUNT(*) FROM hotel_services WHERE how_add_bill='.$id.' and service_status=4) as hotel, 
       (SELECT COUNT(*) FROM visa_services WHERE how_add_bill='.$id.' and service_status=4) as visa,
       (SELECT COUNT(*) FROM medical_services WHERE how_add_bill='.$id.' and service_status=4) as medical,
       (SELECT COUNT(*) FROM general_services WHERE how_add_bill='.$id.' and service_status=4) as g');
@@ -821,49 +821,49 @@ unset($_SESSION['remark']);
       $affected=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
       ,service_status as s_st,bill_num as bill FROM ticket_services 
       JOIN users on ticket_services.user_id=users.id
-       JOIN currency on ticket_services.cur_id=currency.cur_id
+       JOIN currency on ticket_services.ses_cur_id=currency.cur_id
        JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.'
         UNION 
             SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
       ,service_status as s_st,bill_num as bill FROM general_services
        JOIN users on general_services.user_id=users.id
-       JOIN currency on general_services.cur_id=currency.cur_id
+       JOIN currency on general_services.ses_cur_id=currency.cur_id
        JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
         WHERE service_status = 4 and how_add_bill='.$id.'
         UNION 
       SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
       ,service_status as s_st,bill_num as bill FROM bus_services
         JOIN users on bus_services.user_id=users.id
-       JOIN currency on bus_services.cur_id=currency.cur_id
+       JOIN currency on bus_services.ses_cur_id=currency.cur_id
        JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.'
         UNION 
       SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
       ,service_status as s_st,bill_num as bill FROM hotel_services 
         JOIN users on hotel_services.user_id=users.id
-       JOIN currency on hotel_services.cur_id=currency.cur_id
+       JOIN currency on hotel_services.ses_cur_id=currency.cur_id
        JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.'
         UNION 
       SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
       ,service_status as s_st,bill_num as bill FROM visa_services
         JOIN users on visa_services.user_id=users.id
-       JOIN currency on visa_services.cur_id=currency.cur_id
+       JOIN currency on visa_services.ses_cur_id=currency.cur_id
        JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.' 
         UNION 
       SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
       ,service_status as s_st ,bill_num as bill FROM medical_services 
         JOIN users on medical_services.user_id=users.id
-       JOIN currency on medical_services.cur_id=currency.cur_id
+       JOIN currency on medical_services.ses_cur_id=currency.cur_id
        JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.'
         UNION 
       SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
        ,service_status as s_st,bill_num as bill FROM car_services
        JOIN users on car_services.user_id=users.id
-       JOIN currency on car_services.cur_id=currency.cur_id
+       JOIN currency on car_services.ses_cur_id=currency.cur_id
        JOIN suppliers on car_services.due_to_supp=suppliers.s_no
         WHERE service_status = 4 and how_add_bill='.$id.' ');
              
@@ -876,12 +876,12 @@ unset($_SESSION['remark']);
 if($id=='1'){
 //ticket
 $affected =TicketService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-->join('currency','ticket_services.cur_id','currency.cur_id')
+->join('currency','ticket_services.ses_cur_id','currency.cur_id')
 ->join('suppliers','ticket_services.due_to_supp','suppliers.s_no')
 ->join('users','ticket_services.user_id','users.id')
 ->select ('ticket_services.tecket_id as t_id' ,
 'ticket_services.service_id as st_id' ,
-'ticket_services.ticket_status as s_st ',
+'general as s_st ',
 'ticket_services.passenger_name as t_pn',
 'ticket_services.refernce as t_ref',
 'ticket_services.provider_cost as tp_c' ,
@@ -898,14 +898,14 @@ $affected1=['id'=>'ticket'];
        //bus
        $affected1=['id'=>'bus'];
        $affected =BusService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-       ->join('currency','bus_services.cur_id','currency.cur_id')
+       ->join('currency','bus_services.ses_cur_id','currency.cur_id')
        ->join('suppliers','bus_services.due_to_supp','suppliers.s_no')
        ->join('users','bus_services.user_id','users.id')
        ->select ('bus_services.bus_id as t_id' ,
        'bus_services.passenger_name as t_pn',
         'bus_services.service_id as st_id' ,
        'bus_services.refernce as t_ref',
-       'bus_services.bus_status as s_st ',
+       'bus_services.ses_status as s_st ',
        'bus_services.provider_cost as tp_c' ,
        'bus_services.bus_number as s_num' ,
        'bus_services.bill_num as bill' ,
@@ -920,7 +920,7 @@ $affected1=['id'=>'ticket'];
             //bus
             $affected1=['id'=>'car'];
             $affected =CarService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-            ->join('currency','car_services.cur_id','currency.cur_id')
+            ->join('currency','car_services.ses_cur_id','currency.cur_id')
             ->join('suppliers','car_services.due_to_supp','suppliers.s_no')
             ->join('users','car_services.user_id','users.id')
             ->select ('car_services.car_id as t_id' ,
@@ -930,7 +930,7 @@ $affected1=['id'=>'ticket'];
             'car_services.provider_cost as tp_c' ,
             'car_services.voucher_number as s_num' ,
             'car_services.bill_num as bill' ,
-            'car_services.car_status as s_st ',
+            'car_services.ses_status as s_st ',
             'suppliers.supplier_name as s_name',
             'users.name as u_name',
             'currency.cur_name as cur_n',
@@ -941,7 +941,7 @@ $affected1=['id'=>'ticket'];
                }elseif($id=='7'){
                   $affected1=['id'=>'general'];
                   $affected =GeneralService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-                  ->join('currency','general_services.cur_id','currency.cur_id')
+                  ->join('currency','general_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','general_services.due_to_supp','suppliers.s_no')
                   ->join('users','general_services.user_id','users.id')
                   ->select ('general_services.gen_id as t_id' ,
@@ -949,7 +949,7 @@ $affected1=['id'=>'ticket'];
                   'general_services.service_id as st_id' ,
                   'general_services.refernce as t_ref',
                   'general_services.provider_cost as tp_c' ,
-                  'general_services.general_status as s_st ',
+                  'general_services.ses_status as s_st ',
                   'suppliers.supplier_name as s_name',
                   'general_services.voucher_number as s_num' ,
                   'users.name as u_name',
@@ -962,7 +962,7 @@ $affected1=['id'=>'ticket'];
               }elseif($id=='5'){
                $affected1=['id'=>'hotel'];
                $affected =HotelService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-               ->join('currency','hotel_services.cur_id','currency.cur_id')
+               ->join('currency','hotel_services.ses_cur_id','currency.cur_id')
                ->join('suppliers','hotel_services.due_to_supp','suppliers.s_no')
                ->join('users','hotel_services.user_id','users.id')
                ->select ('hotel_services.hotel_id as t_id' ,
@@ -972,7 +972,7 @@ $affected1=['id'=>'ticket'];
                'hotel_services.provider_cost as tp_c' ,
                'suppliers.supplier_name as s_name',
                'users.name as u_name',
-               'hotel_services.hotel_status as s_st ',
+               'hotel_services.ses_status as s_st ',
                'currency.cur_name as cur_n',
                'hotel_services.voucher_number as s_num' ,
                'hotel_services.voucher_number as s_num' ,
@@ -984,7 +984,7 @@ $affected1=['id'=>'ticket'];
               }elseif($id=='6'){
                $affected1=['id'=>'visa'];
                   $affected =VisaService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-                  ->join('currency','visa_services.cur_id','currency.cur_id')
+                  ->join('currency','visa_services.ses_cur_id','currency.cur_id')
                   ->join('suppliers','visa_services.due_to_supp','suppliers.s_no')
                   ->join('users','visa_services.user_id','users.id')
                   ->select ('visa_services.visa_id as t_id' ,
@@ -993,7 +993,7 @@ $affected1=['id'=>'ticket'];
                   'visa_services.refernce as t_ref',
                   'visa_services.provider_cost as tp_c' ,
                   'suppliers.supplier_name as s_name',
-                  'visa_services.visa_status as s_st ',
+                  'visa_services.ses_status as s_st ',
                   'visa_services.voucher_number as s_num' ,
                   'users.name as u_name',
                   'currency.cur_name as cur_n',
@@ -1005,7 +1005,7 @@ $affected1=['id'=>'ticket'];
               }elseif($id=='4'){
                $affected1=['namme'=>'medical'];
                $affected =MedicalService::where([['service_status',4],['how_add_bill',$user],['errorlog',0]])
-               ->join('currency','medical_services.cur_id','currency.cur_id')
+               ->join('currency','medical_services.ses_cur_id','currency.cur_id')
                ->join('suppliers','medical_services.due_to_supp','suppliers.s_no')
                ->join('users','medical_services.user_id','users.id')
                ->select ('medical_services.med_id as t_id' ,
@@ -1018,7 +1018,7 @@ $affected1=['id'=>'ticket'];
                'users.name as u_name',
                'currency.cur_name as cur_n',
                'medical_services.cost as cost',
-               'medical_services.report_status as s_st ',
+               'medical_services.ses_status as s_st ',
                'medical_services.document_number as s_num' ,
                'medical_services.bill_num as bill' ,
                'medical_services.Issue_date as t_idate') 
@@ -1072,19 +1072,19 @@ function remove_bookmark($main,$service,$h){
 }
 /************************************do filter******************************** */
 public function DISPLAY_FILTER1(){
-  print_r($_SESSION['filter']);
+ // print_r($_SESSION['filter']);
  $ss="";
-  IF(ARRAY_SEARCH('service_status',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+  IF(ARRAY_SEARCH('filter_m_ser',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
    foreach($_SESSION['filter'] as $index=>$column){
     foreach($column as $key=>$value){
-        if($key=='col_name' && $value=="service_status"){
-         $ss =" in ". $_SESSION['filter'][$index]['v'].' and';
+        if($key=='col_name' && $value=="filter_m_ser"){
+         $ss= $_SESSION['filter'][$index]['v'];
         }
    }
    }
    foreach($_SESSION['filter'] as $index=>$column){
       foreach($column as $key=>$value){
-          if($key=='col_name' && $value=="service_status"){
+          if($key=='col_name' && $value=="filter_m_ser"){
                 $sp=array();
               $sp=$_SESSION['filter'];
               unset($sp[$index]);
@@ -1097,41 +1097,11 @@ echo $ss;
 $a=implode(" and ",array_map(function($a) {
    return implode(" ",$a);},$_SESSION['filter']));
    echo $a;
-   if($ss==""){
-      $bus= 'where service_status=3 and '.$a;
-      $ticket= 'where service_status=3 and '.$a;
-      $hotel= 'where service_status=3 and '.$a;
-      $car= 'where service_status=3 and '.$a;
-      $visa= 'where service_status=3 and '.$a;
-      $medical= 'where service_status=3 and '.$a;
-      $general= 'where service_status=3 and '.$a;
-   }else if($ss != ""){
-      $bus= 'where bus_status=3 and bus_status '.$ss .' '.$a;
-      $ticket= 'where  ticket_status=3 and bus_status '.$ss .' '.$a;
-      $hotel= 'where service_status=3 and hotel_status  '.$ss .' '.$a;
-      $car= 'where service_status=3 and car_status   '.$ss .' '.$a;
-      $visa= 'where service_status=3 and visa_status  '.$ss .' '.$a;
-      $medical= 'where service_status=3 and report_status  '.$ss .' '.$a;
-      $general= 'where service_status=3 and offered_status  '.$ss .' '.$a;
-   }
+  
 }
 public function add_filer($col,$op,$v1){
    $v=$v1;
-   if($col=='service_status'){
-    $v='('.$v1.')';
-    $item=array('col_name'=>$col,'op'=>$op,'v'=>$v);
-      IF(ARRAY_SEARCH($col,ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
-         foreach($_SESSION['filter'] as $index=>$column){
-          foreach($column as $key=>$value){
-              if($key=='col_name' && $value==$col){
-         $_SESSION['filter'][$index]['v']=$v;
-              }
-         }
-         }
-      }ELSE{
-           array_push($_SESSION['filter'],$item);  	
-      }
-   }else{
+  
       $item=array('col_name'=>$col,'op'=>$op,'v'=>$v);
       IF(ARRAY_SEARCH($col,ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
          foreach($_SESSION['filter'] as $index=>$column){
@@ -1144,23 +1114,21 @@ public function add_filer($col,$op,$v1){
       }ELSE{
            array_push($_SESSION['filter'],$item);  	
       }
-      }
     return $_SESSION['filter'];
    }
    
-public function display_filter(){
-   $ss="";
-   IF(ARRAY_SEARCH('service_status',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
+public function display_filter(){ $ss="";
+   IF(ARRAY_SEARCH('filter_m_ser',ARRAY_COLUMN($_SESSION['filter'],'col_name'))!==FALSE){
     foreach($_SESSION['filter'] as $index=>$column){
      foreach($column as $key=>$value){
-         if($key=='col_name' && $value=="service_status"){
-          $ss =" in ". $_SESSION['filter'][$index]['v'].' and';
+         if($key=='col_name' && $value=="filter_m_ser"){
+          $ss= $_SESSION['filter'][$index]['v'];
          }
     }
     }
     foreach($_SESSION['filter'] as $index=>$column){
        foreach($column as $key=>$value){
-           if($key=='col_name' && $value=="service_status"){
+           if($key=='col_name' && $value=="filter_m_ser"){
                  $sp=array();
                $sp=$_SESSION['filter'];
                unset($sp[$index]);
@@ -1169,80 +1137,125 @@ public function display_filter(){
       }
       }
  }
+ echo $ss;
  $a=implode(" and ",array_map(function($a) {
     return implode(" ",$a);},$_SESSION['filter']));
-    if($ss==""){
-       $bus= 'where service_status=3 and '.$a;
-       $ticket= 'where service_status=3 and '.$a;
-       $hotel= 'where service_status=3 and '.$a;
-       $car= 'where service_status=3 and '.$a;
-       $visa= 'where service_status=3 and '.$a;
-       $medical= 'where service_status=3 and '.$a;
-       $general= 'where service_status=3 and '.$a;
-    }else if($ss != ""){
-       $bus= 'where service_status=3 and bus_status '.$ss .' '.$a;
-       $ticket= 'where  service_status=3 and bus_status '.$ss .' '.$a;
-       $hotel= 'where service_status=3 and hotel_status  '.$ss .' '.$a;
-       $car= 'where service_status=3 and car_status   '.$ss .' '.$a;
-       $visa= 'where service_status=3 and visa_status  '.$ss .' '.$a;
-       $medical= 'where service_status=3 and report_status  '.$ss .' '.$a;
-       $general= 'where service_status=3 and offered_status  '.$ss .' '.$a;
-    }
+   if($ss==0){
 $onlyl=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM ticket_services 
          JOIN users on ticket_services.user_id=users.id
-          JOIN currency on ticket_services.cur_id=currency.cur_id
+          JOIN currency on ticket_services.ses_cur_id=currency.cur_id
           JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
-          '.$ticket.'
+          where  '.$a.'
            UNION 
                SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM general_services
           JOIN users on general_services.user_id=users.id
-          JOIN currency on general_services.cur_id=currency.cur_id
+          JOIN currency on general_services.ses_cur_id=currency.cur_id
           JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
-           '.$general.'
+          where  '.$a.'
            UNION 
          SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM bus_services
            JOIN users on bus_services.user_id=users.id
-          JOIN currency on bus_services.cur_id=currency.cur_id
+          JOIN currency on bus_services.ses_cur_id=currency.cur_id
           JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
-           '.$bus.'
+          where  '.$a.'
            UNION 
          SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
          ,service_status as s_st FROM hotel_services 
            JOIN users on hotel_services.user_id=users.id
-          JOIN currency on hotel_services.cur_id=currency.cur_id
+          JOIN currency on hotel_services.ses_cur_id=currency.cur_id
           JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
-           '.$hotel.'
+          where  '.$a.'
            UNION 
          SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM visa_services
            JOIN users on visa_services.user_id=users.id
-          JOIN currency on visa_services.cur_id=currency.cur_id
+          JOIN currency on visa_services.ses_cur_id=currency.cur_id
           JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
-           '.$visa.'
+          where  '.$a.'
            UNION 
          SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
          ,service_status as s_st FROM medical_services 
            JOIN users on medical_services.user_id=users.id
-          JOIN currency on medical_services.cur_id=currency.cur_id
+          JOIN currency on medical_services.ses_cur_id=currency.cur_id
           JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
-           '.$medical.'
+          where  '.$a.'
            UNION 
          SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
           ,service_status as s_st FROM car_services
           JOIN users on car_services.user_id=users.id
-          JOIN currency on car_services.cur_id=currency.cur_id
+          JOIN currency on car_services.ses_cur_id=currency.cur_id
           JOIN suppliers on car_services.due_to_supp=suppliers.s_no
-           '.$car.'');
+          where  '.$a.'
+          ');
+   }else if($ss==1){
+      $onlyl=DB::SELECT('SELECT tecket_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,ticket_number as s_num, Issue_date as t_idate
+               ,service_status as s_st FROM ticket_services 
+               JOIN users on ticket_services.user_id=users.id
+                JOIN currency on ticket_services.ses_cur_id=currency.cur_id
+                JOIN suppliers on ticket_services.due_to_supp=suppliers.s_no
+                where  '.$a.'');
+                }else if($ss==2){
+      $onlyl=DB::SELECT('SELECT bus_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,bus_number as s_num, Issue_date as t_idate
+      ,service_status as s_st FROM bus_services
+        JOIN users on bus_services.user_id=users.id
+       JOIN currency on bus_services.ses_cur_id=currency.cur_id
+       JOIN suppliers on bus_services.due_to_supp=suppliers.s_no
+       where  '.$a.'');
+       }else if($ss==3){
+         $onlyl=DB::SELECT(' SELECT car_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+         ,service_status as s_st FROM car_services
+         JOIN users on car_services.user_id=users.id
+         JOIN currency on car_services.ses_cur_id=currency.cur_id
+         JOIN suppliers on car_services.due_to_supp=suppliers.s_no
+         where  '.$a.'');
+          }else if($ss==4){
+            $onlyl=DB::SELECT('SELECT med_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,document_number as s_num, Issue_date as t_idate
+            ,service_status as s_st FROM medical_services 
+              JOIN users on medical_services.user_id=users.id
+             JOIN currency on medical_services.ses_cur_id=currency.cur_id
+             JOIN suppliers on medical_services.due_to_supp=suppliers.s_no
+             where  '.$a.'');
+             }else if($ss==5){
+               $onlyl=DB::SELECT('SELECT hotel_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number	 as s_num, Issue_date as t_idate
+               ,service_status as s_st FROM hotel_services 
+                 JOIN users on hotel_services.user_id=users.id
+                JOIN currency on hotel_services.ses_cur_id=currency.cur_id
+                JOIN suppliers on hotel_services.due_to_supp=suppliers.s_no
+                where  '.$a.'');
+                }else if($ss==6){
+                  $onlyl=DB::SELECT('SELECT visa_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+                  ,service_status as s_st FROM visa_services
+                    JOIN users on visa_services.user_id=users.id
+                   JOIN currency on visa_services.ses_cur_id=currency.cur_id
+                   JOIN suppliers on visa_services.due_to_supp=suppliers.s_no
+                   where  '.$a.'');
+                   }else if($ss==7){
+                     $onlyl=DB::SELECT(' SELECT gen_id as t_id,passenger_name as t_pn,service_id as st_id,user_id as uuser_resiver, refernce as t_ref,provider_cost as tp_c,suppliers.supplier_name as s_name,users.name as u_name,currency.cur_name as cur_n,cost as cost,bookmark as bookmark,how_add_bookmark as bookmark_how ,voucher_number as s_num, Issue_date as t_idate
+                     ,service_status as s_st FROM general_services
+                      JOIN users on general_services.user_id=users.id
+                      JOIN currency on general_services.ses_cur_id=currency.cur_id
+                      JOIN suppliers on general_services.due_to_supp=suppliers.s_no 
+                      where  '.$a.'');
+                      }else{
+      echo "kkkk";
+   }
            echo json_encode($onlyl);
-          /* $opps=[];
-           $_SESSION['filter']=$opps;
-           return  $_SESSION['filter'];*/
+          $this->clear_session();
   }   
 public function clear_session(){
    $opps=[];
    $_SESSION['filter']=$opps;
+   $item=array('col_name'=>'service_status','op'=>'=','v'=>'3');
+   array_push($_SESSION['filter'],$item);  
    return  $_SESSION['filter'];
-}}
+}
+/*******************************REPORTS ^_^ REPORT************************** */
+public function report_desplay($id){
+return view('accountent_report');
+
+}
+
+}
