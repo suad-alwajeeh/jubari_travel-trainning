@@ -134,7 +134,7 @@
              url:'/addsupplier',
              data:$('#supplier_display1').serialize(),
              success:function(response){console.log(response);
-             alert("data saved");
+              $('#so-alert-message').html('<div  class="alert so-alert-message" >Supplier Edited successfully...<button type="button" data-dismiss="alert" class="close">&times;</button></div>');
              },
              error:function(error){console.log(error);
              alert("data dont saved");
