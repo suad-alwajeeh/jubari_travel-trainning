@@ -85,17 +85,21 @@
       <span class="text-danger">{{$errors->first('is_active')}}</span>
       @endif -->
     </div>
-    
     <div class="form-group col-md-3 mb-3">
-      <label for="supplier_photo">Photo</label> 
-      <input type="file" class="form-control"  id="supplier_photo" required placeholder="supplier_photo" name="supplier_photo">
-   
-    </div>
-    <div class="form-group col-md-6 mb-3">
       <label for="supplier_remark">Remark</label>
       <textarea class="form-control" name="supplier_remark" required id="supplier_remark"></textarea>
     </div>
     <!-- -->
+    <div class="form-group col-md-3 mb-3">
+      <img id="supplier_photo1" name="supplier_photo" style="border:1px solid #CC8B79; width:150px; height:150px" alt=""
+      height="200px" width="200px"
+      class="img-fluid rounded shadow-sm  d-block">
+      <label for="supplier_photo" class=" p-2 mt-3 mx-3 btncolor">Select Photo</label> 
+      <input type="file" class="form-control"  id="supplier_photo" required placeholder="supplier_photo" name="supplier_photo"
+      onchange="onFilePicked(event)" accept="image/*" style="display: none;">
+   
+    </div>
+    
     <br>
     <div class="form-group col-md-12 mb-3">
     <label class="checkbox-inline"><input type="checkbox" name="is_active" checked value="1">   Active</label>
@@ -117,7 +121,7 @@
   
   </div> 
   </div>
-<!-- jquery-validation -->
+<!-- jquery-validation --->
 <script src="{{ asset('assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/jquery-validation/additional-methods.min.js') }}"></script> 
 
@@ -236,7 +240,38 @@
 
     });
 
+    function onFilePicked(event) {
 
+const files = event.target.files
+console.log(files)
+let filename = files[0].name
+if (filename.lastIndexOf('.') <= 0) {
+    return alert('not image')
+}
+let filesize = files[0].size
+console.log(filesize)
+
+let fileType = files[0].type
+console.log(fileType)
+
+if (fileType !== 'image/png') {
+    if (fileType !== 'image/jpeg') {
+        return alert('image type not supported')
+    }
+}
+const fileReder = new FileReader()
+let formData = new FormData()
+formData.append('file', files[0])
+fileReder.addEventListener('load', () => {
+    let dataURI = fileReder.result
+    if (dataURI) {
+        document.getElementById('supplier_photo1').src = dataURI
+
+    }
+})
+fileReder.readAsDataURL(files[0])
+console.log(this.image)
+}
 
     
 
