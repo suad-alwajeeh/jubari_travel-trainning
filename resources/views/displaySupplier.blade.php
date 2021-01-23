@@ -31,9 +31,6 @@
 </div>
 
 <div class="container">    
-@foreach($data1 as $item1)
-<div  class="alert so-alert-message" >{{$item1}} <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
-  @endforeach
   <div id="so-alert-message"></div>            
   <table class="table table-hover text-center">
     <thead>

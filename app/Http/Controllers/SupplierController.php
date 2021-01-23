@@ -43,7 +43,8 @@ class SupplierController extends Controller
 
     public function display(){
         $affected1 = Supplier::where('is_deleted',0)->paginate(7);
-      //  ->join('currency','currency.cur_id','=','sup_currency.cur_id')
+        $affected2 =[];
+      ////  ->join('currency','currency.cur_id','=','sup_currency.cur_id')
        // ->join('sup_services','sup_services.sup_id', '=','suppliers.s_no')
        // ->join('services','services.ser_id','=','sup_services.service_id')->paginate(7);
 //$data['suplier']= Supplier::join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
@@ -51,7 +52,7 @@ class SupplierController extends Controller
 // $affected = Supplier::where('is_active',1)->paginate(7);
 //$affected = Supplier::where('is_deleted',0)->paginate(7);
 // $affected1 = Currency::where('is_active',1)->paginate(7);
-return view('displaySupplier',['data'=>$affected1]);
+return view('displaySupplier',['data'=>$affected1,'data1'=>$affected2]);
     }
 
     
@@ -129,6 +130,9 @@ return view('displaySupplier',['data'=>$affected1]);
                  $supplier->supplier_photo= $photo_name;
 
              }
+
+
+             
           
          
             
@@ -258,25 +262,25 @@ public function  edit_supplier(){
 }*/
         public function is_active($id){
             $affected1= Supplier::where('s_no',$id)
-            ->update(['is_active'=>'1']);
-           
-            return redirect('displaySupplier');
+            ->where(['is_active'=>'1']);
+            $affected = Supplier::where('is_deleted',0)->paginate(7);
+            return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
             }
             public function is_not_active($id){
                 $affected1= Supplier::where('s_no',$id)
-                ->update(['is_active'=>'0']);
+                ->where(['is_active'=>'0']);
                 $affected = Supplier::where('is_deleted',0)->paginate(7);
-                return redirect('displaySupplier');
+                return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
                 }
                 public function filter($id){
                     if($id==1){
-                        $affected1 = Supplier::where('is_active',1)->get();
+                        $affected1 = Supplier::where([['is_deleted',0],['is_active',1]])->get();
                         $affected = Supplier::where([['is_deleted',0],['is_active',1]])->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }elseif($id==0){
                         $affected1 = Supplier::where('is_active',1)->get();
                         $affected = Supplier::where([['is_deleted',0],['is_active',0]])->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==3){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -285,7 +289,7 @@ public function  edit_supplier(){
                         ->join('sup_services','sup_services.sup_id', '=','suppliers.s_no')
                         ->join('services','services.ser_id','=','sup_services.service_id')
                         ->where('currency.cur_id','=',2)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==4){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -294,7 +298,7 @@ public function  edit_supplier(){
                         ->join('sup_services','sup_services.sup_id', '=','suppliers.s_no')
                         ->join('services','services.ser_id','=','sup_services.service_id')
                         ->where('currency.cur_id','=',1)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==5){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -303,7 +307,7 @@ public function  edit_supplier(){
                         ->join('sup_services','sup_services.sup_id', '=','suppliers.s_no')
                         ->join('services','services.ser_id','=','sup_services.service_id')
                         ->where('currency.cur_id','=',3)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==6){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -312,7 +316,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',1)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==7){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -321,7 +325,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',2)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==8){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -330,7 +334,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',5)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==9){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -339,7 +343,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',3)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==10){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -348,7 +352,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',4)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==11){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -357,7 +361,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',6)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                     elseif($id==12){
                         $affected1 = Supplier::where('is_active',1)->get();
@@ -366,7 +370,7 @@ public function  edit_supplier(){
                         ->join('sup_currency','sup_currency.sup_id', '=','suppliers.s_no')
                         ->join('currency','currency.cur_id','=','sup_currency.cur_id')
                         ->where('services.ser_id','=',7)->paginate(7);
-                        return view('displaySupplier',['data'=>$affected,'data1'=>$affected1]);
+                        return view('displaySupplier',['data'=>$affected,'data2'=>$affected1]);
                     }
                 }
 
