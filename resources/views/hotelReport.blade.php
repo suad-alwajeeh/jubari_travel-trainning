@@ -14,55 +14,64 @@
   <div class="card-header">
   <h2 class="card-title">Hotel Service Report</h2>
 
-
-  <a type="button" class="btn btn-outline-success so_form_btn" href="/export_excel">Download as Excel file</a>
-
-
-  <div class="dropdown so_form_btn">
-    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
-      Filter Customer
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="/hotelReport">all</a>
-      @foreach($all as $supp)
-      <a class="dropdown-item" href="/hotelReport">{{$supp->due_to_customer}}</a>
-      @endforeach
-    </div>
-
-  </div>
-
-
-
-
-  <div class="dropdown so_form_btn">
-    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
-      Filter Supplier 
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="/hotelReport">all</a>
-      @foreach($all as $supp)
-      <a class="dropdown-item" href="/hotelReport">{{$supp->due_to_supp}}</a>
-      @endforeach
-    </div>
-
-  </div> 
-
-
-  <div class="dropdown so_form_btn">
-    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
-      Filter Currency
-    </button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="/hotelReport">all</a>
+</div>
+<div class="card-body">
+<div class="row">
+  <div class="col-md-2">
+    <div class="dropdown so_form_btn">
+      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+        Filter Currency
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/hotelReport">all</a>
       <a class="dropdown-item " href="/hotelReport/13"> USD</a>
       <a class="dropdown-item " href="/hotelReport/14">YER</a>
       <a class="dropdown-item " href="/hotelReport/15">SAR</a>
-    </div>
-
-  </div>  
-  </div>
+      </div>
   
-<div class="container">            
+    </div>  
+  </div>
+  <div class="col-md-2">
+    <div class="dropdown so_form_btn">
+      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+        Filter Supplier 
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/hotelReport">all</a>
+        @foreach($all as $supp)
+        <a class="dropdown-item" href="/hotelReport/a/{{$supp->s_no}}">{{$supp->supplier_name}}</a>
+        @endforeach
+      </div>
+  
+    </div> 
+  </div>
+  <div class="col-md-2">
+    <div class="dropdown so_form_btn">
+      <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+        Filter Customer
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/hotelReport">all</a>
+        @foreach($all as $supp)
+        <a class="dropdown-item" href="/hotelReport/b/{{$supp->emp_id}}">{{$supp->emp_first_name}} {{$supp->emp_last_name}}</a>
+        @endforeach
+      </div>
+  
+    </div>
+  
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-md-2">
+  <input type="button" value="Export to PDF" class="btn btn-outline-danger so_form_btn " onclick="window.print();" id="pdf_btn" />
+  </div>
+ 
+
+
+
+  </div>
+<br>
+<div class="container" id="pdf">  
+  <div class="row">          
   <table class="table table-hover text-center">
     <thead>
       <tr>
@@ -87,10 +96,12 @@
       </tr>
     </thead>
     <tbody>
-    @foreach($all as $item)
+      <?php $i=1 ?>
+      @forelse($all as $item)
     
       <tr>
-      <td>{{$item->hotel_id}}</td>
+        <input type="hidden" class="delete_id" value="{{$item->hotel_id}}">
+        <td><?php echo $i;?></td>
       
       <td>{{$item->Issue_date}}</td>
      
@@ -98,11 +109,11 @@
       
       <td>{{$item->passenger_name}}</td>
       
-      <td>{{$item->due_to_supp}}</td>
+      <td>{{$item->supplier_name}}</td>
      
       <td>{{$item->provider_cost}}</td>
       
-      <td>{{$item->due_to_customer}}</td>
+      <td>{{$item->emp_first_name}} {{$item->emp_last_name}}</td>
       
       <td>{{$item->cost}}</td>
      
@@ -110,17 +121,34 @@
       
 
       </tr>
-     
-     @endforeach
+      <?php $i++ ?>
+      @empty
+      <tr> <td colspan="8" >There is No data <td></tr>
+                        @endforelse  
     </tbody>
   </table>
-  
 </div>
+</div>
+</div>
+</div>
+</div>
+  </div>
+  </div>
+  <!--- /.content-wrapper -->
 
-</div>
-</div>
-  </div>
-  </div>
-  </div>
-  <!-- /.content-wrapper -->
-@endsection
+
+<script type="text/javascript">
+  
+  $("#pdf_btn").live("click", function () {
+              var divContents = $("#pdf").html();
+              var printWindow = window.open('', '', 'height=400,width=800');
+              printWindow.document.write('<html><head><title>General Service Report</title>');
+              printWindow.document.write('</head><body >');
+              printWindow.document.write(pdf);
+              printWindow.document.write('</body></html>');
+              printWindow.document.close();
+              printWindow.print();
+          });
+      </script>
+
+@stop

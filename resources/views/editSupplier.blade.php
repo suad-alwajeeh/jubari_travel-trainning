@@ -102,7 +102,7 @@
          <input type="hidden"  class="form-check-input" name="supplier_photo1" value="{{$item->supplier_photo}}">
 
                                     <div class="input-group ">
-                                        <label for="upload" class=" p-2 mt-3 mx-auto btncolor">Chose Image:</label>
+                                        <label for="upload" class=" p-2 mt-3 mx-auto btncolor">Select Photo</label>
                                         <input id="upload" type="file" name="supplier_photo" onchange="onFilePicked(event)"
                                             accept="image/*" style="display: none;">
 

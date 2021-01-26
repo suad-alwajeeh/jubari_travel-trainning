@@ -87,15 +87,15 @@
     </div>
     <div class="form-group col-md-3 mb-3">
       <label for="supplier_remark">Remark</label>
-      <textarea class="form-control" name="supplier_remark" required id="supplier_remark"></textarea>
+      <textarea class="form-control" rows="1" name="supplier_remark" required id="supplier_remark"></textarea>
     </div>
     <!-- -->
     <div class="form-group col-md-3 mb-3">
-      <img id="supplier_photo1" name="supplier_photo" style="border:1px solid #CC8B79; width:150px; height:150px" alt=""
+      <img id="supplier_photo1" name="supplier_photo1" style="border:1px solid #CC8B79; width:150px; height:150px" alt=""
       height="200px" width="200px"
       class="img-fluid rounded shadow-sm  d-block">
       <label for="supplier_photo" class=" p-2 mt-3 mx-3 btncolor">Select Photo</label> 
-      <input type="file" class="form-control"  id="supplier_photo" required placeholder="supplier_photo" name="supplier_photo"
+      <input type="file" class="form-control"  id="supplier_photo" required name="supplier_photo"
       onchange="onFilePicked(event)" accept="image/*" style="display: none;">
    
     </div>
@@ -128,7 +128,8 @@
   <script>
     var formsup = document.getElementById("supplier_display");
     var nameFormat = /^[A-Za-z-0-9-ا-ب-ت-ث-ج-ح-خ-د-ذ-ر-ز-س-ش-ص-ض-ط-ظ-ع-غ-ف-ق-ك-ل-م-ن-ه-و-ي-ة]+$/;
-    var phoneNumber = "^[0-9]{9}$";
+    var mobileNumber = "^[0-9]{9}$";
+    var phoneNumber = "^[0-9]{6}$";
     var accountNumber = "^[0-9]{5}$";
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     var mass1 = document.getElementById("helpId1");
@@ -157,7 +158,7 @@
            formsup[1].style.borderColor = "green";
            return true;
               }
-              else if (formsup[1].value.match(phoneNumber)) {
+              else if (formsup[1].value.match(mobileNumber)) {
                 formsup[1].style.borderColor = "green";
                 return true;
               } 
@@ -169,7 +170,7 @@
           });
           formsup[2].addEventListener("keyup", function confirmName() {
 
-          if (formsup[2].value.length == 9) {
+          if (formsup[2].value.length == 6) {
             formsup[2].style.borderColor = "green";
               return true;
                }
@@ -178,7 +179,7 @@
                 return true;
               } 
             else {
-        mass3.innerHTML = "Enter 9 Degits";
+        mass3.innerHTML = "Enter 6 Degits";
         formsup[2].style.borderColor = "red";
           return false;
          }

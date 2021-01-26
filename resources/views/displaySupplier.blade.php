@@ -30,7 +30,13 @@
 
 </div>
 
-<div class="container">    
+<div class="container"> 
+  @if (session('Success'))
+  <div class="alert alert-success" role="alert">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    {{ session('Success') }}
+  </div>
+  @endif   
   <div id="so-alert-message"></div>            
   <table class="table table-hover text-center">
     <thead>
@@ -48,6 +54,12 @@
       </tr>
     </thead>
     <tbody>
+      @if ($data =="null")
+
+<tr> <td colspan="10" >There is No data  Pleas Add Service <td></tr> 
+
+  @else
+
     
     @foreach($data as $item)
       <tr id="tr{{$item->s_no}}">
@@ -113,6 +125,10 @@ function delete{{$item->s_no}}() {
       </tr>
       
      @endforeach
+
+     
+
+@endif
      
     </tbody>
   </table>
