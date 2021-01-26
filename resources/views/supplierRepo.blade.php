@@ -6,7 +6,7 @@
 
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" id="pdf">
   <div class="container p-4">
     <div class="row card-outline so_panal">
       <div class="col-12 card ">
@@ -16,16 +16,17 @@
                   </div>
                   <div class="card-body">
  
-          <div class="row "> 
-<div class="col-md-3">
+          <div class="row" id="a"> 
+<div class="col-md-8" id="radios">
+
           <label>
-            <a href="/supplierRepo"> <input type="radio" checked="checked" /> USD</a>
+            <input type="radio" name="filter" value="usd" id="usd" onclick="window.location='/supplierRepo';" checked="checked"/> USD
           </label>
           <label>
-            <a class="dropdown-item " href="/supplierRepo/100"> <input type="radio" />  YER</a>
+            <input type="radio" value="yer" id="yer" name="filter" onclick="window.location='/supplierRepo/100';" />  YER
           </label>
           <label>
-            <a class="dropdown-item " href="/supplierRepo/101"> <input type="radio" />  SAR</a>
+            <input type="radio" value="sar" id="sar" name="filter" onclick="window.location='/supplierRepo/101';" />  SAR
           </label>
         </div>
         <div class="col-md-2">
@@ -34,7 +35,7 @@
               Filter By Date
             </button>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="/supplierRepo">All</a>
+              <a class="dropdown-item" href="/supplierRepo/1000">All</a>
               <a class="dropdown-item " href="/supplierRepo/200"> Today</a>
               <a class="dropdown-item " href="/supplierRepo/201">Yesterday</a>
               <a class="dropdown-item " href="/supplierRepo/202">Last 7 Days</a>
@@ -47,43 +48,106 @@
           </div> 
          
         </div>
-<div class="col-md-7">
-     <form action="/supplierRepoinBetween" method="get">
-            
-            <div class="col-md-3">
-              <div class="form-group">
-              <label for="">Start Date</label>
-              <input type="date" class="form-control" name="start_date">
-            </div>
-            </div>
+        <div class="col-md-2">
+          
+          <input type="button" value="Export to PDF" class="btn btn-outline-danger so_form_btn " onclick="window.print();" id="pdf_btn" />
+             
+        </div>
 
-            <div class="col-md-3">
-              <div class="form-group">
-              <label for="">End Date</label>
-              <input type="date" class="form-control" name="end_date">
-            </div>
-            </div>
-
-            <div class="col-md-1" >
-               <div class="form-group">
-                 <input type="submit" class="btn btn-primary" value="Submit">
-                </div>
-            </div>
-          </form>    
-        </div>   
+   
 
 </div>
 
-
+<div class="col-md-12">
+  <input type="checkbox" name='filter' value="filter" onChange="toggleDiv()" /> Filter by Currency and Date togather 
+  
+  <br>
+  <br>
+ 
+<div class="row" id="b" style="display:none;"> 
+  <div class="col-md-2">
+            <div class="dropdown">
+              <button type="button" class="btn btn-outline-primary so_form_btn dropdown-toggle" data-toggle="dropdown">
+                USD and Date
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/supplierRepo/1000">All</a>
+                <a class="dropdown-item " href="/supplierRepo/200"> Today</a>
+                <a class="dropdown-item " href="/supplierRepo/201">Yesterday</a>
+                <a class="dropdown-item " href="/supplierRepo/202">Last 7 Days</a>
+                <a class="dropdown-item " href="/supplierRepo/203">Last Month</a>
+                <a class="dropdown-item " href="/supplierRepo/204">Last Year</a>
+          
+               
+              </div>
+          
+            </div> 
+           
+          </div>
+          <div class="col-md-2">
+            <div class="dropdown">
+              <button type="button" class="btn btn-outline-primary so_form_btn dropdown-toggle" data-toggle="dropdown">
+                YER and Date
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/supplierRepo/1001">All</a>
+                <a class="dropdown-item " href="/supplierRepo/205"> Today</a>
+                <a class="dropdown-item " href="/supplierRepo/206">Yesterday</a>
+                <a class="dropdown-item " href="/supplierRepo/207">Last 7 Days</a>
+                <a class="dropdown-item " href="/supplierRepo/208">Last Month</a>
+                <a class="dropdown-item " href="/supplierRepo/209">Last Year</a>
+          
+               
+              </div>
+          
+            </div> 
+           
+          </div>
+          <div class="col-md-2">
+            <div class="dropdown">
+              <button type="button" class="btn btn-outline-primary so_form_btn dropdown-toggle" data-toggle="dropdown">
+                SAR and Date
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="/supplierRepo/1002">All</a>
+                <a class="dropdown-item " href="/supplierRepo/210"> Today</a>
+                <a class="dropdown-item " href="/supplierRepo/211">Yesterday</a>
+                <a class="dropdown-item " href="/supplierRepo/212">Last 7 Days</a>
+                <a class="dropdown-item " href="/supplierRepo/213">Last Month</a>
+                <a class="dropdown-item " href="/supplierRepo/214">Last Year</a>
+          
+               
+              </div>
+          
+            </div> 
+           
+          </div>
+          <div class="col-md-3">               
+          </div>
+          <div class="col-md-3">
+          
+            <input type="button" value="Export to PDF" class="btn btn-outline-danger so_form_btn " onclick="window.print();" id="pdf_btn" />
+               
+          </div>
+          
+  
+     
+  
+  </div>
+</div>
+</div>
 <br>
 
 
 <div class="container"> 
-<div class="row ">          
+<div class="row "> 
+  <?php $total = 0;?>
+          
   <table class="card-outline so_panal table table-hover  col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Ticket Service</th>
+        <th class="text-center" colspan="2">Ticket Service </th>
+        <th> <a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/ticketReport') }}"> More Details</a></th>
         
       </tr>
     <tr>
@@ -92,7 +156,9 @@
     <th>Total</th>
 
     </tr>
-    @foreach($tic as $tickets)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($tic as $tickets)
     <tr>
       
      
@@ -102,7 +168,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $tickets->tt;
+    $total += $sum;
+    $sum2 += $tickets->tc; ?>
+    @empty
+<tr><td class="text-center" colspan="3">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   <table class="table table-hover col-md-2 mb-3">
   </table>
@@ -110,16 +187,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Visa Service</th>
-        
+        <th colspan="2">Visa Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/visaReport') }}"> More Details</a></th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($visa as $visas)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($visa as $visas)
     <tr>
       
      
@@ -129,7 +208,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $visas->vt;
+    $total += $sum;
+    $sum2 += $visas->vc; ?>
+    @empty
+<tr><td class="text-center" colspan="3">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   </div>
   <br>
@@ -139,16 +229,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Bus Service</th>
-        
+        <th colspan="2">Bus Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/busReport') }}"> More Details</a></th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($bus as $buss)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($bus as $buss)
     <tr>
       
      
@@ -158,7 +250,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $buss->bt;
+    $total += $sum;
+    $sum2 += $buss->bc; ?>
+    @empty
+<tr><td class="text-center" colspan="2">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   <table class="table table-hover col-md-2 mb-3">
   </table>
@@ -166,16 +269,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Car Service</th>
-        
+        <th colspan="2">Car Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/carReport') }}"> More Details</a></th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($car as $carss)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($car as $carss)
     <tr>
       
      
@@ -185,7 +290,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $carss->ct;
+    $total += $sum;
+    $sum2 += $carss->cc; ?>
+    @empty
+<tr><td class="text-center" colspan="2">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   </div>
   <br>
@@ -195,16 +311,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Hotel Service</th>
-        
+        <th colspan="2">Hotel Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/hotelReport') }}"> More Details</a></th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($hot as $hots)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($hot as $hots)
     <tr>
       
      
@@ -214,7 +332,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $hots->ht;
+    $total += $sum;
+    $sum2 += $hots->hc; ?>
+    @empty
+<tr><td class="text-center" colspan="2">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   <table class="table table-hover col-md-2 mb-3">
   </table>
@@ -222,16 +351,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">Medical Service</th>
-        
+        <th colspan="2">Medical Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/medicalReport') }}"> More Details</a> </th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($med as $meds)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($med as $meds)
     <tr>
       
      
@@ -241,7 +372,18 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $meds->mt;
+    $total += $sum;
+    $sum2 += $meds->mc; ?>
+    @empty
+<tr><td class="text-center" colspan="2">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr>
   </table>
   </div>
   <br>
@@ -251,16 +393,18 @@
   <table class="card-outline so_panal table table-hover col-md-5 mb-3">
       <tr>
         
-        <th class="text-center" colspan="3">General Service</th>
-        
+        <th colspan="2">General Service </th>
+        <th><a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/generalReport') }}"> More Details</a></th>
       </tr>
     <tr>
     <th>Date</th>
-    <th>Count</th>
+    <th>Number of tickets</th>
     <th>Total</th>
 
     </tr>
-    @foreach($gen as $gens)
+    <?php $sum = 0;
+    $sum2=0; ?>
+    @forelse($gen as $gens)
     <tr>
       
      
@@ -270,27 +414,34 @@
    
       
     </tr>
-    @endforeach
+    <?php 
+    $sum += $gens->gt;
+    $total += $sum;
+    $sum2 += $gens->gc; ?>
+    @empty
+<tr><td class="text-center" colspan="2">There is No data<td></tr>
+  @endforelse 
+  <tr>
+    <th>Total</th>
+    <td><?php echo $sum2;?></td>
+    <td><?php echo $sum;?></td>
+  </tr> 
   </table>
   <table class="table table-hover col-md-2 mb-3">
   </table>
   
+
+</div>
+<div>
+  <table class="card-outline so_panal table table-hover col-md-12 mb-3">
+    <th class="text-right" >Total: <?php echo $total;?> </th>
   
+</table>
   </div>
-</div>
 <br>
 <br>
 <br>
-  
-</div>
-<div class="card-footer" >
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/ticketReport') }}"> Ticket Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/busReport') }}"> Bus Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/visaReport') }}"> Visa Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/carReport') }}"> Car Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/hotelReport') }}"> Hotel Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/medicalReport') }}"> Medical Service</a> 
-<a type="button" class="btn btn-outline-primary so_form_btn" href="{{ url('/generalReport') }}"> General Service</a>  
+
 </div>
 </div>
 </div>
@@ -298,58 +449,37 @@
   </div>
   </div>
   <!-- /.content-wrapper -->
-@endsection
+<script type="text/javascript">
+function toggleDiv() {
 
-@section('scripts')
-    <!-- Include Required Prerequisites -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+// first check if display then hide otherwise show
+if ((document.getElementById('b').style.display == 'none')) {
+ document.getElementById('b').style.display="flex";
+ document.getElementById('a').style.display="none";
+}
+else {
+document.getElementById('b').style.display="none";
+document.getElementById('a').style.display="flex";
+}
+};
 
-    <!-- Include Date Range Picker -->
-    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 
-    <script type="text/javascript">
-        $(function () {
-            let dateInterval = getQueryParameter('date_filter');
-            let start = moment().startOf('isoWeek');
-            let end = moment().endOf('isoWeek');
-            if (dateInterval) {
-                dateInterval = dateInterval.split(' - ');
-                start = dateInterval[0];
-                end = dateInterval[1];
-            }
-            $('#date_filter').daterangepicker({
-                "showDropdowns": true,
-                "showWeekNumbers": true,
-                "alwaysShowCalendars": true,
-                startDate: start,
-                endDate: end,
-                locale: {
-                    format: 'YYYY-MM-DD',
-                    firstDay: 1,
-                },
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                    'This Year': [moment().startOf('year'), moment().endOf('year')],
-                    'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
-                    'All time': [moment().subtract(30, 'year').startOf('month'), moment().endOf('month')],
-                }
-            });
+$("#pdf_btn").live("click", function () {
+            var divContents = $("#pdf").html();
+            var printWindow = window.open('', '', 'height=400,width=800');
+            printWindow.document.write('<html><head><title>Reports</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(pdf);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
         });
-        function getQueryParameter(name) {
-            const url = window.location.href;
-            name = name.replace(/[\[\]]/g, "\\$&");
-            const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, " "));
-        }
+//   console.log('ewgrjwhehnwehdwqfyetfqyhefhqwafdhwqfytfwqytefwqfewqfeyqwfeqwfefwqf');
+
+//   var v=$('#t').val();
+// //v.html('3233332');
+//         console.log('total');
+//         console.log(v);
     </script>
 
 @stop
