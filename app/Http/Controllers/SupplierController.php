@@ -165,7 +165,7 @@ return view('displaySupplier',['data'=>$affected1,'data1'=>$affected2]);
            $sup_cur=DB::insert('insert into sup_services (sup_id,service_id) value ("'.$id2.'","'.$services.'")');
        }
           $affected = Supplier::where('is_deleted',0)->paginate(7);
-          // $services['services']=Service::where('is_active',1)->get();
+          //// $services['services']=Service::where('is_active',1)->get();
           return redirect('displaySupplier')->with('Success','Supplier has been Added successfully');
                    
         }

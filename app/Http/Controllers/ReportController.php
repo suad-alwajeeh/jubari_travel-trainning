@@ -79,7 +79,7 @@ class ReportController extends Controller
         $data=array();
     
         //$data=[];
-        $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" GROUP By Issue_date');
+        $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt , issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" GROUP By Issue_date');
         $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" GROUP By Issue_date');
         $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" GROUP By Issue_date');
         $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD"  GROUP By Issue_date');
@@ -136,7 +136,7 @@ class ReportController extends Controller
         INNER JOIN visa_services as visa');*/
 
     
-    $ticketRepo=DB::select('select * from ticket_services ');
+    $ticketRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.due_to_supp,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.service_status=4 and ticket_services.due_to_supp=suppliers.s_no and ticket_services.due_to_customer=emp_id ');
     
     $supp=DB::select('select * from suppliers ');
     
@@ -152,7 +152,7 @@ class ReportController extends Controller
       
 
     
-    $busRepo=DB::select('select * from bus_services ');
+    $busRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.due_to_supp,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.service_status=4 and bus_services.due_to_supp=suppliers.s_no and bus_services.due_to_customer=emp_id ');
     
     $supp=DB::select('select * from suppliers ');
     
@@ -168,7 +168,7 @@ class ReportController extends Controller
       
 
     
-        $visaRepo=DB::select('select * from visa_services ');
+        $visaRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.due_to_supp,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.service_status=4 and visa_services.due_to_supp=suppliers.s_no and visa_services.due_to_customer=emp_id ');
         
         $supp=DB::select('select * from suppliers ');
         
@@ -184,7 +184,7 @@ class ReportController extends Controller
       
 
     
-            $carRepo=DB::select('select * from car_services ');
+            $carRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.due_to_supp,car_services.car_id,car_services.refernce,car_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.service_status=4 and car_services.due_to_supp=suppliers.s_no and car_services.due_to_customer=emp_id ');
             
             $supp=DB::select('select * from suppliers ');
             
@@ -201,7 +201,7 @@ class ReportController extends Controller
       
 
     
-                $hotRepo=DB::select('select * from hotel_services ');
+                $hotRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.due_to_supp,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.service_status=4 and hotel_services.due_to_supp=suppliers.s_no and hotel_services.due_to_customer=emp_id ');
                 
                 $supp=DB::select('select * from suppliers ');
                 
@@ -217,7 +217,7 @@ class ReportController extends Controller
       
 
     
-                    $medRepo=DB::select('select * from medical_services ');
+                    $medRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.due_to_supp,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.service_status=4 and medical_services.due_to_supp=suppliers.s_no and medical_services.due_to_customer=emp_id ');
                     
                     $supp=DB::select('select * from suppliers ');
                     
@@ -233,7 +233,7 @@ class ReportController extends Controller
       
 
     
-                        $genRepo=DB::select('select * from general_services ');
+                        $genRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.due_to_supp,general_services.gen_id,general_services.refernce,general_services.passenger_name,suppliers.s_no,suppliers.supplier_name from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.service_status=4 and general_services.due_to_supp=suppliers.s_no and general_services.due_to_customer=emp_id ');
                         
                         $supp=DB::select('select * from suppliers ');
                         
@@ -286,13 +286,119 @@ class ReportController extends Controller
       
 
         
-public function filterSupp($sup_id){
-    $genSupRepo=DB::select('select * from general_services where general_services.due_to_supp="'.$sup_id.'"');
-                    
-    dd($genSupRepo);
+
+
+public function filterSuppTic($id){
+    $ticSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and ticket_services.due_to_customer=emp_id');
+     // dd($genSupRepo);
+return view('ticketReport',['all'=>$ticSupRepo]);
+
+}
+public function filterSuppBus($id){
+   
+    $busSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and visa_services.due_to_customer=emp_id ');
+     // dd($genSupRepo);
+return view('busReport',['all'=>$busSupRepo]);
+
+}
+
+public function filterSuppCar($id){
+   
+    $carSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.car_id,car_services.refernce,car_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and car_services.due_to_customer=emp_id ');
+     // dd($genSupRepo);
+return view('carReport',['all'=>$carSupRepo]);
+
+}
+
+public function filterSuppVisa($id){
+     $visaSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and visa_services.due_to_customer=emp_id  ');
+     // dd($genSupRepo);
+return view('visaReport',['all'=>$visaSupRepo]);
+
+}
+
+
+public function filterSuppHot($id){
+    $hotSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and hotel_services.due_to_customer=emp_id  ');
+    // dd($genSupRepo);
+return view('hotelReport',['all'=>$hotSupRepo]);
+
+}
+
+public function filterSuppMed($id){
+   $medSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and medical_services.due_to_customer=emp_id ');
+    // dd($genSupRepo);
+return view('medicalReport',['all'=>$medSupRepo]);
+
+}
+
+public function filterSuppGen($id){
+    $genSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.gen_id,general_services.refernce,general_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.service_status=4 and general_services.due_to_supp=suppliers.s_no and suppliers.s_no="'.$id.'" and general_services.due_to_customer=emp_id ');    
+   // dd($genSupRepo);
 return view('generalReport',['all'=>$genSupRepo]);
 
 }
+
+
+public function filterCustomerTic($id){
+    $ticSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees,ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.due_to_supp=suppliers.s_no and ticket_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'"');
+                    
+   // dd($genSupRepo);
+return view('ticketReport',['all'=>$ticSupRepo]);
+
+}
+
+public function filterCustomerBus($id){
+    $busSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.due_to_supp=suppliers.s_no and bus_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'"');
+                    
+   // dd($genSupRepo);
+return view('busReport',['all'=>$busSupRepo]);
+
+}
+
+public function filterCustomerCar($id){
+    $carSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.car_id,car_services.refernce,car_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.due_to_supp=suppliers.s_no and car_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'"');
+                    
+   // dd($genSupRepo);
+return view('carReport',['all'=>$carSupRepo]);
+
+}
+public function filterCustomerVisa($id){
+    $visaSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.due_to_supp=suppliers.s_no and visa_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'" ');
+                    
+   // dd($genSupRepo);
+return view('visaReport',['all'=>$visaSupRepo]);
+
+}
+
+public function filterCustomerHot($id){
+    $hotSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.due_to_supp=suppliers.s_no and hotel_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'" ');
+                    
+   // dd($genSupRepo);
+return view('hotelReport',['all'=>$hotSupRepo]);
+
+}
+
+public function filterCustomerMed($id){
+    $medSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.due_to_supp=suppliers.s_no and medical_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'" ');
+                    
+   // dd($genSupRepo);
+return view('medicalReport',['all'=>$medSupRepo]);
+
+}
+
+
+public function filterCustomerGen($id){
+    $genSupRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.gen_id,general_services.refernce,general_services.passenger_name,suppliers.s_no,suppliers.supplier_name  from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.due_to_supp=suppliers.s_no and general_services.due_to_customer=employees.emp_id and employees.emp_id="'.$id.'" ');
+                    
+   // dd($genSupRepo);
+return view('generalReport',['all'=>$genSupRepo]);
+
+}
+
+
+
+
        
 
 
@@ -300,111 +406,113 @@ return view('generalReport',['all'=>$genSupRepo]);
             
                 public function filter($id){
                     if($id==1){
-                        $ticketRepo=DB::select('select * from ticket_services where ticket_services.passnger_currency="USD"');
+                        $ticketRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.due_to_supp,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,ticket_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.service_status=4 and ticket_services.due_to_supp=suppliers.s_no and ticket_services.due_to_customer=emp_id and ticket_services.passnger_currency="USD"');
                         return view('ticketReport',['all'=>$ticketRepo]);
                     }elseif($id==2){
-                        $ticketRepo=DB::select('select * from ticket_services where ticket_services.passnger_currency="YER"');
+                        $ticketRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.due_to_supp,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,ticket_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.service_status=4 and ticket_services.due_to_supp=suppliers.s_no and ticket_services.due_to_customer=emp_id and ticket_services.passnger_currency="YER"');
                         return view('ticketReport',['all'=>$ticketRepo]);
                     }
                     elseif($id==3){
                         
-                        $ticketRepo=DB::select('select * from ticket_services where ticket_services.passnger_currency="SAR"');
+                        $ticketRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, ticket_services.Issue_date,ticket_services.provider_cost,ticket_services.cost,ticket_services.passnger_currency,ticket_services.due_to_customer,ticket_services.due_to_supp,ticket_services.tecket_id,ticket_services.refernce,ticket_services.passenger_name,ticket_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, ticket_services , suppliers WHERE ticket_services.deleted=0 and ticket_services.service_status=4 and ticket_services.due_to_supp=suppliers.s_no and ticket_services.due_to_customer=emp_id and ticket_services.passnger_currency="SAR"');
                         return view('ticketReport',['all'=>$ticketRepo]);
                     }
                     elseif($id==4){
-                        $busRepo=DB::select('select * from bus_services where bus_services.passnger_currency="USD"');
+                        $busRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.due_to_supp,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,bus_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.service_status=4 and bus_services.due_to_supp=suppliers.s_no and bus_services.due_to_customer=emp_id and bus_services.passnger_currency="USD"');
                         return view('busReport',['all'=>$busRepo]);
                     }
                     elseif($id==5){
-                        $busRepo=DB::select('select * from bus_services where bus_services.passnger_currency="YER"');
+                        $busRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.due_to_supp,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,bus_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.service_status=4 and bus_services.due_to_supp=suppliers.s_no and bus_services.due_to_customer=emp_id and bus_services.passnger_currency="YER"');
                         return view('busReport',['all'=>$busRepo]);
                     }
                     elseif($id==6){
-                        $busRepo=DB::select('select * from bus_services where bus_services.passnger_currency="SAR"');
+                        $busRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, bus_services.Issue_date,bus_services.provider_cost,bus_services.cost,bus_services.passnger_currency,bus_services.due_to_customer,bus_services.due_to_supp,bus_services.bus_id,bus_services.refernce,bus_services.passenger_name,bus_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, bus_services , suppliers WHERE bus_services.deleted=0 and bus_services.service_status=4 and bus_services.due_to_supp=suppliers.s_no and bus_services.due_to_customer=emp_id and bus_services.passnger_currency="SAR"');
                         return view('busReport',['all'=>$busRepo]);
                     }
                     elseif($id==7){
-                        $visaRepo=DB::select('select * from visa_services where visa_services.passnger_currency="USD"');
+                        $visaRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.due_to_supp,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,visa_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.service_status=4 and visa_services.due_to_supp=suppliers.s_no and visa_services.due_to_customer=emp_id and visa_services.passnger_currency="USD"');
                         return view('visaReport',['all'=>$visaRepo]);
                     }
                     elseif($id==8){
-                        $visaRepo=DB::select('select * from visa_services where visa_services.passnger_currency="YER"');
+                        $visaRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.due_to_supp,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,visa_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.service_status=4 and visa_services.due_to_supp=suppliers.s_no and visa_services.due_to_customer=emp_id and visa_services.passnger_currency="YER"');
                         return view('visaReport',['all'=>$visaRepo]);
                     }
                     elseif($id==9){
-                        $visaRepo=DB::select('select * from visa_services where visa_services.passnger_currency="SAR"');
+                        $visaRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, visa_services.Issue_date,visa_services.provider_cost,visa_services.cost,visa_services.passnger_currency,visa_services.due_to_customer,visa_services.due_to_supp,visa_services.visa_id,visa_services.refernce,visa_services.passenger_name,visa_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, visa_services , suppliers WHERE visa_services.deleted=0 and visa_services.service_status=4 and visa_services.due_to_supp=suppliers.s_no and visa_services.due_to_customer=emp_id and visa_services.passnger_currency="SAR"');
                         return view('visaReport',['all'=>$visaRepo]);
                     }
                     elseif($id==10){
-                        $carRepo=DB::select('select * from car_services where car_services.passnger_currency="USD"');
+                        $carRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.due_to_supp,car_services.car_id,car_services.refernce,car_services.passenger_name,car_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.service_status=4 and car_services.due_to_supp=suppliers.s_no and car_services.due_to_customer=emp_id and car_services.passnger_currency="USD"');
                         return view('carReport',['all'=>$carRepo]);
                     }
                     elseif($id==11){
-                        $carRepo=DB::select('select * from car_services where car_services.passnger_currency="YER"');
+                        $carRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.due_to_supp,car_services.car_id,car_services.refernce,car_services.passenger_name,car_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.service_status=4 and car_services.due_to_supp=suppliers.s_no and car_services.due_to_customer=emp_id and car_services.passnger_currency="YER"');
                         return view('carReport',['all'=>$carRepo]);
                     }
                     elseif($id==12){
-                        $carRepo=DB::select('select * from car_services where car_services.passnger_currency="SAR"');
+                        $carRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, car_services.Issue_date,car_services.provider_cost,car_services.cost,car_services.passnger_currency,car_services.due_to_customer,car_services.due_to_supp,car_services.car_id,car_services.refernce,car_services.passenger_name,car_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, car_services , suppliers WHERE car_services.deleted=0 and car_services.service_status=4 and car_services.due_to_supp=suppliers.s_no and car_services.due_to_customer=emp_id and car_services.passnger_currency="SAR"');
                         return view('carReport',['all'=>$carRepo]);
                     }
                     elseif($id==13){
-                        $carRepo=DB::select('select * from hotel_services where hotel_services.passnger_currency="USD"');
-                        return view('hotelReport',['all'=>$carRepo]);
+                        $hotRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.due_to_supp,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,hotel_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.service_status=4 and hotel_services.due_to_supp=suppliers.s_no and hotel_services.due_to_customer=emp_id and hotel_services.passnger_currency="USD"');
+                        return view('hotelReport',['all'=>$hotRepo]);
                     }
                     elseif($id==14){
-                        $carRepo=DB::select('select * from hotel_services where hotel_services.passnger_currency="YER"');
-                        return view('hotelReport',['all'=>$carRepo]);
+                        $hotRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.due_to_supp,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,hotel_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.service_status=4 and hotel_services.due_to_supp=suppliers.s_no and hotel_services.due_to_customer=emp_id and hotel_services.passnger_currency="YER"');
+                        return view('hotelReport',['all'=>$hotRepo]);
                     }
                     elseif($id==15){
-                        $carRepo=DB::select('select * from hotel_services where hotel_services.passnger_currency="SAR"');
-                        return view('hotelReport',['all'=>$carRepo]);
+                        $hotRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, hotel_services.Issue_date,hotel_services.provider_cost,hotel_services.cost,hotel_services.passnger_currency,hotel_services.due_to_customer,hotel_services.due_to_supp,hotel_services.hotel_id,hotel_services.refernce,hotel_services.passenger_name,hotel_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, hotel_services , suppliers WHERE hotel_services.deleted=0 and hotel_services.service_status=4 and hotel_services.due_to_supp=suppliers.s_no and hotel_services.due_to_customer=emp_id and hotel_services.passnger_currency="SAR"');
+                        return view('hotelReport',['all'=>$hotRepo]);
                     }
                     elseif($id==16){
-                        $medRepo=DB::select('select * from medical_services where medical_services.passnger_currency="USD"');
+                        $medRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.due_to_supp,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,medical_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.service_status=4 and medical_services.due_to_supp=suppliers.s_no and medical_services.due_to_customer=emp_id and medical_services.passnger_currency="USD"');
                         return view('medicalReport',['all'=>$medRepo]);
                     }
                     elseif($id==17){
-                        $medRepo=DB::select('select * from medical_services where medical_services.passnger_currency="YER"');
+                        $medRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.due_to_supp,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,medical_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.service_status=4 and medical_services.due_to_supp=suppliers.s_no and medical_services.due_to_customer=emp_id and medical_services.passnger_currency="YER"');
                         return view('medicalReport',['all'=>$medRepo]);
                     }
                     elseif($id==18){
-                        $medRepo=DB::select('select * from medical_services where medical_services.passnger_currency="SAR"');
+                        $medRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, medical_services.Issue_date,medical_services.provider_cost,medical_services.cost,medical_services.passnger_currency,medical_services.due_to_customer,medical_services.due_to_supp,medical_services.med_id,medical_services.refernce,medical_services.passenger_name,medical_services.service_status,suppliers.s_no,suppliers.supplier_name from employees, medical_services , suppliers WHERE medical_services.deleted=0 and medical_services.service_status=4 and medical_services.due_to_supp=suppliers.s_no and medical_services.due_to_customer=emp_id and medical_services.passnger_currency="SAR"');
                         return view('medicalReport',['all'=>$medRepo]);
                     }
                     elseif($id==19){
-                        $genRepo=DB::select('select * from general_services where general_services.passnger_currency="USD"');
+                        
+                        $genRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.gen_id,general_services.refernce,general_services.passenger_name,general_services.due_to_supp,suppliers.s_no,suppliers.supplier_name  from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.service_status=4 and general_services.due_to_supp=suppliers.s_no and general_services.due_to_customer=emp_id and general_services.passnger_currency="USD"');
+                       // dd($genRepo);
                         return view('generalReport',['all'=>$genRepo]);
                     }
                     elseif($id==20){
-                        $genRepo=DB::select('select * from general_services where general_services.passnger_currency="YER"');
+                        $genRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.gen_id,general_services.refernce,general_services.passenger_name,general_services.due_to_supp,suppliers.s_no,suppliers.supplier_name  from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.service_status=4 and general_services.due_to_supp=suppliers.s_no and general_services.due_to_customer=emp_id and general_services.passnger_currency="YER"');
                         return view('generalReport',['all'=>$genRepo]);
                     }
                     elseif($id==21){
-                        $genRepo=DB::select('select * from general_services where general_services.passnger_currency="SAR"');
+                        $genRepo=DB::select('select employees.emp_id,employees.emp_first_name,employees.emp_last_name, general_services.Issue_date,general_services.provider_cost,general_services.cost,general_services.passnger_currency,general_services.due_to_customer,general_services.gen_id,general_services.refernce,general_services.passenger_name,general_services.due_to_supp,suppliers.s_no,suppliers.supplier_name  from employees, general_services , suppliers WHERE general_services.deleted=0 and general_services.service_status=4 and general_services.due_to_supp=suppliers.s_no and general_services.due_to_customer=emp_id and general_services.passnger_currency="SAR"');
                         return view('generalReport',['all'=>$genRepo]);
                     }
 
                     elseif($id==100){
-                        $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" GROUP By Issue_date');
-                         $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" GROUP By Issue_date');
-                         $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" GROUP By Issue_date');
-                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER"  GROUP By Issue_date');
-                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" GROUP By Issue_date');
-                         $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" GROUP By Issue_date');
-                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" GROUP By Issue_date');
+                        $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+                         $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+                         $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and deleted=0  GROUP By Issue_date');
+                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+                         $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
         
                         return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
    
                                     }
                     elseif($id==101){
-                         $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" GROUP By Issue_date');
-                        $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" GROUP By Issue_date');
-                        $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" GROUP By Issue_date');
-                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR"  GROUP By Issue_date');
-                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" GROUP By Issue_date');
-                        $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" GROUP By Issue_date');
-                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" GROUP By Issue_date');
+                         $tick=DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+                        $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+                        $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and deleted=0  GROUP By Issue_date');
+                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+                        $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
         
                         return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
@@ -412,13 +520,13 @@ return view('generalReport',['all'=>$genSupRepo]);
                                     }
 
                     elseif($id==200)  {
-                        $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
-                        $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
-                        $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
-                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) = CURDATE()  GROUP By Issue_date');
-                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
-                        $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
-                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) = CURDATE() GROUP By Issue_date');
+                        $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+                        $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+                        $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+                        $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0  GROUP By Issue_date');
+                        $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+                        $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+                        $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
         
                         return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
@@ -426,13 +534,13 @@ return view('generalReport',['all'=>$genSupRepo]);
          }
 
          elseif($id==201)  {
-            $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
-            $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) GROUP By Issue_date');
+            $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+            $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
 //dd($tick);
             return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
@@ -440,13 +548,13 @@ return view('generalReport',['all'=>$genSupRepo]);
 }
 
 elseif($id==202)  {
-    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
-    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) GROUP By Issue_date');
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
 //dd($tick);
     return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
@@ -454,13 +562,13 @@ elseif($id==202)  {
 }
 
 elseif($id==203)  {
-    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
 //dd($tick);
     return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
@@ -468,19 +576,198 @@ elseif($id==203)  {
 }
 
 elseif($id==204)  {
-    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
-    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) GROUP By Issue_date');
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+    return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+elseif($id==205)  {
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and Date(Issue_date) = CURDATE()and deleted=0 GROUP By Issue_date');
+
+    return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==206)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==207)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==208)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==209)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+elseif($id==210)  {
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0  GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and Date(Issue_date) = CURDATE() and deleted=0 GROUP By Issue_date');
+
+    return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==211)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and Date(Issue_date) = SUBDATE(CURRENT_DATE(), INTERVAL 1 DAY) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==212)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and Date(Issue_date) >= SUBDATE(CURRENT_DATE(), INTERVAL 7 DAY) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==213)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and MONTH(Issue_date) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==214)  {
+$tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)and deleted=0 GROUP By Issue_date');
+$visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+$gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and YEAR(Issue_date) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH) and deleted=0 GROUP By Issue_date');
+//dd($tick);
+return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==1000)  {
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="USD" and deleted=0 GROUP By Issue_date');
 //dd($tick);
     return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
 
 
 }
 
+elseif($id==1001)  {
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="YER" and deleted=0 GROUP By Issue_date');
+//dd($tick);
+    return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
+
+elseif($id==1002)  {
+    $tick = DB::select('SELECT count(*) as tc,sum(cost) as tt ,issue_date as ad ,service_id as st_id FROM ticket_services as tic WHERE tic.service_status=4 and tic.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $visa=DB::select('SELECT count(*) as vc,sum(cost) as vt ,issue_date as av ,service_id as sv_id FROM visa_services as visa WHERE visa.service_status=4 and visa.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $bus=DB::select('SELECT count(*) as bc,sum(cost) as bt,issue_date as ab ,service_id as sb_id FROM bus_services as bus WHERE bus.service_status=4 and bus.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $hot=DB::select('SELECT count(*) as hc,sum(cost) as ht , issue_date as ah ,service_id as sh_id FROM hotel_services as hot WHERE hot.service_status=4 and hot.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $car=DB::select('SELECT count(*) as cc,sum(cost) as ct ,issue_date as ac ,service_id as sc_id FROM car_services as car WHERE car.service_status=4 and car.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $med=DB::select('SELECT count(*) as mc,sum(cost) as mt ,issue_date as am ,service_id as sm_id FROM medical_services as med WHERE med.service_status=4 and med.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+    $gen=DB::select('SELECT count(*) as gc,sum(cost) as gt ,issue_date as ag ,service_id as sg_id FROM general_services as gen WHERE gen.service_status=4 and gen.passnger_currency="SAR" and deleted=0 GROUP By Issue_date');
+//dd($tick);
+    return view('supplierRepo',['tic'=>$tick,'visa'=>$visa,'bus'=>$bus,'car'=>$car,'hot'=>$hot,'med'=>$med,'gen'=>$gen]);
+
+
+}
 
                 }
 
