@@ -138,14 +138,13 @@
                                             class="form-control select2 select2-hidden-accessible provider"
                                             style="width: 100%;" data-select2-id="2" tabindex="0" aria-hidden="true">
                                             <option disabled selected>Choose Suppliers</option>
-                                            <small class="text-muted text-center" id="remark"> </small>
 
                                             @if(count($suplier))
                                             @foreach($suplier as $sup)
                                             <option value="{{$sup->s_no}}">{{$sup->supplier_name}}</option>
                                             @endforeach
                                         </select>
-                                        <small class="text-muted text-center" id="remark"></small>
+                                        <small class="text-muted text-center" id="remark">Remark Of Supplier </small>
 
                                         @else
                                         <select name="due_to_supp" required
@@ -154,6 +153,7 @@
 
                                             <option value="" disabled>There Is No Sopllier For This Service</option>
                                         </select>
+                                        <small class="text-muted text-center" >Remark Of Supplier </small>
 
                                         @endif
                                     </div>
@@ -205,6 +205,7 @@
                                             @endforeach
 
                                         </select>
+                                        <small class="text-muted text-center" > Employee Name </small>
 
                                     </div>
                                 </div>

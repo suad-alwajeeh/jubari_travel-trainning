@@ -48,7 +48,25 @@
 ?>
 
             <?php
-                         $issue_date=false;
+                   
+                   $mass_date='';
+                   $mass_date2='';
+                   $mass_date3='';
+                   $mass_name='';
+                   $mass_country='';
+                   $mass_status='';
+                   $mass_type='';
+                   $mass_number='';
+                   $mass_ref='';
+                   $mass_pass='';
+                   $mass_info='';
+                   $mass_empcur='';
+                   $mass_empcost='';
+                   $mass_emp='';
+                   $mass_proCur='';
+                   $mass_proCost='';
+                   $mass_sup='';
+                   $issue_date=false;
                        $refernce=false;
                        $passenger_name=false;
                        $hotel_status=false;
@@ -66,59 +84,53 @@
                        $passnger_currency=false;
                        $cost=false;
                           $x=0;      
-
-                            for( $i=0;$i<sizeof($mv);$i++){
-                        if ($mv[$i][$x]==='Issue_date') {
-                         $issue_date=true;
-                         break;
-                        }
-                        else{
-                          $issue_date=false;
-                        }
-                      }
+                          for( $i=0;$i<sizeof($mv);$i++){
+                            if ($mv[$i][$x]==='Issue_date') {
+                             $issue_date=true;
+                  $mass_date=$mv[$i][2];
+    
+                             break;
+                            }
+                            
+                          }
+    
+                          for( $i=0;$i<sizeof($mv);$i++){
+    
+                          if ($mv[$i][$x]==='refernce') {
+                            $refernce=true;
+                  $mass_ref=$mv[$i][2];
+    
+                            break;
+                           }
+                          
+                          }
+                          for( $i=0;$i<sizeof($mv);$i++){
+    
+                         if ($mv[$i][$x]==='passenger_name') {
+                          $passenger_name=true;
+                  $mass_pass=$mv[$i][2];
+    
+                          break;
+                         }
+                       
+                          }
                       for( $i=0;$i<sizeof($mv);$i++){
 
-                      if ($mv[$i][$x]==='refernce') {
-                        $refernce=true;
-                        break;
-                       }
-                       else{
-                        $refernce=false;
-                      }
-                      }
-                      for( $i=0;$i<sizeof($mv);$i++){
-
-                     if ($mv[$i][$x]==='passenger_name') {
-                      $passenger_name=true;
-                      break;
-                     }
-                     else{
-                      $passenger_name=false;
-                    }
-                      }
-                      for( $i=0;$i<sizeof($mv);$i++){
-
-                   if ($mv[$i][$x]==='hotel_status') {
+                   if ($mv[$i][$x]==='ses_status') {
                     $hotel_status=true;
+                  $mass_status=$mv[$i][2];
+
                     break;
                    }
-                   else{
-                    $hotel_status=false;
-                  }
+                   
                       }
-                      for( $i=0;$i<sizeof($mv);$i++){
-
-                 if ($mv[$i][$x]==='bus_name') {
-                  $bus_name=true;
-                  break;
-                 }
-                 else{
-                  $bus_name=false;
-                }}
+                      
                 for( $i=0;$i<sizeof($mv);$i++){
 
               if ($mv[$i][$x]==='voucher_number') {
                 $voucher_number=true;
+                $mass_number=$mv[$i][2];
+                
                 break;
                }
                else{
@@ -130,70 +142,90 @@
              
              if ($mv[$i][$x]==='country') {
               $country=true;
+              $mass_country=$mv[$i][2];
+
               break;
              }}
              for( $i=0;$i<sizeof($mv);$i++){
              
               if ($mv[$i][$x]==='check_in') {
                $check_in=true;
+               $mass_date2=$mv[$i][2];
+
                break;
               }}
               for( $i=0;$i<sizeof($mv);$i++){
              
                 if ($mv[$i][$x]==='check_out') {
                  $check_out=true;
+                 $mass_date3=$mv[$i][2];
+
                  break;
                 }}
              for( $i=0;$i<sizeof($mv);$i++){
           
            if ($mv[$i][$x]==='hotel_name') {
             $hotel_name=true;
+            $mass_name=$mv[$i][2];
+
             break;
            }}
            for( $i=0;$i<sizeof($mv);$i++){
         
          if ($mv[$i][$x]==='city') {
           $city=true;
+          $mass_type=$mv[$i][2];
+
           break;
          }}
          for( $i=0;$i<sizeof($mv);$i++){
       
-       if ($mv[$i][$x]==='due_to_supp') {
-        $due_to_supp=true;
-        break;
-       }}
-    
-       for( $i=0;$i<sizeof($mv);$i++){
-    
-     if ($mv[$i][$x]==='provider_cost') {
-      $provider_cost=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='cur_id') {
-      $cur_id=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='user_id') {
-      $due_to_customer=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='cost') {
-      $cost=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='passnger_currency') {
-      $passnger_currency=true;
-      break;
-     }
-         }
+          if ($mv[$i][$x]==='due_to_supp') {
+           $due_to_supp=true;
+         $mass_sup=$mv[$i][2];
+           break;
+          }}
+          for( $i=0;$i<sizeof($mv);$i++){
+       
+        if ($mv[$i][$x]==='provider_cost') {
+         $provider_cost=true;
+         $mass_proCost=$mv[$i][2];
+         
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='cur_id') {
+         $cur_id=true;
+         $mass_proCur=$mv[$i][2];
+   
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='user_id') {
+         $due_to_customer=true;
+         $mass_emp=$mv[$i][2];
+   
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='cost') {
+         $cost=true;
+         $mass_empcost=$mv[$i][2];
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='passnger_currency') {
+         $passnger_currency=true;
+         $mass_empcur=$mv[$i][2];
+   
+         break;
+        }
+            }
+          
                       if($issue_date)
                      { echo'  <div class="form-row col-md-12 col-sm-12 col-xm-12">
                       <div class="form-group col-md-6 col-sm-12 col-xm-12">
@@ -204,6 +236,7 @@
             <input type="hidden" value="{{$bus->hotel_id}}" name="id">
             <input required type="date" class="form-control " name="Issue_date"
               value="{{\Carbon\Carbon::createFromDate($bus->Issue_date)->format('Y-m-d')}}" />
+<small class="text-red text-center">{{$mass_date}}</small>       
             <?php  echo' </div>
                       </div>';
         }
@@ -229,6 +262,7 @@
                         <div class="form-group">';
 ?>
             <input required type="text" class="form-control" value="{{$bus->refernce}}" name="refernce">
+<small class="text-red text-center">{{$mass_ref}}</small>       
             <?php echo ' </div>
                     </div>
                 </div>';
@@ -258,6 +292,7 @@
               <input required type="text" class="form-control select2 select2-hidden-accessible" name="passenger_name"
                 value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
                 style="width: 100%;" />
+<small class="text-red text-center">{{$mass_pass}}</small>       
               <?php echo ' </div>
                     </div>';
                        }
@@ -290,6 +325,7 @@
                       <input required type="number" class="form-control " style="width:100%;"
                                           name="voucher_number" value="{{$bus->voucher_number}}" id="number" />
                                      
+<small class="text-red text-center">{{$mass_number}}</small>       
               <?php echo ' <small id="helpId2" class="text-muted "></small>
                         <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
   
@@ -304,7 +340,7 @@
   ';
   ?>
                 <input required disabled  type="number" class="form-control " style="width:100%;"
-                                         value="{{$car->voucher_number}}" id="number" />
+                                         value="{{$bus->voucher_number}}" id="number" />
                                      
               <input required type="hidden" class="form-control " style="width:100%;"   name="voucher_number"
                 value="{{$bus->voucher_number}}" id="number" />
@@ -344,9 +380,13 @@
                              echo '<option value="1" >OK</option>
                              <option value="2">Issue</option>
                              <option value="3">Void</option>
-                             <option value="4" selected>Refund</option>';
+                             <option value="4" selected>Refund</option>';?>
+</select>
+<small class="text-red text-center">{{$mass_status}}</small>       
+
+<?php
                 
-  echo' </select>
+  echo' 
   </div>
   </div>
   </div>
@@ -355,7 +395,7 @@
               else
               {
                   echo'      <div class="form-group col-md-3 col-sm-12 col-xm-12">
-                  <label class="col-md-12 col-sm-12 col-xm-12">Car Status :</label>
+                  <label class="col-md-12 col-sm-12 col-xm-12">Hotel Status :</label>
   
   
                   <div class="form-group" data-select2-id="44">
@@ -396,6 +436,7 @@
   ?>
               <input required name="country" style="width:100%" id="tbNum" type="text"
                 value="{{$bus->country}}" class="form-control " list="cars" />
+<small class="text-red text-center">{{$mass_country}}</small>       
               <?php echo'   </div>
                   </div>';
                  }
@@ -423,7 +464,9 @@
       ?>
               <input required name="city" style="width:100%"  id="tbNum" type="text"
                 value="{{$bus->city}}" class=" form-control " />
-              <?php echo'   </div>
+            
+<small class="text-red text-center">{{$mass_type}}</small>       
+            <?php echo'   </div>
                       </div>';
                      }
                else
@@ -447,6 +490,7 @@
   ?>
               <input required name="hotel_name"  id="tbNum2" class="form-control "
                 value="{{$bus->hotel_name}}" list="cars" />
+<small class="text-red text-center">{{$mass_name}}</small>       
               <?php echo' 
                   </div> </div>';
                  }
@@ -473,6 +517,7 @@
                                         id="date2"
                                         value="{{ \Carbon\Carbon::createFromDate($bus->check_in)->format('Y-m-d')}}" />
                                
+<small class="text-red text-center">{{$mass_date2}}</small>       
           <?php echo' 
               </div> </div>';
              }
@@ -500,6 +545,7 @@
       <input required type="date" style="width:100%" class="form-control"
                                         value="{{ \Carbon\Carbon::createFromDate($bus->check_out)->format('Y-m-d')}}"
                                         name="check_out" id="date4" />
+<small class="text-red text-center">{{$mass_date3}}</small>       
       <?php echo'      </div>
                             </div>
                         </div>
@@ -545,8 +591,11 @@
   
   
               @endforeach
+              </select>
+<small class="text-red text-center">{{$mass_supp}}</small>       
+
               <?php
-            echo ' </select>
+            echo '
             </div>
         </div>';
            }
@@ -579,7 +628,9 @@
   
               <input type="number" style="width:100%;" required name="provider_cost" class="form-control "
                 value="{{ $bus->provider_cost}}" />
-              <?php echo' </div>
+                
+<small class="text-red text-center">{{$mass_proCost}}</small>       
+ <?php echo' </div>
       </div>';
          }
        else
@@ -612,7 +663,9 @@
               @endif
   
               @endforeach
-              <?php echo'  </select>
+              </select>
+<small class="text-red text-center">{{$mass_proCur}}</small> 
+              <?php echo'  
         </div>
     </div>
   </div>';
@@ -663,8 +716,9 @@
               @endif
   
               @endforeach
-  
-              <?php echo'</select>
+              </select>
+<small class="text-red text-center">{{$mass_emp}}</small> 
+              <?php echo'
   
             </div>
         </div>';
@@ -703,6 +757,7 @@
   
               <input required type="number" name="cost" style="width: 100%;" class="form-control "
                 value="{{ $bus->cost}}" />
+<small class="text-red text-center">{{$mass_empcost}}</small> 
               <?php echo '</div>
   </div>';
    }
@@ -732,8 +787,11 @@
               <option value="YER">YER</option>
               <option value="SAR">SAR</option>
               <option value="USD">USD</option>
+              </select>
+<small class="text-red text-center">{{$mass_empcur}}</small> 
+
               <?php echo '
-        </select>
+        
     </div>
   </div>
   </div>

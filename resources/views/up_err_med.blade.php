@@ -46,6 +46,21 @@
 ?>
 
             <?php
+                $mass_date='';
+                $mass_date2='';
+                $mass_country='';
+                $mass_status='';
+                $mass_type='';
+                $mass_number='';
+                $mass_ref='';
+                $mass_pass='';
+                $mass_info='';
+                $mass_empcur='';
+                $mass_empcost='';
+                $mass_emp='';
+                $mass_proCur='';
+                $mass_proCost='';
+                $mass_sup='';
                          $issue_date=false;
                        $refernce=false;
                        $passenger_name=false;
@@ -64,119 +79,121 @@
                        $cost=false;
                           $x=0;      
 
-                            for( $i=0;$i<sizeof($mv);$i++){
-                        if ($mv[$i][$x]==='Issue_date') {
-                         $issue_date=true;
-                         break;
-                        }
-                        else{
-                          $issue_date=false;
-                        }
-                      }
+                          for( $i=0;$i<sizeof($mv);$i++){
+                            if ($mv[$i][$x]==='Issue_date') {
+                             $issue_date=true;
+                  $mass_date=$mv[$i][2];
+    
+                             break;
+                            }
+                            
+                          }
+    
+                          for( $i=0;$i<sizeof($mv);$i++){
+    
+                          if ($mv[$i][$x]==='refernce') {
+                            $refernce=true;
+                  $mass_ref=$mv[$i][2];
+    
+                            break;
+                           }
+                          
+                          }
+                          for( $i=0;$i<sizeof($mv);$i++){
+    
+                         if ($mv[$i][$x]==='passenger_name') {
+                          $passenger_name=true;
+                  $mass_pass=$mv[$i][2];
+    
+                          break;
+                         }
+                       
+                          }
                       for( $i=0;$i<sizeof($mv);$i++){
 
-                      if ($mv[$i][$x]==='refernce') {
-                        $refernce=true;
-                        break;
-                       }
-                       else{
-                        $refernce=false;
-                      }
-                      }
-                      for( $i=0;$i<sizeof($mv);$i++){
-
-                     if ($mv[$i][$x]==='passenger_name') {
-                      $passenger_name=true;
-                      break;
-                     }
-                     else{
-                      $passenger_name=false;
-                    }
-                      }
-                      for( $i=0;$i<sizeof($mv);$i++){
-
-                   if ($mv[$i][$x]==='report_status') {
+                   if ($mv[$i][$x]==='ses_status') {
                     $report_status=true;
+                    $mass_status=$mv[$i][2];
+
                     break;
                    }
-                   else{
-                    $report_status=false;
-                  }
+                   
                       }
                       for( $i=0;$i<sizeof($mv);$i++){
 
                  if ($mv[$i][$x]==='from_city') {
                   $from_city=true;
+                  $mass_country=$mv[$i][2];
+
                   break;
                  }
-                 else{
-                  $from_city=false;
-                }}
+                }
                 for( $i=0;$i<sizeof($mv);$i++){
 
               if ($mv[$i][$x]==='document_number') {
                 $document_number=true;
+                $mass_number=$mv[$i][2];
+
                 break;
                }
-               else{
-                $document_number=false;
-              }}
+             }
               for( $i=0;$i<sizeof($mv);$i++){
              
              if ($mv[$i][$x]==='med_info') {
               $med_info=true;
+              $mass_info=$mv[$i][2];
+
               break;
              }}
-             for( $i=0;$i<sizeof($mv);$i++){
           
-           if ($mv[$i][$x]==='arr_city') {
-            $arr_city=true;
-            break;
-           }}
-           for( $i=0;$i<sizeof($mv);$i++){
-        
-         if ($mv[$i][$x]==='dep_date') {
-          $dep_date=true;
-          break;
-         }}
          for( $i=0;$i<sizeof($mv);$i++){
       
-       if ($mv[$i][$x]==='due_to_supp') {
-        $due_to_supp=true;
-        break;
-       }}
-    
-       for( $i=0;$i<sizeof($mv);$i++){
-    
-     if ($mv[$i][$x]==='provider_cost') {
-      $provider_cost=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='cur_id') {
-      $cur_id=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='user_id') {
-      $due_to_customer=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='cost') {
-      $cost=true;
-      break;
-     }}
-     for( $i=0;$i<sizeof($mv);$i++){
-
-     if ($mv[$i][$x]==='passnger_currency') {
-      $passnger_currency=true;
-      break;
-     }
-         }
+          if ($mv[$i][$x]==='due_to_supp') {
+           $due_to_supp=true;
+         $mass_sup=$mv[$i][2];
+           break;
+          }}
+          for( $i=0;$i<sizeof($mv);$i++){
+       
+        if ($mv[$i][$x]==='provider_cost') {
+         $provider_cost=true;
+         $mass_proCost=$mv[$i][2];
+         
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='cur_id') {
+         $cur_id=true;
+         $mass_proCur=$mv[$i][2];
+   
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='user_id') {
+         $due_to_customer=true;
+         $mass_emp=$mv[$i][2];
+   
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='cost') {
+         $cost=true;
+         $mass_empcost=$mv[$i][2];
+         break;
+        }}
+        for( $i=0;$i<sizeof($mv);$i++){
+   
+        if ($mv[$i][$x]==='passnger_currency') {
+         $passnger_currency=true;
+         $mass_empcur=$mv[$i][2];
+   
+         break;
+        }
+            }
+          
                       if($issue_date)
                      { echo'  <div class="form-row col-md-12 col-sm-12 col-xm-12">
                       <div class="form-group col-md-6 col-sm-12 col-xm-12">
@@ -187,7 +204,9 @@
             <input type="hidden" value="{{$bus->med_id}}" name="id">
             <input required type="date" class="form-control " name="Issue_date"
               value="{{\Carbon\Carbon::createFromDate($bus->Issue_date)->format('Y-m-d')}}" />
-            <?php  echo' </div>
+              <small class="text-red text-center">{{$mass_date}}</small>       
+           
+           <?php  echo' </div>
                       </div>';
         }
                       else
@@ -212,6 +231,7 @@
                         <div class="form-group">';
 ?>
             <input required type="text" class="form-control" value="{{$bus->refernce}}" name="refernce">
+            <small class="text-red text-center">{{$mass_ref}}</small>       
             <?php echo ' </div>
                     </div>
                 </div>';
@@ -240,6 +260,7 @@
             <input required type="text" class="form-control select2 select2-hidden-accessible" name="passenger_name"
               value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
               style="width: 100%;" />
+              <small class="text-red text-center">{{$mass_pass}}</small>       
             <?php echo ' </div>
                   </div>';
                      }
@@ -271,6 +292,7 @@
 
                     ?> <input required type="number" class="form-control " style="width:100%;" name="document_number"
               value="{{$bus->document_number}}" id="number" />
+              <small class="text-red text-center">{{$mass_number}}</small>       
 
             <?php echo ' <small id="helpId2" class="text-muted "></small>
                       <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
@@ -324,9 +346,13 @@
                            echo '<option value="1" >OK</option>
                            <option value="2">Issue</option>
                            <option value="3">Void</option>
-                           <option value="4" selected>Refund</option>';
+                           <option value="4" selected>Refund</option>';?>
+           </select>
+              <small class="text-red text-center">{{$mass_status}}</small>       
+
+                           <?php
               
-echo' </select>
+echo' 
 
 </div>
 </div>';
@@ -367,7 +393,10 @@ echo '  <option value="4"  disabled selected>Refund</option>
 ';
 ?>
            <input required type="text" class="form-control " style="width:100%;" 
-                                    value="{{$bus->from_city}}" name="from_city" /> <?php echo'   </div>
+                                    value="{{$bus->from_city}}" name="from_city" />
+              <small class="text-red text-center">{{$mass_country}}</small>       
+
+                                     <?php echo'   </div>
               </div>';
              }
            else
@@ -396,6 +425,7 @@ echo '  <option value="4"  disabled selected>Refund</option>
 ?>
             <input required name="med_info" style="width:100%"  id="tbNum" type="text"
               value="{{$bus->med_info}}" class="form-control " list="cars" />
+              <small class="text-red text-center">{{$mass_info}}</small>       
             <?php echo'   </div></div>
                 </div>';
                }
@@ -437,8 +467,11 @@ echo '  <option value="4"  disabled selected>Refund</option>
 
 
             @endforeach
+            </select>
+<small class="text-red text-center">{{$mass_sup}}</small>       
+
             <?php
-          echo ' </select>
+          echo ' 
           </div>
       </div>';
          }
@@ -471,7 +504,9 @@ echo '  <option value="4"  disabled selected>Refund</option>
 
             <input type="number" style="width:100%;" required name="provider_cost" class="form-control "
               value="{{ $bus->provider_cost}}" />
-            <?php echo' </div>
+           
+<small class="text-red text-center">{{$mass_proCost}}</small>       
+<?php echo' </div>
     </div>';
        }
      else
@@ -504,7 +539,10 @@ echo '  <option value="4"  disabled selected>Refund</option>
             @endif
 
             @endforeach
-            <?php echo'  </select>
+            </select>
+<small class="text-red text-center">{{$mass_proCur}}</small>       
+
+            <?php echo'  
       </div>
   </div>
 </div>';
@@ -555,8 +593,10 @@ echo '  <option value="4"  disabled selected>Refund</option>
           @endif
 
           @endforeach
+          </select>
+<small class="text-red text-center">{{$mass_emp}}</small>       
 
-          <?php echo'</select>
+          <?php echo'
 
         </div>
     </div>';
@@ -595,6 +635,7 @@ echo '  <option value="4"  disabled selected>Refund</option>
 
             <input required type="number" name="cost" style="width: 100%;" class="form-control "
               value="{{ $bus->cost}}" />
+<small class="text-red text-center">{{$mass_empcost}}</small>       
             <?php echo '</div>
 </div>';
  }
@@ -624,8 +665,11 @@ if ($passnger_currency) {
             <option value="YER">YER</option>
             <option value="SAR">SAR</option>
             <option value="USD">USD</option>
+            </select>
+<small class="text-red text-center">{{$mass_empcur}}</small>       
+
             <?php echo '
-      </select>
+     
   </div>
 </div>
 </div>
@@ -667,16 +711,6 @@ else
     </div>
   </div>
 
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
   <script>
 
     // ************************ Drag and drop ***************** //

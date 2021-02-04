@@ -289,7 +289,7 @@
                                                     @elseif($item->service_status==2)
                                                     <td><span class="badge badge-warning">Sales Manager</span></td>
                                                     @elseif($item->service_status==3)
-                                                    <td><span class="badgebadge-info">Accountant Manager</span>
+                                                    <td><span class="badge badge-info">Accountant Manager</span>
                                                     </td>
                                                     @else
                                                     <td><span class="badge badge-primary">Archived</span></td>

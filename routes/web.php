@@ -22,7 +22,13 @@ Route::group(['middleware' => ['auth','role:admin|sale_manager|sale_executive|ac
   Route::get('/user_notify/{id}','NotificationController@user_notify');
   Route::get('/status_notify/{s}/{from}/{to}/{status}', 'NotificationController@status_notify');
   Route::get('/user_profile/{id}', 'uuserController@user_profile');
-  Route::get('/profile/{id}', 'uuserController@user_profile1_page');
+  Route::get('/change_pass', 'uuserController@change_password');
+  Route::post('/new_pass', 'uuserController@change_password1');
+  Route::get('/profile', 'uuserController@user_profile1_page');
+  Route::get('/adds_user_display_u/{id}', 'AddsController@adds_user_display_u');
+  Route::get('/ok/{id}', 'AddsController@ok');
+Route::get('/cansel/{id}', 'AddsController@cansel');
+  Route::get('/remark','dashboard@remark');
 
 });
 
@@ -70,9 +76,6 @@ Route::get('/adds_display', 'AddsController@display');
 Route::get('/adds_user_display', 'AddsController@adds_user_display');
 Route::get('/adds_user_display/{id}', 'AddsController@user_filter');
 Route::get('/adds_user_display_row/{id}', 'AddsController@adds_user_display_row');
-Route::get('/adds_user_display_u/{id}', 'AddsController@adds_user_display_u');
-Route::get('/ok/{id}', 'AddsController@ok');
-Route::get('/cansel/{id}', 'AddsController@cansel');
 Route::post('/addadds','AddsController@save1');
 Route::post('/editadds','AddsController@edit_row');
 /*****************users************** */
@@ -111,10 +114,14 @@ Route::post('/addroleuser','RoleController@save_user_role');
 Route::get('/addroleuser1/{r}/{u}/{h}','RoleController@save_user_roleyy');
 Route::get('/addroleuser2/{r}/{u}/{h}','RoleController@save_user_roleyy2');
 Route::post('/editrole','RoleController@edit_row');
-
 //employees
+
 Route::get('employees', 'EmployeeController@index');
-Route::get('employees/active', 'EmployeeController@Activate');
+
+Route::get('/is_active_emp/{id}', 'EmployeeController@is_active');
+Route::get('/no_active_emp/{id}', 'EmployeeController@is_not_active');
+Route::get('/employees/{id}', 'EmployeeController@filter');
+Route::get('/employees/{id}', 'EmployeeController@display_with_status');Route::get('employees/active', 'EmployeeController@Activate');
 Route::get('/employees/checkEmail', 'EmployeeController@checkEmail');
 Route::get('/employees/insert', 'EmployeeController@insert');
 Route::post('/employees/saved', 'EmployeeController@saved');
@@ -122,6 +129,7 @@ Route::get('/employees/employee_delete/{id}','EmployeeController@hide_row');
 Route::get('employees/employee-edit/{id}', 'EmployeeController@display_row');
 Route::get('/employees/employee-show/{id}','EmployeeController@show_row');
 Route::post('employees/editemployee','EmployeeController@edit_row');
+
 //department
 Route::get('department', 'DepartmentController@index');
 Route::get('/department/insert', 'DepartmentController@saved');
@@ -129,8 +137,11 @@ Route::get('department/department-edit/{id}','DepartmentController@department_ed
 Route::get('/department/department_delete/{id}', 'DepartmentController@hide_row');
 Route::get('department/department-edit/{id}', 'DepartmentController@display_row');
 Route::get('department/editdepartment','DepartmentController@edit_row');
-Route::get('/is_active_dept/{id}', 'AddsController@is_active');
-Route::get('/no_active_dept/{id}', 'AddsController@is_not_active');
+
+Route::get('/is_active_dep/{id}', 'DepartmentController@is_active');
+Route::get('/no_active_dep/{id}', 'DepartmentController@is_not_active');
+Route::get('/department/{id}', 'DepartmentController@filter');
+Route::get('/department/{id}', 'DepartmentController@display_with_status');
 /*      ------------  Reports  ------------          */
 Route::get('/supplierRepo', 'ReportController@display');
 Route::get('/is_active_supplier/{id}', 'ReportController@is_active');
@@ -139,6 +150,10 @@ Route::get('/supplierRepo/{id}', 'ReportController@filter');
 Route::get('display_rowRepo/{id}', 'ReportController@display_row');
 Route::get('/export_excel', 'ReportController@ExportIntoExcel');
 Route::get('services','ServiceController@index');
+
+Route::get('/is_active_ser/{id}', 'ServiceController@is_active');
+Route::get('/no_active_ser/{id}', 'ServiceController@is_not_active');
+Route::get('/services/{id}', 'ServiceController@display_with_status');
 Route::get('/service/insert', 'ServiceController@insert');
 Route::get('/service/saved', 'ServiceController@saved');
 Route::get('/service/service_delete/{id}','ServiceController@hide_row');
@@ -182,7 +197,6 @@ Route::delete('/sendallgen','ServiceController@sendallgen');
 
 //Supplier
 
-Route::get('/remark','dashboard@remark');
 Route::get('/dashboard/addBusRemark','dashboard@addBusRemark');
 Route::get('/dashboard/addTicketRemark','dashboard@addTicketRemark');
 Route::get('/dashboard/addCarRemark','dashboard@addCarRemark');
@@ -222,22 +236,61 @@ Route::get('/displaySupplier/{id}', 'SupplierController@filter');
   Route::get('/accountant/medical/{id}','accountantController@medical');
   Route::get('/accountant/hotel/{id}','accountantController@hotel');
   Route::get('/accountant/visa/{id}','accountantController@visa');
-  Route::get('/accountant/bill_num/{servic}/{main}/{bill}/{how}/{rec}/{num}','accountantController@bill_num');
+  Route::get('/accountant/bill_num/{servic}/{main}/{bill}/{how}/{rec}/{num}/{manager}','accountantController@bill_num');
   Route::get('/accountant/add_remark/{col}/{old}/{new}/{status}','accountantController@add_remark');
-  Route::get('/accountant/send_remark/{m}/{s}/{to}/{from}/{number}','accountantController@send_remark');
+  Route::get('/accountant/send_remark/{m}/{s}/{to}/{from}/{number}/{manager}','accountantController@send_remark');
   Route::get('/accountant/add_bookmark/{m}/{s}/{c}/{h}','accountantController@add_bookmark');
   Route::get('/accountant/remove_bookmark/{m}/{s}/{h}','accountantController@remove_bookmark');
   Route::get('/accountant/display_remark_body/{m}/{s}','accountantController@display_remark_body');
   Route::get('/accountant/filter_item/{col}/{op}/{val}','accountantController@add_filer');
   Route::get('/accountant/DISPLAY_FILTER1','accountantController@DISPLAY_FILTER1');
-  Route::get('/accountant/filter_do','accountantController@display_filter');
+  Route::get('/accountant/filter_do/{m}','accountantController@display_filter');
   Route::get('/accountant/clear_session','accountantController@clear_session');
-  Route::get('/accountant/report/{id}','accountantController@report_desplay');
-
+  Route::get('/accountant/report','accountantController@report_desplay');
+  Route::get('/accountant/report_item/{s}/{col}/{op}/{val}','accountantController@add_repo_item');
+  Route::get('/accountant/display_repo','accountantController@display_repo7');
+  Route::get('/accountant/clear_repo_session/{s}','accountantController@clear_repo_session');
+  Route::get('/accountant/repo_do/{s}/{m}','accountantController@display_repo');
 });
 Route::group(['middleware' => ['auth','role:sale_manager']], function() {
+  //report
+
+  Route::get('/se/report','reporterController@se_report_desplay');
+  Route::get('/se/report_item/{s}/{col}/{op}/{val}','reporterController@se_add_repo_item');
+  Route::get('/se/display_repo','reporterController@se_display_repo7');
+  Route::get('/se/clear_repo_session/{s}','reporterController@se_clear_repo_session');
+  Route::get('/se/repo_do/{s}/{m}','reporterController@se_display_repo');
+
   //add error log 
+  Route::get('/sales','SalesManagerController@sales_view');
+  Route::get('/sales_review/{id}','SalesManagerController@sales_review');
   
+  Route::get('/sales_review/{id}','SalesManagerController@sales_review');
+  Route::get('/sales_review/{id}/{s}','SalesManagerController@sales_review_with_status');
+  Route::get('/sales_review','SalesManagerController@sales_review_all');
+  Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
+  Route::get('/sales_finish/{id}/{user}','SalesManagerController@sales_finish');
+  Route::get('/sales/sales_finish_all/{user}','SalesManagerController@sales_finish_all');
+  Route::get('/sales/sales_finish_by/{id}','SalesManagerController@sales_finish_by');
+  
+  Route::get('/excutive_finish/{id}/{user}','SalesManagerController@excutive_finish');
+  Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
+  Route::get('/sales/bus/{id}','SalesManagerController@bus');
+  Route::get('/sales/car/{id}','SalesManagerController@car');
+  Route::get('/sales/general/{id}','SalesManagerController@general');
+  Route::get('/sales/medical/{id}','SalesManagerController@medical');
+  Route::get('/sales/hotel/{id}','SalesManagerController@hotel');
+  Route::get('/sales/visa/{id}','SalesManagerController@visa');
+  Route::get('/sales/saved/{servic}/{main}/{bill}/{how}/{rec}','SalesManagerController@saved');
+  Route::get('/sales/add_remark/{col}/{old}/{new}/{status}','SalesManagerController@add_remark');
+  Route::get('/sales/send_remark/{m}/{s}/{to}/{from}/{number}','SalesManagerController@send_remark');
+  Route::get('/sales/display_remark_body/{m}/{s}','SalesManagerController@display_remark_body');
+  //show service add to another employee
+ 
+  Route::get('/sales/saved/{servic}/{main}/{bill}/{how}/{rec}','SalesManagerController@saved');
+  Route::get('/sales/add_remark/{col}/{old}/{new}/{status}','SalesManagerController@add_remark');
+  Route::get('/sales/send_remark/{m}/{s}/{to}/{from}/{number}','SalesManagerController@send_remark');
+  Route::get('/sales/display_remark_body/{m}/{s}','SalesManagerController@display_remark_body');
   Route::get('/sales','SalesManagerController@sales_view');
   Route::get('/sales_review/{id}','SalesManagerController@sales_review');
   Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
@@ -264,7 +317,6 @@ Route::group(['middleware' => ['auth','role:sale_manager']], function() {
   Route::get('/displaySalesManager/VisaError', 'VisaServiceController@show_add_emp');
 
 // Sales Manager
-Route::get('/remark','dashboard@remark');
 Route::get('/dashboard/addBusRemark','dashboard@addBusRemark');
 Route::get('/dashboard/addTicketRemark','dashboard@addTicketRemark');
 Route::get('/dashboard/addCarRemark','dashboard@addCarRemark');
@@ -378,6 +430,7 @@ Route::get('/service/generate_med','MedicalServiceController@generate');
 });
 Route::group(['middleware' => ['auth','role:sale_executive|sale_manager']], function() {
 //finshed service add by me 
+Route::get('/excutive_finish/{id}/{user}','SalesManagerController@excutive_finish');
 Route::get('/sales','SalesManagerController@sales_view');
 Route::get('/sales_review/{id}','SalesManagerController@sales_review');
 Route::get('/sales/ticket/{id}','SalesManagerController@ticket');
@@ -555,6 +608,12 @@ Route::get('/service/generate_visa','VisaServiceController@generate');
 Route::get('/service/generate_gen','GeneralServiceController@generate');
 Route::get('/service/generate_med','MedicalServiceController@generate');
   Route::get('/suplier/suplier_row','SupplierController@show_row');
+  Route::get('/se/report','reporterController@se_report_desplay');
+  Route::get('/se/report_item/{s}/{col}/{op}/{val}','reporterController@se_add_repo_item');
+  Route::get('/se/display_repo','reporterController@se_display_repo7');
+  Route::get('/se/clear_repo_session/{s}','reporterController@se_clear_repo_session');
+  Route::get('/se/repo_do/{s}/{m}','reporterController@se_display_repo');
+
 });
 
 Route::get('/clear-cache',function(){
@@ -570,10 +629,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/private', 'HomeController@private')->name('private');
 Route::get('/users', 'HomeController@users')->name('users');
 
-Route::get('messages', 'MessageController@fetchMessages');
-Route::post('messages', 'MessageController@sendMessage');
-Route::get('/private-messages/{user}', 'MessageController@privateMessages')->name('privateMessages');
-Route::post('/private-messages/{user}', 'MessageController@sendPrivateMessage')->name('privateMessages.store');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/message/{id}', 'HomeController@getMessage')->name('message');
+Route::post('message', 'HomeController@sendMessage');
+Route::get('/notify_count/{id}','HomeController@counter_notify');
+Route::get('/user_notify/{id}','HomeController@user_notify');
+Route::get('/status_notify/{s}/{from}/{to}/{status}', 'HomeController@status_notify');
+Route::get('/message_update/{servic}/{main}/{bill}','HomeController@message_update');
+
+Route::get('/touser', 'HomeController@touser')->name('touser');
+Route::get('/chatRepo', 'HomeController@chatRepos')->name('chatRepo');
+Route::get('/chatRepo/{from}/{to}', 'HomeController@chatRepo')->name('chatRepo');
+
+
 Route::get('/sales/up_err_bus/{id}','BusServiceController@update_Bus2');
 Route::get('/sales/up_err_car/{id}','CarServiceController@update_Car2');
 Route::get('/sales/up_err_visa/{id}','VisaServiceController@update_Visa2');

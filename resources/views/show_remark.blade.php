@@ -151,15 +151,5 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
 
-    window.setInterval(function () {
-        var total = 0;
-        $('.row2').each(function () {
-            $('.row2').load();
-        });
-    }, 1000);
-
-
-</script>
 @endsection

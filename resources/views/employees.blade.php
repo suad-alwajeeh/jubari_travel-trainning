@@ -1,265 +1,221 @@
 @extends('app_layouts.master')
 @section('main_content')
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Content Wrapper. Contains page content -->
-  
-<div class="col-12">
-            <ol class="breadcrumb float-sm-right bg-white">
-              <li class="breadcrumb-item"><a href="/employees"> Employee</a></li>
-            </ol>
-  </div>
-  </br>
-  </br>
-  <div class="content-wrapper" >
-    <!-- Content Header (Page header) -->
-   
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1> Employees</h1>
-          </div>
-          <div class="col-sm-6">
-           
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-    @if (Session::has('seccess'))
-    <div class="alert alert-success text-center" role="alert">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        {{ Session::get('seccess') }}
+  <div class="content-wrapper">
+  <div class="container p-4">
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              Display Employees
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+      status 
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/employees">all</a>
+      <a class="dropdown-item " href="/employees/1"> Active</a>
+      <a class="dropdown-item " href="/employees/0">No Active</a>
     </div>
-  
-    @endif
-    <!-- Main content -->
-   
-    <!-- /.content -->
- 
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-        
-          <div class="col-sm-6">
-            
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-   
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-         
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title col-3  d-inline-block">Employees</h3>
-                <select  class="form-control col-2   mx-5 d-inline-block" id="dropselect">
-<option  class="form-control  d-inline-block" value="2">ALL</option>
-<option  class="form-control  d-inline-block" value="1">Active</option>
-<option  class="form-control  d-inline-block" value="0">Deactive</option>
-</select>
-            <a class="btn btncolor  col-2 float-right p-2 d-inline-block" href="{{url('employees/insert')}}">  <i class="fa fa-plus" aria-hidden="true"></i>Add New Employee</a>
-      </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="datatable" class="table table-bordered table-striped table-responsive">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
+  </div>
+  <a type="button" class="btn btn-outline-success so_form_btn" data-toggle="modal" data-target="#add">add new</a>
+            </div>
+</br>
+@if (session('seccess'))
+<div  class="alert so-alert-message" >        {{ session('seccess') }}
+ <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endif        
+  <div id="so-alert-message"></div>         
+
+<div class="container"> 
+<?php $i=1 ?> 
+
+  <table class="table table-hover text-center " id="table">
+    <thead>
+      <tr>
+      <th>#</th>
+        <th>Name</th>
                     <th> Mobile</th>
                     <th> Department</th>
                     <th> Salary</th>
                     <th> Hire Date</th>
                     <th> Account Number</th>
-                    <th> Status</th>
                     <th> Cv</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody class="row2">
-                 @forelse($emps as $emp)
-                  <tr>
-                  <input type="hidden" class="delete_id" value="{{$emp->emp_id}}">
+        <th>Status</th>
+        <th>Opreation</th>
+      </tr>
+    </thead>
+    <tbody id="pp">
+    @forelse($emps as $emp)
+      <tr id="tr{{$emp->emp_id}}" class="status{{$emp->is_active}}" >
+      <td><?php echo $i;?><span style="display:none;">{{$emp->emp_id}}</span></td>
+      <input type="hidden" class="delete_id" value="{{$emp->emp_id}}">
 
-                    <td>{{$emp->emp_id}}</td>
                     <td>{{$emp->emp_first_name}}{{$emp->emp_middel_name}}  {{$emp->emp_thired_name}}  {{$emp->emp_last_name}}</td>
                     <td>{{$emp->emp_mobile}}</td>
                     <td>{{$emp->name}}</td>
                     <td>{{$emp->emp_salary}}</td>
                     <td>{{$emp->emp_hirdate}}</td>
                     <td>{{$emp->account_number}}</td>
-                    @if($emp->is_active==1)
-                    <td><span class="badge badge-success">Active</span></td>
-                    @else
-                    <td><span class="badge badge-danger">Deactive</span></td>
-                    @endif
                     <td> <a href="{{asset('img/attchment/'.$emp->attchment)}}"><img src="{{asset('assets/img/pdf.jpg')}}"
                   class="text-center" width="80px"></a></td>
 
+                    
                     <td>
-                    <a class="m-2" href="{{ url('employees/employee-edit/'.$emp->emp_id) }}"><i class="fas fa-pencil-alt text-primary "></i></a>
-                   
-                    <a class="m-2 deletebtn"><i class="fas fa-trash text-danger"></i></a>
+      @if($emp->is_active == 0)
+      
+      <div class="form-group">
+                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                      <input onclick="myFunction{{$emp->emp_id}}()" type="checkbox" class="custom-control-input" id="customSwitch{{$emp->emp_id}}">
+                      <label class="custom-control-label" for="customSwitch{{$emp->emp_id}}"></label>
+                    </div>
+                  </div>
+                  @elseif($emp->is_active == 1)
+                  <div class="form-group">
+                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                      <input onclick="myFunction{{$emp->emp_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch{{$emp->emp_id}}">
+                      <label class="custom-control-label" for="customSwitch{{$emp->emp_id}}"></label>
+                    </div>
+                  </div>
+@endif
+      </td>
+    
+        <td>
+        <div class="btn-group btn-group-sm">
+  <a type="button" class="btn btn-outline-success" href="{{ url('employees/employee-edit/'.$emp->emp_id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger deletebtn"   ><i class="fas fa-trash "></i></a>
+</div>
 
-</td>
-                  </tr>
-                  @empty
-                  <tr class="text-center">  No Data Available</tr>
-                  @endforelse
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                  <th>ID</th> 
-                    <th>Name</th>
-                    <th> Mobile</th>
-                    <th> Department</th>
-                    <th> Salary</th>
-                    <th> Hire Date</th>
-                    <th> Account Number</th>
-                    <th> Status</th>
-                    <th> Cv</th>
-                    <th>Action</th>
-                  </tr>
-                  </tfoot>
-                </table>
-
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
+        </td>
+      </tr>
+        <!-- The Modal -->
+        <div class="modal fade" id="myModalair{{$emp->emp_id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal body -->
+      <div class="modal-body">
+      <div class="row text-center"><div class="col-12 p-4"><i style="font-size: 70px;" class="fas fa-exclamation-circle text-center text-danger"></i></div><div class="col-12 p-3"><h3 class="text-center">are you sure you want to delete emp ??</h3></div><div class="col-12 p-2"><button type="button" class="btn btn-success so_form_btn" style="float:none" data-dismiss="modal" >cansel</button><button type="button" class="btn btn-danger" onclick="delete{{$emp->emp_id}}()" style="width:15%;">ok</button></div></div>
       </div>
-      </div>
-      <!-- /.container-fluid -->
+   </div>
+  </div>
+</div>
 
- 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script>
+     function dep_select(){
+     var m= $("#selectdep").val();
+     if(m==1){
+      $('.dep4').css('display','none');
+        }
+     }
+    
+function myFunction{{$emp->emp_id}}() {
+  var checkBox{{$emp->emp_id}} = document.getElementById("customSwitch{{$emp->emp_id}}");
+  
+  if (checkBox{{$emp->emp_id}}.checked == true){
+    $.ajax({
+             type:'get',
+             url:'/is_active_emp/'+{{$emp->emp_id}},
+             data:{id:{{$emp->emp_id}}},
+             success:function(response){console.log(response);
+            // alert("data saved");
+             },
+             error:function(error){console.log(error);
+            // alert("data dont saved");
+             } 
+         });
+  } else{
+    $.ajax({
+             type:'get',
+             url:'/no_active_emp/'+{{$emp->emp_id}},
+             data:{id:{{$emp->emp_id}}},
+             success:function(response){console.log(response);
+            // alert("data saved");
+             },
+             error:function(error){console.log(error);
+            // alert("data dont saved");
+             } 
+         });
+}
+}
+
+
+
+</script>
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
+    </tbody>
+  </table>
+
+  
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  
+
 <script>
-$(document).ready(function(){ 
-  let  td='';
-  $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    $('.deletebtn').click(function (e) {
-      e.preventDefault();
-      //var id =$('#deletebtn').val();
-      var id = $(this).closest("div").find('.delete_id').val();
-      console.log('id');
-      console.log(id);
-
-      //alert(id);
-      swal({
-        title: "Are you sure?",
-        text: "Are You  Sure to delete this filed!",
-        icon: "error",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            var data = {
-              '_token': $('input[name=_token]').val(),
-              'id':id,
-            };
-
-            $.ajax({
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              },
-              type:"GET",
-              url: '/employees/employee_delete/'+id,
-              data: data,
-              success: function (response) {
-                console.log(response);
-                swal("Delete Successfully", {
-                 icon: "success",
-                }).then((willDelete) => {
-                  location.reload();
+    
+    $(document).ready(function(){ 
+      let  td='';
+      $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+    
+        $('.deletebtn').click(function (e) {
+          e.preventDefault();
+          //var id =$('#deletebtn').val();
+          var id = $(this).closest("tr").find('.delete_id').val();
+          console.log('id');
+          console.log(id);
+    
+          //alert(id);
+          swal({
+            title: "Are you sure?",
+            text: "Are You  Sure to delete this filed!",
+            icon: "error",
+            buttons: true,
+            dangerMode: true,
+          })
+            .then((willDelete) => {
+              if (willDelete) {
+                var data = {
+                  '_token': $('input[name=_token]').val(),
+                  'id':id,
+                };
+    
+                $.ajax({
+                  headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                  },
+                  type:"GET",
+                  url: '/employees/employee_delete/'+id,
+                  data: data,
+                  success: function (response) {
+                    console.log(response);
+                    swal("Delete Successfully", {
+                     icon: "success",
+                    }).then((willDelete) => {
+                      location.reload();
+                    });
+                  }
                 });
               }
+              
+              
             });
-          }
-          
-          
         });
     });
-  
-  console.log('insede redar');
-
-//var table=$('#datatable').DataTable();
-$("#dropselect").change(function () {
-
-                var id=$('#dropselect').val();
-                console.log(id);
-                $.ajax({
-        url:"{{url('employees/active')}}",
-        data: {id:id},
-        success: function (data) {
-          console.log('sec');
-          td=''; 
-          $.each(JSON.parse(data), function (key,value) {
-            console.log('value.length');
-            console.log(value.length);
-        if(value.length>0)
-           { for (var i=0; i<value.length;i++){
-              //console.log('value.length2');
-              console.log(value);
-               if(value[i].is_active==1)
-{              td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-success">Active</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a class="m-2 deletebtn"  href="#"><i class="fas fa-trash text-danger"></i></a></div></td></tr>';
-}
-else{
-  td +='<tr><td>'+value[i].emp_id+'</td><td>'+value[i].emp_first_name+' ' +value[i].emp_middel_name +'  ' +value[i].emp_thired_name+' '+value[i].emp_last_name+'</td> <td>'+value[i].emp_mobile+'</td> <td>'+value[i].name+'</td> <td>'+value[i].emp_salary+'</td> <td>'+value[i].emp_hirdate+'</td><td>'+value[i].account_number+'</td><td><span class="badge badge-danger">Deactive</span></td> <td> <a href="img/attchment/'+value[i].attchment+'"><img src="assets/img/pdf.jpg"class="text-center" width="80px"></a></td> <td><div class="btn-group btn-group-sm"><a  class="m-2  " href="employees/employee-edit/'+value[i].emp_id+'"><i class="fas fa-pencil-alt "></i></a><a class="m-2 deletebtn" href="#"><i class="fas fa-trash text-danger"></i></a></div></td></tr>';
-
-}
-
-              $('.row2').html(td);
-
-                     
-   }}
-   else{
-     td='<div class="txte-center">No Data</div>';
-    $('.row2').html(td);
-   }
-
-           
-           
-            td='';
-});
-        },
-        
-        error:function(){
-          console.log('err');
-
-
-        }
-          
-            }); 
-            });
-   
-});
-</script>
+    
+      </script>
+  <!-- /.content-wrapper -->
 @endsection

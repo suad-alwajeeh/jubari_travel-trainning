@@ -77,39 +77,39 @@ class dashboard extends Controller
     
     public function remark(){
       $data['data'] =BusService::join('suppliers','suppliers.s_no','=','bus_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','bus_services.cur_id')
+      ->join('currency','currency.cur_id','=','bus_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','bus_services.due_to_customer')
       ->where(['bus_services.deleted'=>0,'bus_services.user_status'=>0])->paginate(10);
       
       $data['ticket'] =TicketService::join('suppliers','suppliers.s_no','=','ticket_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','ticket_services.cur_id')
+      ->join('currency','currency.cur_id','=','ticket_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','ticket_services.due_to_customer')
       ->where(['ticket_services.deleted'=>0,'ticket_services.user_status'=>0])->paginate(10);
       
       $data['car'] =CarService::join('suppliers','suppliers.s_no','=','car_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','car_services.cur_id')
+      ->join('currency','currency.cur_id','=','car_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','car_services.due_to_customer')
       ->where(['car_services.deleted'=>0,'car_services.user_status'=>0])->paginate(10);
       
        
       $data['hotel'] =HotelService::join('suppliers','suppliers.s_no','=','hotel_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','hotel_services.cur_id')
+      ->join('currency','currency.cur_id','=','hotel_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','hotel_services.due_to_customer')
       ->where(['hotel_services.deleted'=>0,'hotel_services.user_status'=>0])->paginate(10);
       
 
       $data['visa'] =VisaService::join('suppliers','suppliers.s_no','=','visa_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','visa_services.cur_id')
+      ->join('currency','currency.cur_id','=','visa_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','visa_services.due_to_customer')
       ->where(['visa_services.deleted'=>0,'visa_services.user_status'=>0])->paginate(10);
       
       $data['med'] =MedicalService::join('suppliers','suppliers.s_no','=','medical_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','medical_services.cur_id')
+      ->join('currency','currency.cur_id','=','medical_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','medical_services.due_to_customer')
       ->where(['medical_services.deleted'=>0,'medical_services.user_status'=>0])->paginate(10);
       
       $data['gen'] =GeneralService::join('suppliers','suppliers.s_no','=','general_services.due_to_supp')
-      ->join('currency','currency.cur_id','=','general_services.cur_id')
+      ->join('currency','currency.cur_id','=','general_services.ses_cur_id')
       ->join('employees','employees.emp_id','=','general_services.due_to_customer')
       ->where(['general_services.deleted'=>0,'general_services.user_status'=>0])->paginate(10);
       

@@ -32,7 +32,6 @@
                         @csrf
 
                         <div class="around">
-                            <h2 class="form-title">Ticket Info</h2>
                             @foreach($data as $bus)
 
 <?php
@@ -48,7 +47,28 @@ array_push($mv,$ss);
 } 
 ?>
 
-<?php
+<?php 
+    $mass_date='';
+    $mass_date2='';
+    $mass_date3='';
+    $mass_date4='';
+    $mass_air='';
+    $mass_status='';
+    $mass_code='';
+    $mass_number='';
+    $mass_ref='';
+    $mass_pass='';
+    $mass_dep1='';
+    $mass_dep2='';
+    $mass_arr2='';
+    $mass_arr1='';
+    $mass_empcur='';
+    $mass_empcost='';
+    $mass_emp='';
+    $mass_proCur='';
+    $mass_proCost='';
+    $mass_sup='';
+             $bursher_time=false;
              $issue_date=false;
            $refernce=false;
            $passenger_name=false;
@@ -59,6 +79,9 @@ array_push($mv,$ss);
            $Dep_city=false;
            $arr_city=false;
            $dep_date=false;
+           $Dep_city2=false;
+           $arr_city2=false;
+           $dep_date2=false;
            $due_to_supp=false;
            $provider_cost=false;
            $provider_cost=false;
@@ -67,89 +90,97 @@ array_push($mv,$ss);
            $passnger_currency=false;
            $cost=false;
               $x=0;      
+              
 
-                for( $i=0;$i<sizeof($mv);$i++){
-            if ($mv[$i][$x]==='Issue_date') {
-             $issue_date=true;
-             break;
-            }
-            else{
-              $issue_date=false;
-            }
-          }
-          for( $i=0;$i<sizeof($mv);$i++){
+              for( $i=0;$i<sizeof($mv);$i++){
+                if ($mv[$i][$x]==='Issue_date') {
+                 $issue_date=true;
+      $mass_date=$mv[$i][2];
 
-          if ($mv[$i][$x]==='refernce') {
-            $refernce=true;
-            break;
-           }
-           else{
-            $refernce=false;
-          }
-          }
-          for( $i=0;$i<sizeof($mv);$i++){
+                 break;
+                }
+                
+              }
 
-         if ($mv[$i][$x]==='passenger_name') {
-          $passenger_name=true;
-          break;
-         }
-         else{
-          $passenger_name=false;
-        }
-          }
+              for( $i=0;$i<sizeof($mv);$i++){
+
+              if ($mv[$i][$x]==='refernce') {
+                $refernce=true;
+      $mass_ref=$mv[$i][2];
+
+                break;
+               }
+              
+              }
+              for( $i=0;$i<sizeof($mv);$i++){
+
+             if ($mv[$i][$x]==='passenger_name') {
+              $passenger_name=true;
+      $mass_pass=$mv[$i][2];
+
+              break;
+             }
+           
+              }
           for( $i=0;$i<sizeof($mv);$i++){
 
        if ($mv[$i][$x]==='ticket_status') {
         $ticket_status=true;
+      $mass_status=$mv[$i][2];
+
         break;
        }
-       else{
-        $ticket_status=false;
-      }
+       
           }
           for( $i=0;$i<sizeof($mv);$i++){
 
      if ($mv[$i][$x]==='airline_name') {
       $airline_name=true;
+      $mass_air=$mv[$i][2];
+
       break;
      }
-     else{
-      $airline_name=false;
-    }}
+    }
     for( $i=0;$i<sizeof($mv);$i++){
 
       if ($mv[$i][$x]==='ticket') {
        $ticket=true;
+      $mass_code=$mv[$i][2];
+       
        break;
       }
-      else{
-       $ticket=false;
-     }}
+     }
     for( $i=0;$i<sizeof($mv);$i++){
 
   if ($mv[$i][$x]==='ticket_number') {
     $ticket_number=true;
+    $mass_number=$mv[$i][2];
+
     break;
    }
-   else{
-    $ticket_number=false;
-  }}
+  }
   for( $i=0;$i<sizeof($mv);$i++){
  
  if ($mv[$i][$x]==='Dep_city1') {
   $Dep_city=true;
+  $mass_dep1=$mv[$i][2];
+
   break;
  }}
  for( $i=0;$i<sizeof($mv);$i++){
 
 if ($mv[$i][$x]==='arr_city1') {
 $arr_city=true;
+$mass_arr1=$mv[$i][2];
+
 break;
 }}
 for( $i=0;$i<sizeof($mv);$i++){
 
 if ($mv[$i][$x]==='dep_date1') {
 $dep_date=true;
+$mass_date2=$mv[$i][2];
+
 break;
 }}
 
@@ -157,60 +188,84 @@ for( $i=0;$i<sizeof($mv);$i++){
  
     if ($mv[$i][$x]==='Dep_city2') {
      $Dep_city2=true;
+  $mass_dep2=$mv[$i][2];
+
      break;
     }}
     for( $i=0;$i<sizeof($mv);$i++){
    
    if ($mv[$i][$x]==='arr_city2') {
    $arr_city2=true;
+  $mass_arr2=$mv[$i][2];
+   
    break;
    }}
    for( $i=0;$i<sizeof($mv);$i++){
    
-   if ($mv[$i][$x]==='dep_date') {
+   if ($mv[$i][$x]==='dep_date2') {
    $dep_date2=true;
+  $mass_date3=$mv[$i][2];
+
    break;
    }}
 
+   for( $i=0;$i<sizeof($mv);$i++){
+   
+    if ($mv[$i][$x]==='bursher_time') {
+    $bursher_time=true;
+  $mass_date4=$mv[$i][2];
 
-for( $i=0;$i<sizeof($mv);$i++){
+    break;
+    }}
 
-if ($mv[$i][$x]==='due_to_supp') {
-$due_to_supp=true;
-break;
-}}
+    for( $i=0;$i<sizeof($mv);$i++){
+      
+      if ($mv[$i][$x]==='due_to_supp') {
+       $due_to_supp=true;
+     $mass_sup=$mv[$i][2];
+       break;
+      }}
+      for( $i=0;$i<sizeof($mv);$i++){
+   
+    if ($mv[$i][$x]==='provider_cost') {
+     $provider_cost=true;
+     $mass_proCost=$mv[$i][2];
+     
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
 
-for( $i=0;$i<sizeof($mv);$i++){
+    if ($mv[$i][$x]==='cur_id') {
+     $cur_id=true;
+     $mass_proCur=$mv[$i][2];
 
-if ($mv[$i][$x]==='provider_cost') {
-$provider_cost=true;
-break;
-}}
-for( $i=0;$i<sizeof($mv);$i++){
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='cur_id') {
-$cur_id=true;
-break;
-}}
-for( $i=0;$i<sizeof($mv);$i++){
+    if ($mv[$i][$x]==='user_id') {
+     $due_to_customer=true;
+     $mass_emp=$mv[$i][2];
 
-if ($mv[$i][$x]==='user_id') {
-$due_to_customer=true;
-break;
-}}
-for( $i=0;$i<sizeof($mv);$i++){
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='cost') {
-$cost=true;
-break;
-}}
-for( $i=0;$i<sizeof($mv);$i++){
+    if ($mv[$i][$x]==='cost') {
+     $cost=true;
+     $mass_empcost=$mv[$i][2];
+     break;
+    }}
+    for( $i=0;$i<sizeof($mv);$i++){
 
-if ($mv[$i][$x]==='passnger_currency') {
-$passnger_currency=true;
-break;
-}
-}
+    if ($mv[$i][$x]==='passnger_currency') {
+     $passnger_currency=true;
+     $mass_empcur=$mv[$i][2];
+
+     break;
+    }
+        }
+      
           if($issue_date)
          { echo'  <div class="form-row col-md-12 col-sm-12 col-xm-12">
           <div class="form-group col-md-6 col-sm-12 col-xm-12">
@@ -221,6 +276,7 @@ break;
 <input type="hidden" value="{{$bus->tecket_id}}" name="id">
 <input required type="date" class="form-control " name="Issue_date"
   value="{{\Carbon\Carbon::createFromDate($bus->Issue_date)->format('Y-m-d')}}" />
+  <small class="text-red text-center">{{$mass_date}}</small>       
 <?php  echo' </div>
           </div>';
 }
@@ -246,6 +302,7 @@ break;
             <div class="form-group">';
 ?>
 <input required type="text" class="form-control" value="{{$bus->refernce}}" name="refernce">
+<small class="text-red text-center">{{$mass_ref}}</small>       
 <?php echo ' </div>
         </div>
     </div>';
@@ -273,9 +330,11 @@ break;
               <label class="col-12">Passenger Name : </label>
               <div class="form-group" data-select2-id="44">';?>
 
-<input required type="text" class="form-control select2 select2-hidden-accessible" name="passenger_name"
-  value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
+<input required type="text"  name="passenger_name"
+  value="{{$bus->passenger_name}}" class="form-control "
   style="width: 100%;" />
+<small class="text-red text-center">{{$mass_pass}}</small>       
+
 <?php echo ' </div>
       </div>';
          }
@@ -287,8 +346,8 @@ break;
              <label class="col-12">Passenger Name : </label>
              <div class="form-group" data-select2-id="44">';
 ?>
-<input required disabled type="text" class="form-control select2 select2-hidden-accessible"
-  value="{{$bus->passenger_name}}" class="form-control select2 select2-hidden-accessible"
+<input required disabled type="text" 
+  value="{{$bus->passenger_name}}" class="form-control "
   style="width: 100%;" />
 <input required type="hidden" name="passenger_name" value="{{$bus->passenger_name}}" />
 
@@ -302,14 +361,9 @@ break;
                                 <div class="form-group col-3">
                                     <input type="radio" onchange="hideB(this)" name="aorb" class=" m-2" checked>one Way
                                 </div>
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideA(this)" name="aorb" class=" m-2"
-                                        value="other">RoundTrip
-                                </div>
+                                
                                 @else
-                                <div class="form-group col-3">
-                                    <input type="radio" onchange="hideB(this)" name="aorb" class=" m-2">one Way
-                                </div>
+                               
                                 <div class="form-group col-3">
                                     <input type="radio" onchange="hideA(this)" name="aorb" class=" m-2" checked
                                         value="other">RoundTrip
@@ -341,9 +395,11 @@ break;
 
                @endif
                @endforeach
+               </select>
+               <small class="text-red text-center">{{$mass_air}}</small>       
 
          
-<?php echo '  </select>
+<?php echo '  
        </div>
    </div>';
        }
@@ -393,8 +449,10 @@ break;
                                             @endif
                                             @endforeach
 
-       
-<?php echo '  </select>
+                                            </select>
+               <small class="text-red text-center">{{$mass_code}}</small>       
+
+<?php echo '  
      </div>
  </div>';
      }
@@ -429,6 +487,7 @@ value="{{$bus->ticket}}" />
         ?> 
           <input required type="text" class="form-control " style="width:100%;"
                                             name="ticket_number" value="{{$bus->ticket_number}}" id="number" />
+                                            <small class="text-red text-center">{{$mass_number}}</small>       
 
 <?php echo ' <small id="helpId2" class="text-muted "></small>
           <a id="generate" class="btn btn-outline-primary so_form_btn"> Generate</a>
@@ -485,9 +544,10 @@ name="" value="{{$bus->ticket_number}}" id="number" />
                echo '<option value="1" >OK</option>
                <option value="2">Issue</option>
                <option value="3">Void</option>
-               <option value="4" selected>Refund</option>';
+               <option value="4" selected>Refund</option>';?>
+              </select>  <small class="text-red text-center">{{$mass_status}}</small>       
   
-echo' </select>
+<?php echo'
 </div>
 </div>
 </div>';
@@ -536,6 +596,8 @@ echo '  <option value="4"  disabled selected>Refund</option>
 ?>
 <input required name="Dep_city1" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
   value="{{$bus->Dep_city}}" class="form-control " list="cars" />
+   <small class="text-red text-center">{{$mass_dep1}}</small>       
+
 <?php echo'   </div>
     </div>';
    }
@@ -563,6 +625,7 @@ echo '  <option value="4"  disabled selected>Refund</option>
 ?>
 <input required name="dep_date" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
   value="{{ \Carbon\Carbon::createFromDate($bus->Dep_date)->format('Y-m-d')}}" class=" form-control " />
+  <small class="text-red text-center">{{$mass_date2}}</small>       
 <?php echo'   </div>
         </div>';
        }
@@ -584,18 +647,21 @@ echo '  <option value="4"  disabled selected>Refund</option>
 
  if ($arr_city) {
     echo '  
+    <div class="form-group col-md-4 col-sm-12 col-xm-12">
 
         <label class="col-md-12 col-sm-12 col-xm-12">Arr City </label>
         <div class="form-group" data-select2-id="44">';
 ?>
 <input required name="arr_city" onkeyup="addHyphen(this)" id="tbNum2" class="form-control "
   value="{{$bus->arr_city}}" list="cars" />
+  <small class="text-red text-center">{{$mass_arr1}}</small>       
 <?php echo'   </div>
     </div> </div>';
    }
 else
 {
 echo '  
+<div class="form-group col-md-4 col-sm-12 col-xm-12">
 
 <div class="form-group col-md-4 col-sm-12 col-xm-12">
     <label class="col-md-12 col-sm-12 col-xm-12">Arr City </label>
@@ -609,6 +675,145 @@ echo '
 <?php echo'   </div>
 </div> </div></div>';
 }
+?>
+
+@if ($bus->Dep_city!=null)
+ 
+<?php
+if ($Dep_city2) {
+  echo '  <div class="form-row col-md-12 col-sm-12 col-xm-12">
+
+  <div class="form-group col-md-4 col-sm-12 col-xm-12">
+      <label class="col-md-12 col-sm-12 col-xm-12">Dep City </label>
+      <div class="form-group" data-select2-id="44">';
+?>
+<input required name="dep_city1" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
+value="{{$bus->Dep_city2}}" class="form-control " list="cars" />
+<small class="text-red text-center">{{$mass_dep2}}</small>       
+
+<?php echo'   </div>
+  </div>';
+ }
+else
+{
+  echo '  <div class="form-row col-md-12 col-sm-12 col-xm-12">
+
+  <div class="form-group col-md-4 col-sm-12 col-xm-12">
+      <label class="col-md-12 col-sm-12 col-xm-12">Dep City </label>
+      <div class="form-group" data-select2-id="44">';
+?>
+<input required disabled style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
+value="{{$bus->Dep_city2}}" class="form-control " list="cars" />
+<input required name="dep_city1" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="hidden"
+value="{{$bus->Dep_city2}}" class="form-control " list="cars" />
+<?php echo'   </div>
+  </div>';
+ }
+
+ if ($dep_date2) {
+  echo ' 
+      <div class="form-group col-md-4 col-sm-12 col-xm-12">
+          <label class="col-md-12 col-sm-12 col-xm-12">Dep Date </label>
+          <div class="form-group" data-select2-id="44">';
+?>
+<input required name="dep_date2" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
+value="{{ \Carbon\Carbon::createFromDate($bus->Dep_date2)->format('Y-m-d')}}" class=" form-control " />
+<small class="text-red text-center">{{$mass_date3}}</small>       
+
+<?php echo'   </div>
+      </div>';
+     }
+else
+{
+  echo '  
+
+  <div class="form-group col-md-4 col-sm-12 col-xm-12">
+      <label class="col-md-12 col-sm-12 col-xm-12">Dep Date </label>
+      <div class="form-group" data-select2-id="44">';
+?>
+<input required disabled style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="text"
+value="{{ \Carbon\Carbon::createFromDate($bus->Dep_date2)->format('Y-m-d')}}" class=" form-control " />
+<input required name="dep_date2" style="width:100%" onkeyup="addHyphen(this)" id="tbNum" type="hidden"
+value="{{ \Carbon\Carbon::createFromDate($bus->Dep_date2)->format('Y-m-d')}}" class=" form-control " />
+<?php echo'   </div>
+  </div>';
+ }
+
+if ($arr_city2) {
+  echo '  
+  <div class="form-group col-md-4 col-sm-12 col-xm-12">
+
+      <label class="col-md-12 col-sm-12 col-xm-12">Arr City </label>
+      <div class="form-group" data-select2-id="44">';
+?>
+<input required name="arr_city1" onkeyup="addHyphen(this)" id="tbNum2" class="form-control "
+value="{{$bus->arr_city2}}" list="cars" />
+<small class="text-red text-center">{{$mass_arr2}}</small>       
+
+<?php echo'   </div>
+  </div> </div>';
+ }
+else
+{
+echo '  
+<div class="form-group col-md-4 col-sm-12 col-xm-12">
+
+<div class="form-group col-md-4 col-sm-12 col-xm-12">
+  <label class="col-md-12 col-sm-12 col-xm-12">Arr City </label>
+  <div class="form-group" data-select2-id="44">';
+?>
+<input required disabled onkeyup="addHyphen(this)" id="tbNum2" class="form-control "
+value="{{$bus->arr_city2}}" list="cars" />
+
+<input required name="arr_city1" type="hidden" onkeyup="addHyphen(this)" id="tbNum2" class="form-control "
+value="{{$bus->arr_city2}}" list="cars" />
+<?php echo'   </div>
+</div> </div></div>';
+}
+
+?>
+@endif
+
+@if ($bus->bursher_time!=null)
+<?php
+if ($bursher_time) {
+  echo'<div class="form-group col-md-12 col-sm-12 col-xm-12">
+  <div class="form-group">
+  <div id="text" class="form-group">';
+  ?>
+
+  <input type="date" class="form-control "
+      value="{{\Carbon\Carbon::createFromDate($bus->bursher_time)->format('Y-m-d')}}"
+      name="bursher_time" name="bursher_time" />
+   <small class="text-red text-center">{{$mass_date4}}</small>       
+
+      <?php
+      echo'
+</div>
+</div>
+</div>
+';
+}
+else {
+  echo'<div class="form-group col-md-12 col-sm-12 col-xm-12">
+  <div class="form-group">
+  <div id="text" class="form-group">';
+  ?>
+
+  <input type="date" class="form-control " disabled
+      value="{{\Carbon\Carbon::createFromDate($bus->bursher_time)->format('Y-m-d')}}"
+      name="bursher_time"  />
+      <input type="hidden" name="bursher_time" value="{{$bus->bursher_time}}" class="hidden">
+      <?php
+      echo'
+</div>
+</div>
+</div>
+';
+}
+?>
+@endif
+<?php
 
 if ($due_to_supp) {
 echo '
@@ -632,8 +837,11 @@ echo '
 
 
 @endforeach
+</select>
+<small class="text-red text-center">{{$mass_sup}}</small>       
+
 <?php
-echo ' </select>
+echo ' 
 </div>
 </div>';
 }
@@ -666,6 +874,9 @@ echo ' <div class="form-group col-md-12 col-sm-12 col-xm-12">
 
 <input type="number" style="width:100%;" required name="provider_cost" class="form-control "
   value="{{ $bus->provider_cost}}" />
+  
+<small class="text-red text-center">{{$mass_proCost}}</small>       
+
 <?php echo' </div>
 </div>';
 }
@@ -699,7 +910,10 @@ echo  ' <div class="form-group col-md-12 col-sm-12 col-xm-12">
 @endif
 
 @endforeach
-<?php echo'  </select>
+</select>
+<small class="text-red text-center">{{$mass_proCur}}</small>       
+
+<?php echo'  
 </div>
 </div>
 </div>';
@@ -750,8 +964,10 @@ echo  '  <div class="col-md-5 col-sm-12 col-xm-12 d-inline-block">
 @endif
 
 @endforeach
+</select>
+<small class="text-red text-center">{{$mass_emp}}</small>       
 
-<?php echo'</select>
+<?php echo'
 
 </div>
 </div>';
@@ -790,6 +1006,8 @@ echo '    <div class="form-group col-md-12 col-sm-12 col-xm-12">
 
 <input required type="number" name="cost" style="width: 100%;" class="form-control "
   value="{{ $bus->cost}}" />
+<small class="text-red text-center">{{$mass_empcost}}</small>       
+
 <?php echo '</div>
 </div>';
 }
@@ -819,8 +1037,10 @@ data-select2-id="10" tabindex="0" aria-hidden="true">';
 <option value="YER">YER</option>
 <option value="SAR">SAR</option>
 <option value="USD">USD</option>
-<?php echo '
 </select>
+<small class="text-red text-center">{{$mass_empcur}}</small>       
+
+<?php echo '
 </div>
 </div>
 </div>
@@ -867,15 +1087,6 @@ data-select2-id="10" tabindex="0" aria-hidden="true">';
     </div>
 
    
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
     <script>
 console.log('hhhhhhhhhhh');
         // ************************ Drag and drop ***************** //

@@ -12,29 +12,24 @@ class DepartmentController extends Controller
     public function index()
     {
         $del=0;
-        if(isset($_GET['id']) && ($_GET['id']==0 || $_GET['id']==1) )
-       { 
-       
-        $where=['is_active'=>$_GET['id']];
-        $where +=['deleted'=>0];
-        //$where +=['deleted'===0];
-
-        $data['dept']=Department::where($where)->get();
-        return json_encode($data);}
-    
-        else if(isset($_GET['id']) && $_GET['id']==2 )
-       { 
-        //$where +=['deleted'===$del];
-        $data['dept']=Department::where('deleted',0)->get();
-        return json_encode($data);}
-    
+        $affected1=[];
+            $data=Department::where('deleted',0)->orderBy('id', 'DESC')->paginate(30);
+            return view('department',['dept'=>$data,'data1'=>$affected1]);
         
-        else{
-          //  $where +=['deleted'=>0];
-          
-            $data['dept']=Department::where('deleted',0)->get();
-            return view('department',$data);
+    }
+
+    public function display_with_status($id)
+    {  
+        if($id==1){
+            $affected1 =[];
+            $affected = Department::where([['deleted',0],['is_active',1]])->paginate(25);
+            return view('department',['dept'=>$affected,'data1'=>$affected1]);
+        }elseif($id==0){
+            $affected1 =[];
+            $affected = Department::where([['deleted',0],['is_active',0]])->paginate(25);
+            return view('department',['dept'=>$affected,'data1'=>$affected1]);
         }
+                 
     }
     public function insert(){
 
@@ -64,10 +59,22 @@ class DepartmentController extends Controller
 
     public function display_row($id)
     { 
+        $affected1 =[];
         $data['dept'] = Department::where('id',$id)->get();
         return view('update-department',$data);
                     }
-
+                    public function is_active($id){
+                        $affected1= Department::where('id',$id)
+                        ->update(['is_active'=>'1']);
+                        $affected = Department::where('deleted',0)->paginate(25);
+                        return redirect('department');
+                        }
+                        public function is_not_active($id){
+                            $affected1= Department::where('id',$id)
+                            ->update(['is_active'=>'0']);
+                            $affected = Department::where('deleted',0)->paginate(25);
+                            return redirect('department');
+                            }
 public function edit_row(Request $req){
                         $dept=new Department;
                         $active='';
@@ -81,7 +88,7 @@ public function edit_row(Request $req){
                         'is_active'=>$active,
                         ]); 
                         $data['dept'] = Department::where('deleted',0)->paginate(7);
-                        return redirect('department')->with($data);
+                        return redirect('department')->with('seccess','Seccess Data update');
                         
                     }
     public function hide_row($id){

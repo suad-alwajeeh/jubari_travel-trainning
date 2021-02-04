@@ -121,9 +121,15 @@
 
                                             <td>{{$meds->document_number }}</td>
                                             <td>{{$meds->from_city }}</td>
-                                            @if($meds->report_status==1)
-                                            <td>OK</td>
-                                            @endif
+                                            @if($meds->ses_status==1)
+                                                <td>OK</td>
+                                                @elseif($meds->ses_status==2)
+                                                <td>Issue</td>
+                                                @elseif($meds->ses_status==3)
+                                                <td>Void</td>
+                                                @elseif($meds->ses_status==4)
+                                                <td>Refund</td>
+                                                @endif
                                             <td>{{$meds->med_info }}</td>
                                             <td>{{$meds->supplier_name}} </td>
                                             <td>{{$meds->provider_cost}} </td>
@@ -178,16 +184,6 @@
     </section>
 </div>
 <!-- /.container-fluid -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $('.selectall').click(function () {
         $('.selectbox').prop('checked', $(this).prop('checked'));

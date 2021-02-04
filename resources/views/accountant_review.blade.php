@@ -26,10 +26,9 @@
           </div>
                    <div class="form-group col-1" style="display:">
                   <label>service</label>
-                  <select onchange="filter_item('filter_m_ser','=')" id="filter_m_ser" class="form-control select2" style="width: 100%;">
-                  
-                  <option value="no"></option>
-                  <option value="0">all</option>
+                  <!--select onchange="filter_item('filter_m_ser','=')" id="filter_m_ser" class="form-control select2" style="width: 100%;"-->
+                  <select onchange="chang_stat()"  id="filter_m_ser" class="ses_repo_filter form-control select2" style="width: 100%;">
+                                    <option selected="selected" value="0">all</option>
                     @foreach($data3 as $d3)
                     <option value="{{$d3->ser_id}}">{{$d3->ser_name}}</option>
                     @endforeach
@@ -37,7 +36,7 @@
                 </div>
                 <div class="form-group col-1">
                   <label>status</label>
-                  <select onchange="filter_item('ses_status','in')" id="ses_status" class="form-control select2" data-placeholder="Select a State" style="width: 100%;">
+                  <select onchange="filter_item('ses_status','in')" id="ses_status" class="ses_repo_filter form-control select2" data-placeholder="Select a State" style="width: 100%;">
                   <option value="no"></option>
                   <option value="1,2,3,4">all</option>
                   <option value="1">ok</option>
@@ -48,7 +47,7 @@
                 </div>
                    <div class="form-group col-2">
                   <label>issue date</label>
-                  <select onchange="filter_item('issue_date','=')" id="issue_date" class="form-control select2" style="width: 100%;">
+                  <select onchange="filter_item('issue_date','=')" id="issue_date" class="ses_repo_filter form-control select2" style="width: 100%;">
                   <option value="no"></option>
                   <option value="CURRENT_DATE()">today</option>
                   <option value="CURRENT_DATE()-1">yestrday</option>
@@ -82,7 +81,7 @@
                      </select>
                 </div>
                 <div class=" form-group col-1 mt-4 pt-2">
-                  <button class="btn btn-info" onclick="get_filter()">go</button>
+                  <button class="btn btn-info disabled" id="ses_first_type" onclick="get_filter()">go</button>
                 </div>
               </div>
   </div>
@@ -93,7 +92,9 @@
             <div class="card">
               <div class="card-header border-transparent">
                 <h3 class="card-title">
-               service name
+                @foreach($data1 as $item1)
+                {{$item1}}
+                @endforeach
                 </h3>
                 <a type="button" style="float:right;display:none" class="btn btn-outline-success" id="bill_for_all" onclick="bill_all()" ><i class="fas fa-plus ">add bill number for selected item</i></a>
 
@@ -102,7 +103,8 @@
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <div class="table-responsive">
-                <table id="su_table_filter"  class="table table-striped">
+                <!--div  class="alert so-alert-message" id="in_success_or_not" ><button type="button" data-dismiss="alert" class="close">&times;</button></div-->         
+                <table id=""  class="table table-striped">
                 
     <thead>
       <tr>
@@ -132,6 +134,7 @@
       <tr style="" id="serr{{$lat->t_id}}" >
       @endif
       <td>
+      <input hidden=hidden id=manager_id name=manager_id value='{{$lat->manager_id}}'>
       <input type=text hidden=hidden value="{{$lat->s_num}}" class="form-control mt-2 mb-2" id=nummm_all >
       <input type=text hidden=hidden value="{{$lat->uuser_resiver}}" class="form-control mt-2 mb-2" id=user_resiver_all >
       <input type="checkbox" id="serv" onclick="selectone()" name="su_service" class="selectbox " value="{{$lat->t_id}}"></td>
@@ -185,7 +188,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-      <a  type="button" class="btn btn-outline-success su_send_remark" onclick="sendremark()">send remark</a>
+      <a  type="button" class="btn btn-outline-success su_send_remark ses_valiide" id="" onclick="sendremark()">send remark</a>
      
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
@@ -257,35 +260,7 @@
 </div>
 
 <script>
-  function get_filter(){
-
-    $.ajax({
-     url:'/accountant/filter_do',
-       type:'get',
-       dataType:'json',
-  success:function(response){
-  if(response.length==0){
-    $('#filter_data_come_here').html('<tr><td class=text-center colspan="10">There is No data in table...<td></tr>');
-  }else{
-    alert("found thing");
-    $('#filter_data_come_here').html('');
-    $('#filter_data_come_here').append('');
-               $.map(response ,function(k,v){
-                  console.log(k.t_id);
-                  for(var i in k){
-                    console.log(k[i].t_id);
-                  }
-                  
-                  $('#filter_data_come_here').append('<option value="'+k.t_id+'">'+k.t_id+'</option>');
-
-               });
-
-  }
-  } 
-    });
-  
-  }
-  function filter_item(col,op){
+function filter_item(col,op){
     var val=$('#'+col).val();
     if(col=="ses_status"){
 val='('+$('#'+col).val()+')';
@@ -297,6 +272,95 @@ val='('+$('#'+col).val()+')';
   }
   });
   }
+  function get_filter(){
+var m=$('#filter_m_ser').val();
+    $.ajax({
+     url:'/accountant/filter_do/'+m,
+       type:'get',
+       dataType:'json',
+  success:function(response){
+    // $(".ses_repo_filter").reset();
+
+  if(response.length==0){
+    $('#filter_data_come_here').html('<tr><td class=text-center colspan="10">There is No data in table...<td></tr>');
+  }else{
+   // alert("found thing");
+   $('#in_success_or_not').text('filter done successfuly');
+    $('#filter_data_come_here').html('');
+var user_f={{Auth::user()->id}};
+var type_f="";
+var status_f="";
+var count_f=1;
+var tr_f="";
+
+              $.map(response ,function(k,v){
+                 // console.log(k.st_id);
+                  for(var i in k){
+                  //  console.log(k[i].st_id);
+                  }
+                 // alert(k.st_id);
+                  if(k.s_st==1){
+                    status_f='<span class="badge badge-success">ok</span>';
+                  }if(k.s_st==2){
+                    status_f=' <span class="badge badge-info">issue</span>';
+                  }if(k.s_st==3){
+                    status_f='<span class="badge badge-danger">void</span>';
+                  }if(k.s_st==4){
+                    status_f='<span class="badge badge-primary">refund</span>';
+                  }
+
+                  if(k.st_id==1){
+                      type="Ticket";
+                  }if(k.st_id==2){
+                      type="Bus";
+                  }if(k.st_id==3){
+                      type="Car";
+                  }if(k.st_id==4){
+                      type="Medical";
+                  }if(k.st_id==5){
+                      type="Hotel";
+                  }if(k.st_id==6){
+                      type="Visa";
+                  }if(k.st_id==7){
+                      type="General";
+                  }
+
+if(k.bookmark_how==user_f){
+  tr_f='<tr style="background-color:#'+k.bookmark+'" id="serr'+k.t_id+'" >';
+}else{
+  tr_f='<tr style="" id="serr'+k.t_id+'" >';
+}
+//alert("found thing"+tr_f);
+
+
+        var content_of_f=tr_f+'<td>';
+        content_of_f+='<input type=text hidden=hidden value="'+k.s_num+'" class="form-control mt-2 mb-2" id=nummm_all >';
+        content_of_f+='<input type=text hidden=hidden value="'+k.uuser_resiver+'" class="form-control mt-2 mb-2" id=user_resiver_all >';
+        content_of_f+='<input type="checkbox" id="serv" onclick="selectone()" name="su_service" class="selectbox " value="'+k.t_id+'"></td>';
+        content_of_f+='<input type="hidden" id="main_serv" value="'+k.st_id+'">';
+        content_of_f+='</td>';
+        content_of_f+='<td>'+count_f+'</td>';
+        content_of_f+='<td>'+type+'</td>';
+        content_of_f+='<td>'+k.t_idate+'</td>';
+        content_of_f+='<td>'+k.u_name+'</td>';
+        content_of_f+='<td>'+k.t_pn+'</td>';
+        content_of_f+='<td>'+k.s_name+'</td>';
+        content_of_f+='<td>'+k.tp_c+'</td>';
+        content_of_f+='<td>'+k.cur_n+'</td>';
+        content_of_f+='<td>'+k.cost+'</td>';
+        content_of_f+='<td>'+status_f+'</td>';
+        content_of_f+='<td><div class="btn-group btn-group-sm"><a type="button" class="btn btn-outline-info su_all_c"   onclick=display_data('+'"'+k.t_id+'"'+','+k.st_id+') ><i class="fas fa-eye "></i></a><a type="button" class="btn btn-outline-success su_all_c" onclick="bill_num()" ><i class="fas fa-plus ">bill_num</i></a></div>';
+        content_of_f+='<div class="modal fade" id="myModal_acc"><div class="modal-dialog su_modal-dialog"><div class="modal-content"><div class="modal-header"><a  type="button" class="btn btn-outline-success su_send_remark" onclick="sendremark()">send remark</a><button type="button" class="close" data-dismiss="modal">&times;</button></div><div class="modal-body" id="details"></div><div class="modal-footer"></div></div></div></div></td></tr><div class="modal fade text-center" id="myModalcus_del"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4> bill number </h4></div><div class="modal-body" id="details1"><input type=number class="form-control mt-2 mb-2" id=bill_num name=bill><input type=text hidden=hidden value="'+k.uuser_resiver+'" class="form-control mt-2 mb-2" id=user_resiver name=user_resiver><input hidden=hidden id=manager_id name=manager_id value='+k.manager_id+'><input type=text hidden=hidden value="'+k.s_num+'" class="form-control mt-2 mb-2" id=nummm name=nummm><a  type="button" onclick="send_bill('+'"'+k.t_id+'"'+','+k.st_id+')" class="btn btn-outline-success" data-dismiss="modal">save</a><a  type="button" class="btn btn-outline-danger" data-dismiss="modal">cansel</a></div></div></div></div><div class="modal fade text-center" id="bill_all"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4> bill number </h4></div><div class="modal-body" id="details1"><input type=number class="form-control mt-2 mb-2" id=bill_num_all name=bill><a  type="button" onclick=add_bill_for_all() class="btn btn-outline-success" data-dismiss="modal">save</a><a  type="button" class="btn btn-outline-danger" data-dismiss="modal">cansel</a></div></div></div></div></td></tr>';
+                  $('#filter_data_come_here').append(content_of_f);
+                  ++count_f;
+               });
+
+  }
+  } 
+    });
+  
+  }
+  
   function selectall() {
     var checkBox = document.getElementById("selectall");
     if (checkBox.checked == true){
@@ -319,19 +383,25 @@ function selectone() {
 
   }
 }
+function chang_stat(){
+            $('#ses_first_type').removeClass('disabled');
+          }
 function add_bill_for_all(){
   var num=$('#nummm_all').val();
   var user={{ Auth::user()->id }};
   var main=$('#main_serv').val();
   var resiver=$('#user_resiver_all').val();
   var bill=$('#bill_num_all').val();
+  var manager=$('#manager_id').val();
   var service_checked=[];
   $.each($("input[name='su_service']:checked"),function(){
     service_checked.push($(this).val());
     $.ajax({
-     url:'/accountant/bill_num/'+$(this).val()+'/'+main+'/'+bill+'/'+user+'/'+resiver+'/'+num,
+     url:'/accountant/bill_num/'+$(this).val()+'/'+main+'/'+bill+'/'+user+'/'+resiver+'/'+num+'/'+manager,
        type:'get',
   success:function(response){
+    $('#in_success_or_not').text('bill number added successfuly');
+
     location.reload();
   }
   });
@@ -365,8 +435,10 @@ var bill=$('#bill_num').val();
 var user={{ Auth::user()->id }};
 var reciver=$('#user_resiver').val();
 var num=$('#nummm').val();
+var manager=$('#manager_id').val();
+
 $.ajax({
-     url:'/accountant/bill_num/'+service+'/'+main+'/'+bill+'/'+user+'/'+reciver+'/'+num,
+  url:'/accountant/bill_num/'+service+'/'+main+'/'+bill+'/'+user+'/'+reciver+'/'+num+'/'+manager,
        type:'get',
   success:function(response){
 location.reload();
@@ -384,21 +456,22 @@ function display_data(id,type){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var tic='<input hidden=hidden id=num name=num value='+response[0].ticket_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].tecket_id+'><h4 class="modal-title">ticket service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
-    tic+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
-    tic+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
+
+    var tic='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].ticket_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].tecket_id+'><h4 class="modal-title">ticket service details</h4><div class=row><div class="col-md-6 col-sm-12"><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    tic+='<tr><td>Issue date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
+    tic+='<tr><td>Issue by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
     tic+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>passenger_name</td><td>'+response[0].passenger_name+'</td><td class="su_t_h"><input id="passenger_name" oninput=send("passenger_name","'+response[0].passenger_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("passenger_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("passenger_name")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>airline_name</td><td>'+response[0].airline_name+'</td><td class="su_t_h"><input id="airline_name" oninput=send("airline_name","'+response[0].airline_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("airline_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("airline_name")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>ticket_number</td><td>'+response[0].ticket_number+'</td><td class="su_t_h"><input id="ticket_number" oninput=send("ticket_number","'+response[0].ticket_number+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("ticket_number")> <i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("ticket_number")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>passenger name</td><td>'+response[0].passenger_name+'</td><td class="su_t_h"><input id="passenger_name" oninput=send("passenger_name","'+response[0].passenger_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("passenger_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("passenger_name")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>airline name</td><td>'+response[0].airline_name+'</td><td class="su_t_h"><input id="airline_name" oninput=send("airline_name","'+response[0].airline_name+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("airline_name")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("airline_name")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>ticket number</td><td>'+response[0].ticket_number+'</td><td class="su_t_h"><input id="ticket_number" oninput=send("ticket_number","'+response[0].ticket_number+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("ticket_number")> <i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("ticket_number")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>ticket</td><td>'+response[0].ticket+'</td><td class="su_t_h"><input id="ticket" oninput=send("ticket","'+response[0].ticket+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("ticket")> <i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("ticket")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>Dep_city1</td><td>'+response[0].Dep_city1+'</td><td class="su_t_h"><input id="Dep_city1" oninput=send("Dep_city1","'+response[0].Dep_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>Dep_city2</td><td>'+response[0].Dep_city2+'</td><td class="su_t_h"><input id="Dep_city2" oninput=send("Dep_city2","'+response[0].Dep_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='</tbody></table></div><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
-     tic+='<tr><td>arr_city1</td><td>'+response[0].arr_city1+'</td><td class="su_t_h"><input id="arr_city1" oninput=send("arr_city1","'+response[0].arr_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>arr_city2</td><td>'+response[0].arr_city2+'</td><td class="su_t_h"><input id="arr_city2" oninput=send("arr_city2","'+response[0].arr_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>dep_date1</td><td>'+response[0].dep_date1+'</td><td class="su_t_h"><input id="dep_date1" oninput=send("dep_date1","'+response[0].dep_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date1")><i class="fas fa-trash "></i></button></div></td></tr>';
-     tic+='<tr><td>dep_date2</td><td>'+response[0].dep_date2+'</td><td class="su_t_h"><input id="dep_date2" oninput=send("dep_date2","'+response[0].dep_date2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date2")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>Dep city1</td><td>'+response[0].Dep_city+'</td><td class="su_t_h"><input id="Dep_city1" oninput=send("Dep_city1","'+response[0].Dep_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>Dep city2</td><td>'+response[0].Dep_city2+'</td><td class="su_t_h"><input id="Dep_city2" oninput=send("Dep_city2","'+response[0].Dep_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Dep_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("Dep_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='</tbody></table></div><div class="col-md-6 col-sm-12"><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+     tic+='<tr><td>arr city</td><td>'+response[0].arr_city+'</td><td class="su_t_h"><input id="arr_city1" oninput=send("arr_city1","'+response[0].arr_city+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>arr city2</td><td>'+response[0].arr_city2+'</td><td class="su_t_h"><input id="arr_city2" oninput=send("arr_city2","'+response[0].arr_city2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("arr_city2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("arr_city2")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>dep date1</td><td>'+response[0].dep_date+'</td><td class="su_t_h"><input id="dep_date1" oninput=send("dep_date1","'+response[0].dep_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date1")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date1")><i class="fas fa-trash "></i></button></div></td></tr>';
+     tic+='<tr><td>dep date2</td><td>'+response[0].dep_date2+'</td><td class="su_t_h"><input id="dep_date2" oninput=send("dep_date2","'+response[0].dep_date2+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("dep_date2")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("dep_date2")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>provider</td><td>'+response[0].supplier_name+'</td><td class="su_t_h"><input id="due_to_supp" oninput=send("due_to_supp","'+response[0].due_to_supp+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("due_to_supp")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("due_to_supp")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>provider_cost</td><td>'+response[0].provider_cost+'</td><td class="su_t_h"><input id="provider_cost" oninput=send("provider_cost","'+response[0].provider_cost+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("provider_cost")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("provider_cost")><i class="fas fa-trash "></i></button></div></td></tr>';
      tic+='<tr><td>currancy</td><td>'+response[0].cur_name+'</td><td class="su_t_h"><input id="cur_id"  oninput=send("cur_id","'+response[0].cur_id+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("cur_id")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-dark" onclick=hidden_input("cur_id")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -421,7 +494,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var bus ='<input hidden=hidden id=num name=num value='+response[0].bus_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'>';
+    var bus ='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].bus_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'>';
     bus +='<input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].bus_id+'>';
     bus +='<h4 class="modal-title">bus service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
     bus +='<tr><td>Issue date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-outline-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i></button><button type="button" class="btn btn-outline-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr><tr>';
@@ -456,7 +529,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var car='<input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].car_id+'><h4 class="modal-title">car service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var car='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].car_id+'><h4 class="modal-title">car service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
 car+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
 car+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
 car+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -490,7 +563,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var gg='<input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].gen_id+'><h4 class="modal-title">car service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var gg='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].gen_id+'><h4 class="modal-title">car service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
         gg+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
         gg+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
         gg+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -521,7 +594,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var meed='<input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].med_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var meed='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].document_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].med_id+'><h4 class="modal-title">medical service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
     meed+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>Issue_by</td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
     meed+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -555,7 +628,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var hot='<input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].hotel_id+'><h4 class="modal-title">hotel service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var hot='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].hotel_id+'><h4 class="modal-title">hotel service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
     hot+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
     hot+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
     hot+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -589,7 +662,7 @@ success:function(response){
   if(response.length==0){
     console.log("not found thing");
   }else{
-    var car='<input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].visa_id+'><h4 class="modal-title">visa service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
+    var car='<input hidden=hidden id=manager_how  name=manager_how value='+response[0].manager_id+'><input hidden=hidden id=num name=num value='+response[0].voucher_number+'><input hidden=hidden id=to name=to value='+response[0].user_id+'><input hidden=hidden id=main_service name=main_service value='+response[0].service_id+'><input hidden=hidden id=service_id name=service_id value='+response[0].visa_id+'><h4 class="modal-title">visa service details</h4><div class=row><div class=col-6><table class="table table-bordered"><thead><tr><th>key</th><th>value</th><th class="su_t_h">remark</th><th>opration</th></tr></thead><tbody>';
 car+='<tr><td>Issue_date<input name=colname value=Issue_date hidden=hidden></td><td>'+response[0].Issue_date+'<input name=oldval value='+response[0].Issue_date+' hidden=hidden></td><td class="su_t_h"><input id="Issue_date" oninput=send("Issue_date","'+response[0].Issue_date+'") class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_date")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_date")><i class="fas fa-trash "></i></button></div></td></tr>';
 car+='<tr><td>Issue_by<input type=text value=user_id name=colname hidden=hidden></td><td>'+response[0].name+'<input name=oldval value='+response[0].user_id+' hidden=hidden></td><td class="su_t_h"><input oninput=send("user_id","'+response[0].user_id+'") id="Issue_by" class="form-control su_remark_input" type=text  name=newval ></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("Issue_by")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("Issue_by")><i class="fas fa-trash "></i></button></div></td></tr>';
 car+='<tr><td>refernce</td><td>'+response[0].refernce+'</td><td class="su_t_h"><input id="refernce" oninput=send("refernce","'+response[0].refernce+'") class="form-control su_remark_input" type=text  name=newval></td><td><div class="btn-group"><button type="button" class="btn btn-info" onclick=display_input("refernce")><i class="fas fa-pencil-alt "></i> </button><button type="button" class="btn btn-dark" onclick=hidden_input("refernce")><i class="fas fa-trash "></i></button></div></td></tr>';
@@ -643,8 +716,8 @@ $.ajax({
 function send(col,oldval){
   var newval=$('#'+col).val();
   var status=1;
-var oold=oldval.replace(/,/g,'-');
-console.log(oold);
+var oold=oldval.replace('/','-');
+//alert(oold);
 $.ajax({
              type:'get',
              url:'/accountant/add_remark/'+col+'/'+oold+'/'+newval+'/'+status,
@@ -659,19 +732,23 @@ $.ajax({
          });
 }
 function sendremark(){
+  $('.ses_valiide').addClass('disabled');
   var m=$('#main_service').val();
   var s=$('#service_id').val();
   var n=$('#num').val();
   var to=$('#to').val();
-  alert(s);
+  var manager=$('#manager_how').val();
+  //alert(s);
   var from={{ Auth::user()->id }};
   $.ajax({
              type:'get',
-             url:'/accountant/send_remark/'+m+'/'+s+'/'+to+'/'+from+'/'+n,
+             url:'/accountant/send_remark/'+m+'/'+s+'/'+to+'/'+from+'/'+n+'/'+manager,
              data:{id:status},
              success:function(response){
                $('#myModal_acc').modal('toggle');
                $("#serr"+s).css('display','none');
+               $('#in_success_or_not').text('remark send done successfuly');
+
              },
              error:function(error){
                console.log(error);

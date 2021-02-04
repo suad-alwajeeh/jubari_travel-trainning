@@ -117,6 +117,7 @@
                        $Dep_city2=false;
                        $arr_city2=false;
                        $dep_date2=false;
+                       $busher_time=false;
                        $due_to_supp=false;
                        $provider_cost=false;
                        $provider_cost=false;
@@ -211,24 +212,32 @@
           $dep_date=true;
           break;
          }}
-         for( $i=0;$i<sizeof($mv);$i++){
-             
-          if ($mv[$i][$x]==='Dep_city2') {
-           $Dep_city2=true;
-           break;
-          }}
-          for( $i=0;$i<sizeof($mv);$i++){
        
-        if ($mv[$i][$x]==='arr_city2') {
-         $arr_city2=true;
-         break;
-        }}
-        for( $i=0;$i<sizeof($mv);$i++){
-     
-      if ($mv[$i][$x]==='dep_date2') {
-       $dep_date2=true;
-       break;
-      }}
+for( $i=0;$i<sizeof($mv);$i++){
+ 
+  if ($mv[$i][$x]==='Dep_city2') {
+   $Dep_city2=true;
+   break;
+  }}
+  for( $i=0;$i<sizeof($mv);$i++){
+ 
+ if ($mv[$i][$x]==='arr_city2') {
+ $arr_city2=true;
+ break;
+ }}
+ for( $i=0;$i<sizeof($mv);$i++){
+ 
+ if ($mv[$i][$x]==='dep_date2') {
+ $dep_date2=true;
+ break;
+ }}
+
+ for( $i=0;$i<sizeof($mv);$i++){
+ 
+  if ($mv[$i][$x]==='bursher_time') {
+  $bursher_time=true;
+  break;
+  }}
          for( $i=0;$i<sizeof($mv);$i++){
       
        if ($mv[$i][$x]==='due_to_supp') {
@@ -387,25 +396,27 @@
 else
 {
  if ($arr_city2) {
-  echo"<td>  $item->arr_city2</td>";
+  echo"<td> $item->arr_city2</td>";
  }
  else{
-  echo"<td class='text-red'>  $item->arr_city2</td>";
+  echo"<td class='text-red'> $item->arr_city2</td>";
 
  }
 } 
-   if($item->busher_time==null)
-   echo" <td > --</td>";     
-else
+if($item->busher_time==null)
+echo" <td > --</td>";  
+if ($item->Dep_city!=null)
 {
+     
+
  if ($busher_time) {
   echo"<td>  $item->busher_time</td>";
  }
  else{
   echo"<td class='text-red'>  $item->busher_time</td>";
 
- }
-} 
+ 
+} }
               
          if ($due_to_supp) {
           echo" <td class='text-red'> $item->supplier_name</td>";
@@ -498,13 +509,6 @@ else
 </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 

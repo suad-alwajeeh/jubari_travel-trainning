@@ -31,37 +31,44 @@ class ServiceController extends Controller
     }
 /***********************start show all service*********************************************** */
     public function index()
-    {
-        
- if(isset($_GET['id']) && ($_GET['id']==0 || $_GET['id']==1) )
-       { 
-        $where=['services.is_active'=>$_GET['id']];
-        $where +=['services.deleted'=>0];
-
-        $data['service']=Service::join('employees', 'employees.emp_id', '=', 'services.emp_id_how_create')
-        ->where($where)->get();
-        return json_encode($data);}
-    
-        else if(isset($_GET['id']) && $_GET['id']==2 )
-       { 
-        $data['service']=Service::join('employees', 'employees.emp_id', '=', 'services.emp_id_how_create')
-        ->where('employees.is_active',1)->get();
-        return json_encode($data);}
-    
-        
-        else{
-
-              $where =['services.deleted'=>0];
-           
-            $data['service']=Service::join('employees','employees.emp_id', '=', 'services.emp_id_how_create')
-            ->where($where)->get();
-            return view('services',$data);
-        }
-
-    
+    {  $affected1=[];
+            $data=DB::select('select  services.ser_id,services.is_active,services.ser_name,services.discrption,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name from services,employees where services.deleted=0 and employees.emp_id=services.emp_id_how_create order By  services.ser_id desc');
+               /* $data=Service::join('employees','employees.emp_id', '=', 'services.emp_id_how_create')
+                ->where('services.deleted',0)->orderBy('ser_id', 'DESC')->paginate(30);*/
+                return view('services',['data'=>$data,'data1'=>$affected1]);
     
     }
+
+
+    
+    public function display_with_status($id)
+    {  
+        if($id==1){
+            $affected1 =[];
+            $affected=DB::select('select  services.ser_id,services.is_active,services.ser_name,services.discrption,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name from services,employees where services.deleted=0 and employees.emp_id=services.emp_id_how_create and services.is_active=1 order By  services.ser_id desc');
+
+            return view('services',['data'=>$affected,'data1'=>$affected1]);
+        }elseif($id==0){
+            $affected1 =[];
+            $affected=DB::select('select  services.ser_id,services.is_active,services.ser_name,services.discrption,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name from services,employees where services.deleted=0 and employees.emp_id=services.emp_id_how_create and services.is_active=0 order By  services.ser_id desc');
+
+            return view('services',['data'=>$affected,'data1'=>$affected1]);
+        }
+                 
+    }
 /***********************end show all service*********************************************** */
+public function is_active($id){
+    $affected1= Service::where('ser_id',$id)
+    ->update(['is_active'=>'1']);
+    $affected = Service::where('deleted',0)->paginate(25);
+    return redirect('services');
+    }
+    public function is_not_active($id){
+        $affected1= Service::where('ser_id',$id)
+        ->update(['is_active'=>'0']);
+        $affected = Service::where('deleted',0)->paginate(25);
+        return redirect('services');
+        }
 /***********************start insert new service*********************************************** */
 
     public function insert(Request $request)
@@ -99,7 +106,8 @@ echo $req->ser_name;
     'is_active'=>$active,
     ]);
     $data['service'] = Service::where('deleted',0)->get();
-    return redirect('/services')->with($data);
+                        return redirect('services')->with('seccess','Seccess Data update');
+
     
 }
 /***********************end update new service*********************************************** */

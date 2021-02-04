@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendingEmail;
+use Auth;
 
 //use Illuminate\Support\Facades\Validator;
 //use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -47,14 +48,30 @@ class uuserController extends Controller
         }
         }
 */
+public function change_password(){
+    $id=Auth::user()->id;
+    $affected = users::where([['id',$id],['is_active',1]])->get();
 
+    return view('change_password',['data1'=>$affected]);
+}
+public function change_password1(Request $req)
+    { 
+        $PASSWORD=$req->password;
+      $id=$req->id;
+      $user=new users;
+      $user::where('id',$req->id)
+      ->update(['password'=>Hash::make($req->password),'pass'=>$req->password,'remember_token'=>NULL]);
+
+      //return redirect('logout');
+    }
     public function display_row($id)
     { 
         $affected = users::where('id',$id)->get();
         $affected2= DB::table('roles')->where([['is_active',1],['is_delete',0]])->get();
         return view('user_edit',['data'=>$affected,'data3'=>$affected2]);
     }
-    public function user_profile1_page($id){
+    public function user_profile1_page(){
+        $id=Auth::user()->id;
         $affected = users::where('users.id',$id)
         ->join('employees','users.id','employees.emp_id')
         ->join('departments','employees.dept_id','departments.id')
@@ -127,8 +144,8 @@ class uuserController extends Controller
         }
         //*******************************************add page fun
     public function add()
-    {
-        $affected1 = Department::where([['is_active',1],['deleted',0]])->get();
+    {      $affected1 = DB::select('select * from employees where deleted=0 and is_active=1 and emp_id not in(select id from users )');
+       // $affected1 = Department::where([['is_active',1],['deleted',0]])->get();
         $affected2= DB::table('roles')->where([['is_active',1],['is_delete',0]])->get();
         return view('user_add',['data1'=>$affected1,'data3'=>$affected2]);
     }
@@ -179,7 +196,7 @@ class uuserController extends Controller
         $p=$req->password1;
          $n=$req->name;
         $role::where('id',$req->id)
-        ->update(['name'=>$req->name,'email'=>$req->email,'password'=>Hash::make($req->password1),'is_active'=>$req->is_active,'pass'=>$req->password1 ]);
+        ->update(['name'=>$req->name,'email'=>$req->email,'remember_token'=>NULL,'password'=>Hash::make($req->password1),'is_active'=>$req->is_active,'pass'=>$req->password1 ]);
         $data = array(
             'EMAIL'=>$e,
             'PASSWORD' =>$p,
@@ -195,6 +212,8 @@ class uuserController extends Controller
         }
     public function hide_row($id){
         $affected1= users::where('id',$id)
+        ->delete();
+        $affected1= role_user::where('user_id',$id)
         ->delete();
         return redirect('user_display');
 

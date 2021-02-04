@@ -7,6 +7,8 @@ use App\Employee;
 use App\Department;
 use App\User;
 use App\users;
+use Illuminate\Support\Facades\DB;
+
 class EmployeeController extends Controller
 {
     /**
@@ -21,12 +23,9 @@ class EmployeeController extends Controller
    
     public function index()
     {
-        $where =['employees.deleted'=>0];
-      $where +=['departments.deleted'=>0];
-      $where +=['departments.is_active'=>1];
-      $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
-      ->where($where)->orderBy('emp_id','DESC')->get();
-            return view('employees',$data);
+        $affected=DB::select('select  employees.emp_salary,employees.emp_hirdate,employees.account_number,employees.emp_mobile,employees.attchment,employees.emp_id,employees.is_active,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name ,departments.name from departments,employees where employees.deleted=0 and employees.dept_id=departments.id  and departments.deleted=0 and departments.is_active=1 order By  employees.emp_id desc');
+        return view('employees',['emps'=>$affected]);
+
        }
     public function Activate(){
         if(isset($_GET['id']) && $_GET['id']==0)
@@ -63,6 +62,35 @@ class EmployeeController extends Controller
       $data['emps']=Employee::join('departments', 'departments.id', '=', 'employees.dept_id')
       ->where($where,1)->paginate(6);
       return json_encode($data);}
+    }
+
+    public function is_active($id){
+        $affected1= Employee::where('emp_id',$id)
+        ->update(['is_active'=>'1']);
+        $affected=DB::select('select  employees.emp_salary,employees.emp_hirdate,employees.account_number,employees.emp_mobile,employees.attchment,employees.emp_id,employees.is_active,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name ,departments.name from departments,employees where employees.deleted=0 and employees.dept_id=departments.id  and departments.deleted=0 and departments.is_active=1 order By  employees.emp_id desc');
+
+           
+        return redirect('employees');
+        }
+        public function is_not_active($id){
+            $affected1= Employee::where('emp_id',$id)
+            ->update(['is_active'=>'0']);
+            $affected=DB::select('select  employees.emp_salary,employees.emp_hirdate,employees.account_number,employees.emp_mobile,employees.attchment,employees.emp_id,employees.is_active,employees.emp_first_name,employees.emp_middel_name,employees.emp_thired_name,employees.emp_last_name ,departments.name from departments,employees where employees.deleted=0 and employees.dept_id=departments.id  and departments.deleted=0 and departments.is_active=1 order By  employees.emp_id desc');
+           
+            return redirect('employees');
+            }
+    public function display_with_status($id)
+    {  
+        if($id==1){
+            $affected1 =[];
+            $affected = Employee::join('departments','departments.id','=','employees.dept_id')->where([['employees.deleted',0],['employees.is_active',1]])->paginate(25);
+            return view('employees',['emps'=>$affected,'data1'=>$affected1]);
+        }elseif($id==0){
+            $affected1 =[];
+            $affected = Employee::join('departments','departments.id','=','employees.dept_id')->where([['employees.deleted',0],['employees.is_active',0]])->paginate(25);
+            return view('employees',['emps'=>$affected,'data1'=>$affected1]);
+        }
+                 
     }
     public function insert(){
         $where=['is_active'=>1];

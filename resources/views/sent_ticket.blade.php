@@ -163,13 +163,13 @@
                                             <td>{{$tickets->cur_name}}</td>
                                             <td>{{$tickets->cost}} </td>
                                             <td> {{$tickets->passnger_currency}} </td>
-                                            @if($tickets->ticket_status==1)
+                                            @if($tickets->ses_status==1)
                                             <td>OK</td>
-                                            @elseif($tickets->ticket_status==2)
+                                            @elseif($tickets->ses_status==2)
                                             <td>Issue</td>
-                                            @elseif($tickets->ticket_status==3)
+                                            @elseif($tickets->ses_status==3)
                                             <td>Void</td>
-                                            @elseif($tickets->ticket_status==4)
+                                            @elseif($tickets->ses_status==4)
                                             <td>Refund</td>
                                             @endif
                                             <td>{{$tickets->remark}} </td>
@@ -212,16 +212,6 @@
     </section>
 </div>
 <!-- /.container-fluid -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
     $('.selectall').click(function () {
         $('.selectbox').prop('checked', $(this).prop('checked'));

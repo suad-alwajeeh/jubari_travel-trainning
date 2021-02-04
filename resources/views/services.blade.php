@@ -1,59 +1,33 @@
 @extends('app_layouts.master')
 @section('main_content')
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  @if (session('seccess'))
-  <div class="alert alert-success" role="alert">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('seccess') }}
-  </div>
-  @elseif(session('failed'))
-  <div class="alert alert-danger" role="alert">
-    <button type="button" class="close" data-dismiss="alert">×</button>
-    {{ session('failed') }}
-  </div>
-  @endif
-                
-<div class="col-12">
-            <ol class="breadcrumb float-sm-right ">
-              <li class="breadcrumb-item"><a href="/services"> Services</a></li>
-
-            </ol>
-  </div>
-  </br>
-  </br>
-  <!--  start add Modal -->
-  <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Service</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form class="form-horizontal">
+  <!-- Content Wrapper. Contains page content -->
+      <!--  start add Modal -->
+ <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{__('messages.add service')}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="width:500px">
+      <form class="form-horizontal">
             @csrf
             <div class="card-body">
               <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Service Name :</label>
+                <label class="col-sm-4 col-form-label">{{__('messages.serviece name')}}:</label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" id="ser_name" name="ser_name" required
-                    placeholder="Service Name ">
+                    placeholder="{{__('messages.serviece name')}}">
                 </div>
               </div>
               <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Discrption :</label>
+                <label class="col-sm-4 col-form-label">{{__('messages.Discrption')}} :</label>
                 <div class="col-sm-8">
                   <textarea type="text" class="form-control" id="discrption" name="discrption" required
-                    placeholder="Descrption "></textarea>
+                    placeholder="{{__('messages.Discrption')}}  "></textarea>
                 </div>
               </div>
 
@@ -62,7 +36,7 @@
                 <div class="offset-sm-4 col-sm-8">
                   <div class="form-check">
                     <input type="checkbox" checked class="form-check-input" name="is_active" id="active">
-                    <label class="form-check-label" for="exampleCheck2">Active</label>
+                    <label class="form-check-label" for="exampleCheck2">{{__('messages.Active')}} </label>
                   </div>
                 </div>
               </div>
@@ -73,178 +47,176 @@
           </form>
         </div>
         <div class="modal-footer">
-          <a href="{{url('service')}}"><button type="button" class="btn btn-secondary  m-3 p-2 float-left"
-              data-dismiss="modal">Close</button></a>
-          <a id="add2"> <button type="button" class="btn btncolor  m-3 p-2 float-right">Save changes</button></a>
-        </div>
+          <a href="{{url('service')}}"><button type="button" class="btn btn-outline-danger  m-3 p-2 float-left" data-dismiss="modal">{{__('messages.cancel')}} </button></a>
+      <a id="add2"> <button type="button" class="btn btn-outline-primary">{{__('messages.save')}} </button></a>
       </div>
     </div>
   </div>
-  <!-- end add model-->
-  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1> Service</h1>
-        </div>
-        <div class="col-sm-6">
-
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
-  <!-- Main content -->
-
-  <!-- /.content -->
-
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-
-        <div class="col-sm-6">
-
-        </div>
-      </div>
-    </div><!-- /.container-fluid -->
-  </section>
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title col-3  d-inline-block">Services</h3>
-                <select class="form-control col-2   mx-5 d-inline-block" id="dropselect">
-                  <option class="form-control  d-inline-block" value="2">ALL</option>
-                  <option class="form-control  d-inline-block" value="1">Active</option>
-                  <option class="form-control  d-inline-block" value="0">Deactive</option>
-                </select>
-                <a class="btn btncolor col-2 float-right p-2 d-inline-block" href="" data-toggle="modal"
-                  data-target="#add"> <i class="fa fa-plus" aria-hidden="true"></i> New Service</a>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="datatable" class="table table-bordered table-striped">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Name</th>
-                      <th> Discrption</th>
-                      <th> Employee</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody class="row2">
-                    @foreach($service as $ser)
-                    <tr>
-                      <input type="hidden" class="delete_id" value="{{$ser->ser_id}}">
-                      <td>{{$ser->ser_id}}</td>
-                      <td>{{$ser->ser_name}}</td>
-                      <td>{{$ser->discrption}}</td>
-                      <td>{{$ser->emp_first_name}} {{$ser->emp_middel_name}} {{$ser->emp_thired_name}}
-                        {{$ser->emp_last_name}}</td>
-                      @if($ser->is_active==1)
-                      <td><span class="badge badge-success">Active</span></td>
-                      @else
-                      <td><span class="badge badge-danger">Deactive</span></td>
-                      @endif
-
-                      <td>
-                        <a class="" href="{{ url('service/service-edit/'.$ser->ser_id) }}"><i
-                            class="fas fa-pencil-alt text-primary "></i></a>
-                        <a class=" deletebtn"><i class="fas fa-trash text-danger "></i></a>
-              </div>
-              @endforeach
-              </tbody>
-
-              </table>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </div>
 </div>
-<!-- /.container-fluid -->
+  <div class="content-wrapper">
+  <div class="container p-4">
+  <div class="row card-outline so_panal">
+  <div class="col-12 card ">
+            <div class="card-header">
+              <h2 class="card-title">
+              {{__('messages.DISPLAY SERVICE')}} 
+              </h2>
+              <div class="dropdown so_form_btn">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown">
+    {{__('messages.status')}}  
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="/services">{{__('messages.all')}} </a>
+      <a class="dropdown-item " href="/services/1"> {{__('messages.Active')}} </a>
+      <a class="dropdown-item " href="/services/0">{{__('messages.notactive')}}  </a>
+    </div>
+  </div>
+  <a type="button" class="btn btn-outline-success so_form_btn" data-toggle="modal" data-target="#add">{{__('messages.add new')}}</a>
+            </div>
+</br>
+@if (session('seccess'))
+<div  class="alert so-alert-message" >        {{ session('seccess') }}
+ <button type="button" data-dismiss="alert" class="close">&times;</button></div>         
+  @endif
+  <div id="so-alert-message"></div>         
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div class="container"> 
+<?php $i=1 ?> 
 
+  <table class="table table-hover text-center " id="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>{{__('messages.Name')}} </th>
+                      <th> {{__('messages.Discrption')}} </th>
+                      <th> {{__('messages.Employee')}} </th>
+        <th>{{__('messages.status')}} </th>
+        <th>{{__('messages.Opreation')}} </th>
+      </tr>
+    </thead>
+    <tbody id="pp">
+    @forelse($data as $item)
+      <tr id="tr{{$item->ser_id}}" class="status{{$item->is_active}}" >
+      <input type="hidden" class="delete_id" value="{{$item->ser_id}}">
+
+      <td><?php echo $i;?><span style="display:none;" >{{$item->ser_id}}</span></td>
+      <td>{{$item->ser_name}}</td>
+                      <td>{{$item->discrption}}</td>
+                      <td>{{$item->emp_first_name}} {{$item->emp_middel_name}} {{$item->emp_thired_name}}
+                        {{$item->emp_last_name}}</td>
+
+      <td>
+      @if($item->is_active == 0)
+      
+      <div class="form-group">
+                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                      <input onclick="myFunction{{$item->ser_id}}()" type="checkbox" class="custom-control-input" id="customSwitch{{$item->ser_id}}">
+                      <label class="custom-control-label" for="customSwitch{{$item->ser_id}}"></label>
+                    </div>
+                  </div>
+                  @elseif($item->is_active == 1)
+                  <div class="form-group">
+                    <div  class="custom-control custom-switch custom-switch-on-success custom-switch-off-danger ">
+                      <input onclick="myFunction{{$item->ser_id}}()" checked type="checkbox" class="custom-control-input" id="customSwitch{{$item->ser_id}}">
+                      <label class="custom-control-label" for="customSwitch{{$item->ser_id}}"></label>
+                    </div>
+                  </div>
+@endif
+      </td>
+        <td>
+        <div class="btn-group btn-group-sm">
+        @if($item->ser_id == 1||$item->ser_id == 2||$item->ser_id == 3||$item->ser_id == 4||$item->ser_id == 5||$item->ser_id == 6||$item->ser_id == 7)
+  <a type="button" class="btn btn-outline-success" href="{{ url('/service/service-edit/'.$item->ser_id) }}"><i class="fas fa-pencil-alt "></i></a>
+@else
+<a type="button" class="btn btn-outline-success" href="{{ url('/service/service-edit/'.$item->ser_id) }}"><i class="fas fa-pencil-alt "></i></a>
+  <a type="button" class="btn btn-outline-danger deletebtn"   ><i class="fas fa-trash "></i></a>
+
+@endif
+
+
+</div>
+
+        </td>
+      </tr>
+        <!-- The Modal -->
+        <div class="modal fade" id="myModalair{{$item->ser_id}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal body -->
+      <div class="modal-body">
+      </div>
+   </div>
+  </div>
+</div>
+
+      <script>
+     function dep_select(){
+     var m= $("#selectdep").val();
+     if(m==1){
+      $('.dep4').css('display','none');
+        }
+     }
+function myFunction{{$item->ser_id}}() {
+  var checkBox{{$item->ser_id}} = document.getElementById("customSwitch{{$item->ser_id}}");
+  
+  if (checkBox{{$item->ser_id}}.checked == true){
+    $.ajax({
+             type:'get',
+             url:'/is_active_ser/'+{{$item->ser_id}},
+             data:{id:{{$item->ser_id}}},
+             success:function(response){console.log(response);
+            // alert("data saved");
+             },
+             error:function(error){console.log(error);
+            // alert("data dont saved");
+             } 
+         });
+  } else{
+    $.ajax({
+             type:'get',
+             url:'/no_active_ser/'+{{$item->ser_id}},
+             data:{id:{{$item->ser_id}}},
+             success:function(response){console.log(response);
+            // alert("data saved");
+             },
+             error:function(error){console.log(error);
+            // alert("data dont saved");
+             } 
+         });
+}
+}
+
+
+
+</script>
+<?php $i++ ?>
+@empty
+<tr>
+                      <td class=text-center colspan="10">There is No data in table...
+                      <td>
+                    </tr>
+     @endforelse
+    </tbody>
+  </table>
+
+
+  
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
 <script>
-  console.log('inseode scripy');
-
-  $(document).ready(function () {
-    $.ajaxSetup({
+    $(document).ready(function () {
+      console.log('add');
+      $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
 
-
-    let td = '';
-    $("#dropselect").change(function () {
-
-      console.log('jbwjebfjw');
-      console.log($("#dropselect"));
-
-      var id = $('#dropselect').val();
-      console.log(id);
-      $.ajax({
-        url: "{{url('services')}}",
-        data: { id: id },
-        success: function (data) {
-          console.log('sec');
-          //console.log(data);
-
-          $.each(JSON.parse(data), function (key, value) {
-            if (value.length > 0) {
-              for (var i = 0; i < value.length; i++) {
-                console.log('value.length');
-                console.log(value.length);
-                if (value.length > 0) {
-                  myJSON = JSON.parse(data);
-                  if (value[i].is_active == 1) {
-                    td += '<tr><input type="hidden" class="delete_id" value="' + value[i].ser_id + '"><td>' + value[i].ser_id + '</td><td>' + value[i].ser_name + '</td> <td>' + value[i].discrption + '</td><td>' + value[i].emp_first_name + ' ' + value[i].emp_middel_name + ' ' + value[i].emp_thired_name + ' ' + value[i].emp_last_name + '</td>   <td><span class="badge badge-success">Active</span></td><td><a  class="m-2" href="/service/service-edit/' + value[i].ser_id + '"><i class="fas fa-pencil-alt text-primary "></i></a> <a class="deletebtn m-2"><i class="fas fa-trash text-danger"></i></a></td></tr>';
-                  }
-                  else {
-                    td += '<tr><input type="hidden" class="delete_id" value="' + value[i].ser_id + '"><td>' + value[i].ser_id + '</td><td>' + value[i].ser_name + '</td> <td>' + value[i].discrption + '</td><td>' + value[i].emp_first_name + ' ' + value[i].emp_middel_name + ' ' + value[i].emp_thired_name + ' ' + value[i].emp_last_name + '</td>   <td><span class="badge badge-danger">Deactive</span></td><td><a  class="m-2" href="/service/service-edit/' + value[i].ser_id + '"><i class="fas fa-pencil-alt text-primary"></i></a> <a  class="deletebtn m-2"><i class="fas fa-trash text-danger"></i></a></td></tr>';
-                  }
-
-                  $('.row2').html(td);
-                }
-              }
-            }
-            else {
-              td = '<div class="txte-center">No Data</div>';
-              $('.row2').html(td);
-            }
-            td = '';
-
-
-
-          });
-        },
-        error: function () {
-          console.log('err');
-        }
-      });
-    });
-
+    
+ 
     $("#add2").click(function () {
       var ser_name = $('#ser_name').val();
       var discrption = $('#discrption').val();
@@ -257,8 +229,9 @@
         success: function (data) {
           console.log('sec');
           $('#add').remove();
-          swal("Data Insert", {
+          swal("{{__('messages.insSuccessfully')}}", {
             icon: "success",
+            
           }).then((willDelete) => {
             location.reload();
           });
@@ -276,11 +249,11 @@
 
       //alert(id);
       swal({
-        title: "Are you sure?",
-        text: "Are You  Sure to delete this filed!",
+        title: "{{__('messages.delete')}}",
+        text: "{{__('messages.delconfig')}}",
         icon: "error",
-        buttons: true,
-        dangerMode: true,
+        buttons: ["{{__('messages.no')}}", "{{__('messages.yes')}}"],
+         dangerMode: true,
       })
         .then((willDelete) => {
           if (willDelete) {
@@ -297,7 +270,7 @@
               url: '/service/service_delete/' + id,
               data: data,
               success: function (response) {
-                swal("Delete Successfully", {
+                swal("{{__('messages.delSuccessfully')}}", {
                   icon: "success",
                 }).then((willDelete) => {
                   location.reload();
@@ -309,6 +282,9 @@
 
         });
     });
-  });
-</script>
+        });
+
+
+  </script>
+  <!-- /.content-wrapper -->
 @endsection

@@ -42,7 +42,6 @@
                                         value="{{ \Carbon\Carbon::createFromDate($gen->Issue_date)->format('Y-m-d')}}" />
                                 </div>
                             </div>
-
                             <div class="form-group col-md-6 col-sm-12 col-xm-12">
                                 <label class="col-md-12 col-xm-12">Reference </label>
                                 <div class="form-group">
@@ -86,23 +85,23 @@
                                         id="code" style="width: 100%;" data-select2-id="1" tabindex="0"
                                         aria-hidden="true">
 
-                                        @if($gen->general_status==1)
+                                        @if($gen->service_status==1)
                                         <option value="1" selected>OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->general_status==2)
+                                        @elseif($gen->service_status==2)
                                         <option value="1">OK</option>
                                         <option value="2" selected>Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->general_status==3)
+                                        @elseif($gen->service_status==3)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3" selected>Void</option>
                                         <option value="4">Refund</option>
 
-                                        @elseif($gen->general_status==4)
+                                        @elseif($gen->service_status==4)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
@@ -123,23 +122,23 @@
                                         id="code" style="width: 100%;" data-select2-id="2" tabindex="0"
                                         aria-hidden="true">
 
-                                        @if($gen->offered_status==1)
+                                        @if($gen->ses_status==1)
                                         <option value="1" selected>OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->offered_status==2)
+                                        @elseif($gen->ses_status==2)
                                         <option value="1">OK</option>
                                         <option value="2" selected>Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($gen->offered_status==3)
+                                        @elseif($gen->ses_status==3)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3" selected>Void</option>
                                         <option value="4">Refund</option>
 
-                                        @elseif($gen->offered_status==4)
+                                        @elseif($gen->ses_status==4)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
@@ -164,8 +163,7 @@
                                         name="gen_info" value="{{$gen->gen_info}}" />
                                 </div>
                             </div>
-                            </div> @endforeach 
-                            <div class="around col-md-12 col-sm-12 col-xm-12 m-3">
+                            </div< @endforeach <div class="around col-md-12 col-sm-12 col-xm-12 m-3">
                             <div class="col-md-5 col-sm-12 col-xm-12 d-inline-block">
                                 <h2 class="form-title">Provider Info </h2>
                                 <div class="form-group col-md-12 col-sm-12 col-xm-12">
@@ -322,15 +320,6 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
 <script>
 
     // ************************ Drag and drop ***************** //
@@ -440,6 +429,43 @@
     $(document).ready(function () {
         let td = '';
         let rm = '';
+        $('.provider').change(function () {
+            console.log('insede airline');
+
+            var id = $('.provider').val();
+            console.log('insede airline');
+            console.log(id);
+            $.ajax({
+                url: "{{url('/suplier/suplier_row')}}",
+                data: { id: id },
+                success: function (data) {
+                    console.log('sec');
+                    console.log(data);
+                    if (JSON.parse(data) === null)
+                        $('.curency').html('null');
+
+                    else {
+                        $.each(JSON.parse(data), function (key, value) {
+                            for (var i = 0; i < value.length; i++) {
+                                console.log('value[i]');
+                                console.log(value[i]);
+                                myJSON = JSON.parse(data);
+                                td += '<option value="' + value[i].cur_id + '">' + value[i].cur_name + '</option>';
+                                rm = value[i].supplier_remark;
+
+                            }
+                            $('.curency').html(td);
+                            $('#remark').html(rm);
+                            td = '';
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('err');
+                }
+            });
+
+        });
         $('#generate').click(function (e) {
             console.log('bggehegw');
             $.ajax({
@@ -551,41 +577,7 @@
             });
 
         });
-        $('.provider').change(function () {
-            var id = $('.provider').val();
-            console.log('insede airline');
-            console.log(id);
-            $.ajax({
-                url: "{{url('/suplier/suplier_row')}}",
-                data: { id: id },
-                success: function (data) {
-                    console.log('sec');
-                    console.log(data);
-                    if (JSON.parse(data) === null)
-                        $('.curency').html('null');
-
-                    else {
-                        $.each(JSON.parse(data), function (key, value) {
-                            for (var i = 0; i < value.length; i++) {
-                                console.log('value[i]');
-                                console.log(value[i]);
-                                myJSON = JSON.parse(data);
-                                td += '<option value="' + value[i].cur_id + '">' + value[i].cur_name + '</option>';
-                                rm = value[i].supplier_remark;
-
-                            }
-                            $('.curency').html(td);
-                            $('#remark').html(rm);
-                            td = '';
-                        });
-                    }
-                },
-                error: function () {
-                    console.log('err');
-                }
-            });
-
-        });
+      
 
 
     });

@@ -167,7 +167,7 @@
      }}
      for( $i=0;$i<sizeof($mv);$i++){
     
-    if ($mv[$i][$x]==='offered_status') {
+    if ($mv[$i][$x]==='ses_status') {
      $offered_status=true;
      break;
     }}
@@ -277,11 +277,11 @@ break;
 
      
         if ($offered_status) {
-          if( $item->offered_status==1)
+          if( $item->ses_status==1)
          echo" <td class='text-red'>  OK</td>";
-         elseif ( $item->offered_status==2)
+         elseif ( $item->ses_status==2)
          echo" <td class='text-red'>  Issue</td>";
-         elseif ( $item->offered_status==3)
+         elseif ( $item->ses_status==3)
          echo" <td class='text-red'>  Void</td>";
          else
          echo" <td class='text-red'>  Refund</td>";
@@ -289,11 +289,11 @@ break;
         }
       else
       {
-       if( $item->offered_status==1)
+       if( $item->ses_status==1)
        echo" <td >  OK</td>";
-       elseif ( $item->offered_status==2)
+       elseif ( $item->ses_status==2)
        echo" <td >  Issue</td>";
-       elseif ( $item->offered_status==3)
+       elseif ( $item->ses_status==3)
        echo" <td >  Void</td>";
        else
        echo" <td>  Refund</td>";
@@ -389,13 +389,6 @@ echo"<td>  $item->passnger_currency</td>";
 </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 

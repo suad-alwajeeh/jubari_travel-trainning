@@ -87,6 +87,7 @@
                                                     <th>Employee Name</th>
                                                     <th>Passenger Cost </th>
                                                     <th>Passenger Currency </th>
+                                                    <th>Remark</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -103,8 +104,15 @@
                                                     <td> {{ $item->passenger_name}}</td>
                                                     <td> {{ $item->bus_name}}</td>
                                                     <td> {{ $item->bus_number}}</td>
-                                                    <td> OK</td>
-                                                    <td> {{$item->Dep_city}}</td>
+                                                    @if($item->ses_status==1)
+                                                <td>OK</td>
+                                                @elseif($item->ses_status==2)
+                                                <td>Issue</td>
+                                                @elseif($item->ses_status==3)
+                                                <td>Void</td>
+                                                @elseif($item->ses_status==4)
+                                                <td>Refund</td>
+                                                @endif                                                    <td> {{$item->Dep_city}}</td>
                                                     <td> {{$item->arr_city}}</td>
                                                     <td> {{ $item->dep_date}}</td>
                                                     <td> {{ $item->supplier_name}}</td>
@@ -113,12 +121,13 @@
                                                     <td>{{$item->emp_first_name}} {{$item->emp_last_name}}</td>
                                                     <td> {{ $item->cost}}</td>
                                                     <td> {{$item->passnger_currency}}</td>
+                                                    <td> {{$item->remark}}</td>
 
 
-                                                    <td>
-                                                        <a class="btn btncolor accept d-inline-block"
+                                                    <td class="btn-group ">
+                                                        <a  class="b_border btn btn-outline-success so_form_btn accept"
                                                             type="button">Accept</a>
-                                                        <a class="btn btncolor ignore  d-inline-block"
+                                                        <a class=" b_border ignore btn btn-outline-danger so_form_btn"
                                                             type="button">Ignore</a>
                                                     </td>
                                                 </tr>
@@ -145,17 +154,6 @@
     </div>
     </section>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 

@@ -92,23 +92,23 @@
                                         aria-hidden="true">
 
 
-                                        @if($bus->bus_status==1)
+                                        @if($bus->ses_status==1)
                                         <option value="1" selected>OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($bus->bus_status==2)
+                                        @elseif($bus->ses_status==2)
                                         <option value="1">OK</option>
                                         <option value="2" selected>Issue</option>
                                         <option value="3">Void</option>
                                         <option value="4">Refund</option>
-                                        @elseif($bus->bus_status==3)
+                                        @elseif($bus->ses_status==3)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3" selected>Void</option>
                                         <option value="4">Refund</option>
 
-                                        @elseif($bus->bus_status==4)
+                                        @elseif($bus->ses_status==4)
                                         <option value="1">OK</option>
                                         <option value="2">Issue</option>
                                         <option value="3">Void</option>
@@ -311,16 +311,6 @@
     </div>
 </div>
 
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
 <script>
 
     // ************************ Drag and drop ***************** //
